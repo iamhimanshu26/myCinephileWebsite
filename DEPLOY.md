@@ -9,7 +9,7 @@
 
 ## 2. Push this project to your new repo
 
-In a terminal, from the project folder (`CineVerse-main\CineVerse-main`), run (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repo name):
+In a terminal, from the project folder (`C:\Users\LENOVO\OneDrive\Desktop\My_Projects\CineVerse-main`), run (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repo name):
 
 ```bash
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
