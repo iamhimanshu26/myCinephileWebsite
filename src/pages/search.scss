@@ -1,0 +1,46 @@
+/* stylelint-disable */
+@use '../sass/' as *;
+
+.search-page {
+  padding: 5rem 1rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.search-page-header {
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.5rem;
+    color: $txt-color;
+    font-weight: 600;
+  }
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.search-section {
+  h2 {
+    font-size: 1.1rem;
+    color: $main-color;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.search-empty,
+.search-hint {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}

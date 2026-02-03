@@ -1,3 +1,36 @@
-.movies {
+.home {
   overflow-x: hidden;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  min-height: 100vh;
+}
+
+.home__hero {
+  text-align: center;
+  padding: 1.5rem 1rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.home__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff8f0;
+  margin-bottom: 0.25rem;
+}
+
+.home__tagline {
+  font-size: 0.95rem;
+  color: rgba(255, 248, 240, 0.7);
+}
+
+.home__content {
+  padding: 0 1.25rem;
+  margin-top: 0.5rem;
+  max-width: 1660px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home__content section[id] {
+  scroll-margin-top: 6rem;
 }

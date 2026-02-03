@@ -81,6 +81,22 @@
   font-weight: 600;
 }
 
+.person-link {
+  color: $main-color;
+  text-decoration: underline;
+  margin-right: 0.25rem;
+
+  &:hover {
+    color: $txt-color;
+  }
+}
+
+.details-loading {
+  color: $txt-color;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
 .fa-star {
   color: #ff9e00;
   margin-left: 5px;

@@ -1,23 +1,109 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchAsyncMoviesOrShowsDetails,
+  fetchAsyncDetailByTmdbId,
   getSelectedMovieOrShow,
 } from '../redux/moviesSlice/moviesSlice';
+import {
+  findMovieByImdbId,
+  fetchMovieCredits,
+  getMovieCredits,
+  getFindResult,
+  hasTMDbKey,
+  clearCredits,
+  clearFind,
+} from '../redux/tmdbSlice/tmdbSlice';
 import './details.scss';
 
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/self-closing-comp */
 const Details = () => {
-  const { imdbID } = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const data = useSelector(getSelectedMovieOrShow);
+  const credits = useSelector(getMovieCredits);
+  const findResult = useSelector(getFindResult);
+  const tmdbAvailable = hasTMDbKey();
+
   useEffect(() => {
-    dispatch(fetchAsyncMoviesOrShowsDetails(imdbID));
-  }, [dispatch, imdbID]);
+    if (!id) return;
+    dispatch(clearCredits());
+    dispatch(clearFind());
+    if (id.startsWith('tt')) {
+      dispatch(fetchAsyncMoviesOrShowsDetails(id));
+    } else {
+      dispatch(fetchAsyncDetailByTmdbId(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (!data || !data.imdbID || !tmdbAvailable) return;
+    dispatch(findMovieByImdbId(data.imdbID));
+  }, [data?.imdbID, dispatch, tmdbAvailable]);
+
+  useEffect(() => {
+    if (!findResult) return;
+    const tmdbId =
+      findResult.movie_results?.[0]?.id ?? findResult.tv_results?.[0]?.id;
+    if (tmdbId) dispatch(fetchMovieCredits(tmdbId));
+  }, [findResult, dispatch]);
+
+  const directors = credits?.crew?.filter((c) => c.job === 'Director') || [];
+  const cast = credits?.cast?.slice(0, 15) || [];
+
+  const renderNames = (namesStr, type) => {
+    if (!namesStr) return null;
+    const list = namesStr.split(',').map((s) => s.trim());
+    if (type === 'director' && directors.length > 0) {
+      return list.map((name, i) => {
+        const person = directors.find(
+          (d) => d.name.toLowerCase() === name.toLowerCase()
+        );
+        if (person) {
+          return (
+            <React.Fragment key={person.id}>
+              {i > 0 && ', '}
+              <Link to={`/person/${person.id}`} className="person-link">
+                {name}
+              </Link>
+            </React.Fragment>
+          );
+        }
+        return (
+          <span key={name}>
+            {i > 0 && ', '}
+            {name}
+          </span>
+        );
+      });
+    }
+    if (type === 'cast' && cast.length > 0) {
+      return list.map((name, i) => {
+        const person = cast.find(
+          (c) => c.name.toLowerCase() === name.toLowerCase()
+        );
+        if (person) {
+          return (
+            <React.Fragment key={person.id}>
+              {i > 0 && ', '}
+              <Link to={`/person/${person.id}`} className="person-link">
+                {name}
+              </Link>
+            </React.Fragment>
+          );
+        }
+        return (
+          <span key={name}>
+            {i > 0 && ', '}
+            {name}
+          </span>
+        );
+      });
+    }
+    return <span>{namesStr}</span>;
+  };
+
   return (
     <div>
       <div className="back-container">
@@ -27,38 +113,57 @@ const Details = () => {
       </div>
       <div className="movie-section">
         {Object.keys(data).length === 0 ? (
-          <div>...Loading</div>
+          <div className="details-loading">Loading...</div>
         ) : (
           <>
             <div className="section-left">
               <div className="movie-title">{data.Title}</div>
               <div className="movie-rating">
                 <span>
-                  IMDB Rating <i className="fa fa-star"></i> : {data.imdbRating}
+                  IMDB Rating
+                  <i className="fa fa-star" />
+                  {' '}
+                  :
+                  {' '}
+                  {data.imdbRating}
                 </span>
                 <span>
-                  IMDB Votes <i className="fa fa-thumbs-up"></i> :{' '}
+                  IMDB Votes
+                  <i className="fa fa-thumbs-up" />
+                  {' '}
+                  :
+                  {' '}
                   {data.imdbVotes}
                 </span>
                 <span>
-                  Runtime <i className="fa fa-film"></i> : {data.Runtime}
+                  Runtime
+                  <i className="fa fa-film" />
+                  {' '}
+                  :
+                  {' '}
+                  {data.Runtime}
                 </span>
                 <span>
-                  Year <i className="fa fa-calendar"></i> : {data.Year}
+                  Year
+                  <i className="fa fa-calendar" />
+                  {' '}
+                  :
+                  {' '}
+                  {data.Year}
                 </span>
               </div>
               <div className="movie-plot">{data.Plot}</div>
               <div className="movie-info">
                 <div>
                   <span>Director</span>
-                  <span>{data.Director}</span>
+                  <span>{renderNames(data.Director, 'director')}</span>
                 </div>
                 <div>
                   <span>Stars</span>
-                  <span>{data.Actors}</span>
+                  <span>{renderNames(data.Actors, 'cast')}</span>
                 </div>
                 <div>
-                  <span>Generes</span>
+                  <span>Genres</span>
                   <span>{data.Genre}</span>
                 </div>
                 <div>

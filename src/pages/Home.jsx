@@ -1,27 +1,53 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import MovieList from '../components/movieList/MovieList';
 import {
   fetchAsyncMovies,
   fetchAsyncShows,
+  fetchAsyncAnimeMovies,
+  fetchAsyncAnimeShows,
 } from '../redux/moviesSlice/moviesSlice';
+import ContentSection from '../components/contentSection/ContentSection';
 import './home.scss';
 
-/* eslint-disable arrow-body-style */
 const Home = () => {
   const dispatch = useDispatch();
-  const movieText = 'Now';
-  const showText = 'Game';
 
   useEffect(() => {
-    dispatch(fetchAsyncMovies(movieText));
-    dispatch(fetchAsyncShows(showText));
-  }, []);
+    dispatch(fetchAsyncMovies('movie'));
+    dispatch(fetchAsyncShows('series'));
+    dispatch(fetchAsyncAnimeMovies());
+    dispatch(fetchAsyncAnimeShows());
+  }, [dispatch]);
 
   return (
-    <div className="movies">
-      <MovieList />
-    </div>
+    <main className="home">
+      <div className="home__hero">
+        <h1 className="home__title">CinePhile</h1>
+        <p className="home__tagline">Discover movies, series & anime</p>
+      </div>
+      <div className="home__content">
+        <ContentSection
+          title="Movies"
+          sectionId="movies"
+          type="movies"
+        />
+        <ContentSection
+          title="Series"
+          sectionId="series"
+          type="shows"
+        />
+        <ContentSection
+          title="Latest Anime — Movies"
+          sectionId="anime"
+          type="animeMovies"
+        />
+        <ContentSection
+          title="Latest Anime — Series"
+          sectionId="anime-series"
+          type="animeShows"
+        />
+      </div>
+    </main>
   );
 };
 

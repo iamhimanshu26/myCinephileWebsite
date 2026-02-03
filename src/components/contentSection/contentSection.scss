@@ -1,0 +1,70 @@
+/* stylelint-disable at-rule-no-unknown */
+@use '../../sass/' as *;
+
+.content-section {
+  margin-bottom: 1.5rem;
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $main-color;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  &__slider {
+    margin: 0 -10px;
+
+    .slick-slide {
+      padding: 0 10px;
+    }
+
+    .slick-track {
+      display: flex;
+
+      .slick-slide {
+        height: auto;
+
+        & > div {
+          height: 100%;
+        }
+      }
+    }
+
+    .slick-arrow {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      z-index: 1;
+
+      &:hover,
+      &:focus {
+        background: rgba(0, 0, 0, 0.8);
+      }
+
+      &::before {
+        color: $main-color;
+      }
+    }
+
+    .slick-prev {
+      left: 10px;
+    }
+
+    .slick-next {
+      right: 10px;
+    }
+  }
+}
+
+.content-section-empty {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+}
+
+@include mobile {
+  .content-section__slider .slick-arrow {
+    display: none !important;
+  }
+}

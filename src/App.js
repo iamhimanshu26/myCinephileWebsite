@@ -5,6 +5,8 @@ import './assets/boxicons-2.0.7/css/boxicons.min.css';
 import Header from './components/header/Header';
 import Home from './pages/Home';
 import Details from './pages/Details';
+import Person from './pages/Person';
+import Search from './pages/Search';
 import Footer from './components/footer/Footer';
 import './App.scss';
 
@@ -15,7 +17,9 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/movie/:imdbID" element={<Details />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/movie/:id" element={<Details />} />
+          <Route path="/person/:personId" element={<Person />} />
         </Routes>
         <Footer />
       </Router>

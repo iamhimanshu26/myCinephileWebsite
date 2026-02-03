@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import movieApi from '../../api/movieApi';
 import APIKey from '../../api/movieApiKey';
+import tmdbApi from '../../api/tmdbApi';
 
 export const fetchAsyncMovies = createAsyncThunk(
   'movies/fetchAsyncMovies',
@@ -22,6 +23,26 @@ export const fetchAsyncShows = createAsyncThunk(
   }
 );
 
+export const fetchAsyncAnimeMovies = createAsyncThunk(
+  'movies/fetchAsyncAnimeMovies',
+  async () => {
+    const response = await movieApi.get(
+      `?apiKey=${APIKey}&s=anime&type=movie`
+    );
+    return response.data;
+  }
+);
+
+export const fetchAsyncAnimeShows = createAsyncThunk(
+  'movies/fetchAsyncAnimeShows',
+  async () => {
+    const response = await movieApi.get(
+      `?apiKey=${APIKey}&s=anime&type=series`
+    );
+    return response.data;
+  }
+);
+
 export const fetchAsyncMoviesOrShowsDetails = createAsyncThunk(
   'movies/fetchAsyncMoviesOrShowsDetails',
   async (id) => {
@@ -30,10 +51,41 @@ export const fetchAsyncMoviesOrShowsDetails = createAsyncThunk(
   }
 );
 
+export const fetchAsyncDetailByTmdbId = createAsyncThunk(
+  'movies/fetchAsyncDetailByTmdbId',
+  async (tmdbId) => {
+    try {
+      const movieRes = await tmdbApi.get(`/movie/${tmdbId}`);
+      if (movieRes.data && movieRes.data.imdb_id) {
+        const res = await movieApi.get(
+          `?apiKey=${APIKey}&i=${movieRes.data.imdb_id}&Plot=full`
+        );
+        return res.data;
+      }
+    } catch (_) {
+      // not a movie, try tv
+    }
+    try {
+      const tvRes = await tmdbApi.get(`/tv/${tmdbId}/external_ids`);
+      if (tvRes.data && tvRes.data.imdb_id) {
+        const res = await movieApi.get(
+          `?apiKey=${APIKey}&i=${tvRes.data.imdb_id}&Plot=full`
+        );
+        return res.data;
+      }
+    } catch (_) {
+      // ignore
+    }
+    return {};
+  }
+);
+
 const initialState = {
   status: 'idle',
   movies: {},
   shows: {},
+  animeMovies: {},
+  animeShows: {},
   selectedMovieOrShow: {},
 };
 
@@ -57,7 +109,16 @@ const moviesSlice = createSlice({
     [fetchAsyncShows.fulfilled]: (state, { payload }) => {
       return { ...state, shows: payload };
     },
+    [fetchAsyncAnimeMovies.fulfilled]: (state, { payload }) => {
+      return { ...state, animeMovies: payload };
+    },
+    [fetchAsyncAnimeShows.fulfilled]: (state, { payload }) => {
+      return { ...state, animeShows: payload };
+    },
     [fetchAsyncMoviesOrShowsDetails.fulfilled]: (state, { payload }) => {
+      return { ...state, selectedMovieOrShow: payload };
+    },
+    [fetchAsyncDetailByTmdbId.fulfilled]: (state, { payload }) => {
       return { ...state, selectedMovieOrShow: payload };
     },
     [fetchAsyncMovies.rejected]: (state) => {
@@ -70,6 +131,8 @@ const moviesSlice = createSlice({
 export const { addMovies } = moviesSlice.actions;
 export const getAllMovies = (state) => state.movies.movies;
 export const getAllShows = (state) => state.movies.shows;
+export const getAnimeMovies = (state) => state.movies.animeMovies;
+export const getAnimeShows = (state) => state.movies.animeShows;
 export const getSelectedMovieOrShow = (state) =>
   state.movies.selectedMovieOrShow;
 export default moviesSlice.reducer;

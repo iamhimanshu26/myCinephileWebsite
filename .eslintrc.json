@@ -19,7 +19,13 @@
     "react/react-in-jsx-scope": "off",
     "import/no-unresolved": "off",
     "no-shadow": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "linebreak-style": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "operator-linebreak": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": ["warn", "multi-line"],
+    "no-param-reassign": ["error", { "props": false }]
   },
   "ignorePatterns": [
     "dist/",
