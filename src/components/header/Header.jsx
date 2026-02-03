@@ -4,16 +4,39 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './header.scss';
 
 const menuItems = [
-  { name: 'Home', link: '/', icon: 'fa-home', desc: 'Back to home' },
-  { name: 'Movies', link: '/#movies', icon: 'fa-film', desc: 'Browse movies' },
-  { name: 'Series', link: '/#series', icon: 'fa-tv', desc: 'Browse series' },
-  { name: 'Anime', link: '/#anime', icon: 'fa-star', desc: 'Latest anime' },
+  {
+    name: 'Home',
+    link: '/',
+    icon: 'fa-home',
+    desc: 'Back to home',
+  },
+  {
+    name: 'Movies',
+    link: '/#movies',
+    icon: 'fa-film',
+    desc: 'Browse movies',
+  },
+  {
+    name: 'Series',
+    link: '/#series',
+    icon: 'fa-tv',
+    desc: 'Browse series',
+  },
+  {
+    name: 'Anime',
+    link: '/#anime',
+    icon: 'fa-star',
+    desc: 'Latest anime',
+  },
 ];
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [menuPosition, setMenuPosition] = useState({
+    top: 0,
+    left: 0,
+  });
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const navigate = useNavigate();
