@@ -1,0 +1,128 @@
+/* stylelint-disable at-rule-no-unknown */
+@import '../../sass/';
+
+.movie-wrapper {
+  padding: 30px;
+  margin-top: 60px;
+}
+
+.search-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  padding: 0 20px;
+
+  form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+
+    .form-group {
+      display: flex;
+      width: 100%;
+    }
+
+    input {
+      font-size: 18px;
+      flex: 4;
+      padding: 5px 10px;
+      height: 38px;
+      outline: none;
+      border: none;
+      border-radius: 10px;
+      background: #272727;
+      color: $txt-color;
+    }
+
+    button {
+      flex: 1;
+      padding: 0 8px;
+      font-size: 20px;
+      cursor: pointer;
+      height: 35px;
+      border: none;
+      background: #FF9933;
+      outline: none;
+      border-radius: 8px;
+      margin-left: 8px;
+    }
+  }
+}
+
+.movie-list,
+.shows-list {
+  margin: 20px 0;
+
+  h2 {
+    color: #FF9933;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+
+// Styles specifically for the slider container
+.movie-container {
+  margin: 0 -10px;
+  
+  .slick-slide {
+    padding: 0 10px;
+  }
+  
+  // Make sure cards are visible
+  .slick-track {
+    display: flex;
+    
+    // This ensures cards have equal height
+    .slick-slide {
+      height: auto;
+      
+      & > div {
+        height: 100%;
+      }
+    }
+  }
+  
+  // Style the arrow buttons
+  .slick-arrow {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    z-index: 1;
+    
+    &:hover, &:focus {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    
+    &::before {
+      color: #FF9933;
+    }
+  }
+  
+  // Adjust prev arrow position
+  .slick-prev {
+    left: 10px;
+  }
+  
+  // Adjust next arrow position
+  .slick-next {
+    right: 10px;
+  }
+}
+
+// Responsive adjustments
+@include mobile {
+  .search-bar {
+    form {
+      max-width: 100%;
+    }
+  }
+  
+  .movie-container {
+    .slick-arrow {
+      display: none !important;
+    }
+  }
+}
