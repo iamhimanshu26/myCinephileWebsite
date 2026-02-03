@@ -20,7 +20,7 @@ const Header = () => {
     <div ref={navRef} className="header">
       <div className="header__wrap container">
         <div className="logo">
-          <Link to="/">CineVerse</Link>
+          <Link to="/">CinePhile</Link>
         </div>
         <ul className="header__nav">
           {headerNav.map((item) => (

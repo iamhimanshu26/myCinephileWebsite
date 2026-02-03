@@ -1,6 +1,6 @@
-# CineVerse
+# CinePhile
 
-Conveys the idea of a vast universe of movies and shows.
+For everyone who loves cinema.
 
 ## Built With
 
@@ -11,7 +11,7 @@ Conveys the idea of a vast universe of movies and shows.
 
 ## Live Demo
 
-- Click [here](https://cineverse-site.netlify.app/) to view the live demo.
+- Click [here](https://cineverse-site.netlify.app/) to view the live demo. (Deploy your own as CinePhile on Vercel.)
 
 ## Getting Started
 
@@ -63,5 +63,3 @@ Give a ⭐️ if you like this project!
 ## Acknowledgments
 
 - Redux ToolKit Team
-# CineVerse
-# CineVerse

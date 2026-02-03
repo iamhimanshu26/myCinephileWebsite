@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="footer__content container">
         <div className="footer__content__logo">
           <div className="logo">
-            <Link to="/">CineVerse</Link>
+            <Link to="/">CinePhile</Link>
           </div>
         </div>
         <div className="footer__content__menus">
@@ -33,7 +33,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer__content__copyright">
-          <p>CineVerse © 2025 | Created with ♥ by krishna.yadav_in.</p>
+          <p>CinePhile © 2025 | Created with ♥</p>
         </div>
       </div>
     </div>
