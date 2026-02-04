@@ -14,12 +14,10 @@
   }
 
   &__slider {
-    margin: 0;
-    padding: 0 12px;
+    margin: 0 -10px;
 
     .slick-slide {
-      padding: 0 8px;
-      min-width: 0;
+      padding: 0 10px;
     }
 
     .slick-track {
@@ -27,17 +25,11 @@
 
       .slick-slide {
         height: auto;
-        min-width: 90px;
 
         & > div {
           height: 100%;
         }
       }
-    }
-
-    .slick-list {
-      margin: 0 -8px;
-      overflow: hidden;
     }
 
     .slick-arrow {
@@ -58,11 +50,11 @@
     }
 
     .slick-prev {
-      left: 2px;
+      left: 10px;
     }
 
     .slick-next {
-      right: 2px;
+      right: 10px;
     }
   }
 }
