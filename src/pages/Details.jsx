@@ -147,9 +147,9 @@ const Details = () => {
                   <button
                     type="button"
                     className="details-collection-btn"
-                    onClick={() =>
-                      dispatch(addToCollection(normalizeCollectionItem({ ...data, id })))
-                    }
+                    onClick={() => dispatch(
+                      addToCollection(normalizeCollectionItem({ ...data, id })),
+                    )}
                   >
                     <i className="fa fa-bookmark-o" />
                     Add to collection

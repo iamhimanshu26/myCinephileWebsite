@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Details from './pages/Details';
 import Person from './pages/Person';
 import Search from './pages/Search';
+import Collection from './pages/Collection';
 import Footer from './components/footer/Footer';
 import './App.scss';
 

@@ -39,7 +39,9 @@ export const normalizeCollectionItem = (data) => {
     poster = `https://image.tmdb.org/t/p/w300${data.poster_path}`;
   }
   const type = data.Type || (data.media_type === 'tv' ? 'series' : 'movie');
-  return { id, title, year, poster, type };
+  return {
+    id, title, year, poster, type,
+  };
 };
 
 const collectionSlice = createSlice({
@@ -67,7 +69,6 @@ const collectionSlice = createSlice({
 export const { addToCollection, removeFromCollection } = collectionSlice.actions;
 
 export const getCollectionItems = (state) => state.collection.items;
-export const isInCollection = (id) => (state) =>
-  state.collection.items.some((i) => i.id === id);
+export const isInCollection = (id) => (state) => state.collection.items.some((i) => i.id === id);
 
 export default collectionSlice.reducer;
