@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addToCollection,
+  normalizeCollectionItem,
+  isInCollection,
+} from '../../redux/collectionSlice/collectionSlice';
 import './movieCard.scss';
 
 /* eslint-disable react/prop-types */
 const MovieCard = (props) => {
   const { data } = props;
   const [imgError, setImgError] = useState(false);
+  const dispatch = useDispatch();
+  const itemId = data.imdbID || data.id;
+  const inCollection = useSelector(isInCollection(itemId));
 
   let posterUrl = '';
   if (data.Poster && data.Poster !== 'N/A') {
@@ -15,9 +24,26 @@ const MovieCard = (props) => {
   }
   const usePlaceholder = !posterUrl || imgError;
 
+  const handleCollectionClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!inCollection) {
+      dispatch(addToCollection(normalizeCollectionItem(data)));
+    }
+  };
+
   return (
     <div className="movie-card">
-      <Link to={`/movie/${data.imdbID || data.id}`}>
+      <button
+        type="button"
+        className={`movie-card__collection-btn ${inCollection ? 'movie-card__collection-btn--saved' : ''}`}
+        onClick={handleCollectionClick}
+        aria-label={inCollection ? 'In collection' : 'Add to collection'}
+        title={inCollection ? 'In collection' : 'Add to collection'}
+      >
+        <i className={`fa ${inCollection ? 'fa-bookmark' : 'fa-bookmark-o'}`} aria-hidden />
+      </button>
+      <Link to={`/movie/${itemId}`}>
         <div className="card-inner">
           <div className="card-top">
             {usePlaceholder ? (

@@ -16,6 +16,12 @@ import {
   clearCredits,
   clearFind,
 } from '../redux/tmdbSlice/tmdbSlice';
+import {
+  addToCollection,
+  removeFromCollection,
+  normalizeCollectionItem,
+  isInCollection,
+} from '../redux/collectionSlice/collectionSlice';
 import { isAdultContent } from '../utils/contentFilter';
 import './details.scss';
 
@@ -26,6 +32,7 @@ const Details = () => {
   const credits = useSelector(getMovieCredits);
   const findResult = useSelector(getFindResult);
   const tmdbAvailable = hasTMDbKey();
+  const inCollection = useSelector(isInCollection(id));
 
   useEffect(() => {
     if (!id) return;
@@ -126,6 +133,29 @@ const Details = () => {
           <>
             <div className="section-left">
               <div className="movie-title">{data.Title}</div>
+              <div className="details-collection">
+                {inCollection ? (
+                  <button
+                    type="button"
+                    className="details-collection-btn details-collection-btn--remove"
+                    onClick={() => dispatch(removeFromCollection(id))}
+                  >
+                    <i className="fa fa-bookmark" />
+                    Remove from collection
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="details-collection-btn"
+                    onClick={() =>
+                      dispatch(addToCollection(normalizeCollectionItem({ ...data, id })))
+                    }
+                  >
+                    <i className="fa fa-bookmark-o" />
+                    Add to collection
+                  </button>
+                )}
+              </div>
               <div className="movie-rating">
                 <span>
                   IMDB Rating

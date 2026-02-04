@@ -1,9 +1,9 @@
-# CinePhile – Git & Vercel Deployment
+# Cinephile – Git & Vercel Deployment
 
 ## 1. Create a new repo on GitHub
 
 1. Go to [github.com/new](https://github.com/new).
-2. Set **Repository name** (e.g. `CinePhile` or `cinephile`).
+2. Set **Repository name** (e.g. `Cinephile` or `cinephile`).
 3. Choose **Public**, leave "Add a README" **unchecked** (you already have one).
 4. Click **Create repository**.
 
@@ -20,7 +20,7 @@ git push -u origin main
 Example:
 
 ```bash
-git remote add origin https://github.com/johndoe/CinePhile.git
+git remote add origin https://github.com/johndoe/Cinephile.git
 git branch -M main
 git push -u origin main
 ```
@@ -29,7 +29,7 @@ git push -u origin main
 
 1. Go to [vercel.com](https://vercel.com) and sign in (e.g. with GitHub).
 2. Click **Add New…** → **Project**.
-3. **Import** the GitHub repo you just created (e.g. `CinePhile`).
+3. **Import** the GitHub repo you just created (e.g. `Cinephile`).
 4. Vercel will detect the React app. Settings should be:
    - **Framework Preset:** Create React App  
    - **Build Command:** `npm run build` (or use `vercel.json`)  

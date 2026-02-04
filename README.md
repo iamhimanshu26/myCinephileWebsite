@@ -1,4 +1,4 @@
-# CinePhile
+# Cinephile
 
 For everyone who loves cinema.
 
@@ -11,7 +11,7 @@ For everyone who loves cinema.
 
 ## Live Demo
 
-- Click [here](https://cineverse-site.netlify.app/) to view the live demo. (Deploy your own as CinePhile on Vercel.)
+- Click [here](https://cineverse-site.netlify.app/) to view the live demo. (Deploy your own as Cinephile on Vercel.)
 
 ## Getting Started
 

@@ -33,6 +33,39 @@
   color: $txt-color;
 }
 
+.details-collection {
+  margin-top: 0.5rem;
+}
+
+.details-collection-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $txt-color;
+  background: rgba(196, 92, 38, 0.12);
+  border: 1px solid $main-color;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  i {
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    background: $main-color;
+    color: #fff;
+  }
+
+  &--remove:hover {
+    background: #b54a1e;
+    border-color: #b54a1e;
+  }
+}
+
 .movie-plot {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;

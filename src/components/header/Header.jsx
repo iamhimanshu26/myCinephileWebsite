@@ -7,6 +7,7 @@ const menuItems = [
   { name: 'Movies', link: '/#movies', icon: 'fa-film' },
   { name: 'Series', link: '/#series', icon: 'fa-tv' },
   { name: 'Anime', link: '/#anime', icon: 'fa-star' },
+  { name: 'My Collection', link: '/collection', icon: 'fa-bookmark' },
 ];
 
 const Header = () => {
@@ -59,7 +60,7 @@ const Header = () => {
             aria-expanded={menuOpen}
             aria-haspopup="true"
           >
-            <span className="header__menu-trigger-text">CinePhile</span>
+            <span className="header__menu-trigger-text">Cinephile</span>
             <i className={`fa fa-chevron-${menuOpen ? 'up' : 'down'}`} aria-hidden />
           </button>
 

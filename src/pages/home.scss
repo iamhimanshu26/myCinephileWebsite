@@ -2,27 +2,23 @@
 
 .home {
   overflow-x: hidden;
-  padding-top: 5rem;
+  padding-top: $header-height;
   padding-bottom: 1.5rem;
   min-height: 100vh;
 }
 
 .home__hero {
-  text-align: center;
-  padding: 1rem 1rem 0.75rem;
-  margin-bottom: 0.25rem;
-}
-
-.home__title {
-  font-size: $text-2xl;
-  font-weight: 700;
-  color: $txt-color;
-  margin-bottom: 0.2rem;
+  text-align: left;
+  padding: 0.5rem 1rem 0.4rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .home__tagline {
   font-size: $text-sm;
-  color: rgba(255, 248, 240, 0.7);
+  color: rgba(26, 26, 26, 0.75);
+  margin: 0;
+  font-weight: 500;
 }
 
 .home__content {
@@ -32,7 +28,7 @@
 }
 
 .home__content section[id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: $header-height;
   animation: sectionFadeIn 0.5s ease backwards;
 }
 

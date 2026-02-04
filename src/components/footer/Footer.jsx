@@ -12,34 +12,23 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer__overlay" aria-hidden />
       <div className="footer__content container">
-        <div className="footer__content__logo">
-          <Link to="/" className="footer__logo-link">
-            CinePhile
-          </Link>
-        </div>
-        <div className="footer__content__menus">
-          <div className="footer__content__menu">
-            <span className="footer__menu-label">Explore</span>
-            <Link to="/" className="footer__link">Home</Link>
-            <Link to="/#movies" className="footer__link">Movies</Link>
-            <Link to="/#series" className="footer__link">Series</Link>
-            <Link to="/#anime" className="footer__link">Anime</Link>
-          </div>
-          <div className="footer__content__menu">
+        <div className="footer__row footer__row--main">
+          <Link to="/" className="footer__logo-link">Cinephile</Link>
+          <nav className="footer__nav">
             <span className="footer__menu-label">Support</span>
-            <Link to="/" className="footer__link">Contact us</Link>
+            <Link to="/" className="footer__link">Contact</Link>
             <Link to="/" className="footer__link">FAQ</Link>
-            <Link to="/" className="footer__link">Privacy policy</Link>
-          </div>
-          <div className="footer__content__menu">
+            <Link to="/" className="footer__link">Privacy</Link>
+          </nav>
+          <nav className="footer__nav">
             <span className="footer__menu-label">Discover</span>
             <Link to="/search?q=action" className="footer__link">Action</Link>
             <Link to="/search?q=comedy" className="footer__link">Comedy</Link>
             <Link to="/search?q=drama" className="footer__link">Drama</Link>
-          </div>
+          </nav>
         </div>
-        <div className="footer__content__copyright">
-          <p>CinePhile © 2025 | Created with ♥</p>
+        <div className="footer__row footer__row--copyright">
+          <p>Cinephile © 2025 | Created with ♥</p>
           <button
             type="button"
             className="footer__back-top"

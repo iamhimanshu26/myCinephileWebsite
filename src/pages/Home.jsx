@@ -22,7 +22,6 @@ const Home = () => {
   return (
     <main className="home">
       <div className="home__hero">
-        <h1 className="home__title">CinePhile</h1>
         <p className="home__tagline">Discover movies, series & anime</p>
       </div>
       <div className="home__content">

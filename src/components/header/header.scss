@@ -7,7 +7,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: #0a0a0c;
+  background: #d4d2cf;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   z-index: 9999;
   transition: background 0.2s ease;
   overflow-x: hidden;
@@ -23,11 +24,14 @@
     height: 100%;
     padding: 0 1rem;
     gap: 1rem;
+    position: relative;
   }
 
   &__left {
     position: relative;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
   &__menu-trigger {
@@ -36,7 +40,7 @@
     gap: 0.4rem;
     padding: 0.5rem 0.75rem;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: $border-radius;
     color: $txt-color;
     font-size: $text-base;
@@ -54,16 +58,29 @@
     letter-spacing: 0.02em;
   }
 
+  &__tagline {
+    font-size: $text-sm;
+    color: rgba(26, 26, 26, 0.7);
+    margin: 0;
+    white-space: nowrap;
+    @include mobile {
+      display: none;
+    }
+  }
+
   &__dropdown {
     position: absolute;
     top: 100%;
     left: 0;
     margin-top: 0.35rem;
-    min-width: 11rem;
-    background: #1c1c1f;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    min-width: 10rem;
+    width: max-content;
+    max-width: 14rem;
+    box-sizing: border-box;
+    background: #e0dedb;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: $border-radius;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     z-index: 10000;
     animation: menuFade 0.15s ease;
   }
@@ -77,31 +94,32 @@
   &__dropdown-link {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.55rem 1rem;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
     color: $txt-color;
     font-size: $text-sm;
     font-weight: 500;
     transition: background 0.15s, color 0.15s;
 
     i {
-      width: 1.1rem;
+      width: 1rem;
       text-align: center;
       color: $main-color;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     &:hover,
     &:focus {
-      background: rgba(255, 153, 51, 0.15);
+      background: rgba(196, 92, 38, 0.12);
       color: $main-color;
     }
   }
 
   &__search {
     flex: 1;
-    max-width: 380px;
+    max-width: 320px;
     min-width: 0;
+    margin-left: auto;
   }
 
   &__search-form {
@@ -118,13 +136,13 @@
     padding: 0 0.75rem;
     font-size: $text-sm;
     color: $txt-color;
-    background: #252528;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: $border-radius;
     outline: none;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(0, 0, 0, 0.45);
     }
 
     &:focus {
@@ -140,7 +158,7 @@
     align-items: center;
     justify-content: center;
     background: $main-color;
-    color: #000;
+    color: #fff;
     border: none;
     border-radius: $border-radius;
     cursor: pointer;
