@@ -7,5 +7,8 @@ export const hasTMDbKey = () => Boolean(API_KEY);
 
 export default axios.create({
   baseURL: TMDB_BASE,
-  params: { api_key: API_KEY },
+  params: {
+    api_key: API_KEY,
+    include_adult: false,
+  },
 });

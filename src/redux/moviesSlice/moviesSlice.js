@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import movieApi from '../../api/movieApi';
 import APIKey from '../../api/movieApiKey';
 import tmdbApi from '../../api/tmdbApi';
+import { filterFamilyFriendly } from '../../utils/contentFilter';
 
 export const fetchAsyncMovies = createAsyncThunk(
   'movies/fetchAsyncMovies',
@@ -104,15 +105,39 @@ const moviesSlice = createSlice({
       state.status = 'loading';
     },
     [fetchAsyncMovies.fulfilled]: (state, { payload }) => {
+      if (payload.Response === 'True' && payload.Search) {
+        return {
+          ...state,
+          movies: { ...payload, Search: filterFamilyFriendly(payload.Search) },
+        };
+      }
       return { ...state, movies: payload };
     },
     [fetchAsyncShows.fulfilled]: (state, { payload }) => {
+      if (payload.Response === 'True' && payload.Search) {
+        return {
+          ...state,
+          shows: { ...payload, Search: filterFamilyFriendly(payload.Search) },
+        };
+      }
       return { ...state, shows: payload };
     },
     [fetchAsyncAnimeMovies.fulfilled]: (state, { payload }) => {
+      if (payload.Response === 'True' && payload.Search) {
+        return {
+          ...state,
+          animeMovies: { ...payload, Search: filterFamilyFriendly(payload.Search) },
+        };
+      }
       return { ...state, animeMovies: payload };
     },
     [fetchAsyncAnimeShows.fulfilled]: (state, { payload }) => {
+      if (payload.Response === 'True' && payload.Search) {
+        return {
+          ...state,
+          animeShows: { ...payload, Search: filterFamilyFriendly(payload.Search) },
+        };
+      }
       return { ...state, animeShows: payload };
     },
     [fetchAsyncMoviesOrShowsDetails.fulfilled]: (state, { payload }) => {

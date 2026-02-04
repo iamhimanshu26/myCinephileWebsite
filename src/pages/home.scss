@@ -1,36 +1,36 @@
+@use '../sass/' as *;
+
 .home {
   overflow-x: hidden;
-  padding-top: 1rem;
-  padding-bottom: 2rem;
+  padding-top: 5rem;
+  padding-bottom: 1.5rem;
   min-height: 100vh;
 }
 
 .home__hero {
   text-align: center;
-  padding: 1.5rem 1rem 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.home__title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #fff8f0;
+  padding: 1rem 1rem 0.75rem;
   margin-bottom: 0.25rem;
 }
 
+.home__title {
+  font-size: $text-2xl;
+  font-weight: 700;
+  color: $txt-color;
+  margin-bottom: 0.2rem;
+}
+
 .home__tagline {
-  font-size: 0.95rem;
+  font-size: $text-sm;
   color: rgba(255, 248, 240, 0.7);
 }
 
 .home__content {
-  padding: 0 1.25rem;
-  margin-top: 0.5rem;
+  padding: 0 1rem;
   max-width: 1660px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
 .home__content section[id] {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 5rem;
 }

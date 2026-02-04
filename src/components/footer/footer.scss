@@ -36,8 +36,8 @@
     &__menu {       
       @include flex(flex-start, flex-start);       
       flex-direction: column;       
-      margin-top: 1rem;       
-      font-size: 1rem;       
+      margin-top: 0.5rem;       
+      font-size: 0.875rem;       
       font-weight: 600;        
 
       & > * ~ * {         

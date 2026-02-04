@@ -2,17 +2,17 @@
 @use '../sass/' as *;
 
 .search-page {
-  padding: 5rem 1rem 2rem;
+  padding: 5rem 1rem 1.5rem;
   max-width: 1400px;
   margin: 0 auto;
   min-height: 80vh;
 }
 
 .search-page-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 
   h1 {
-    font-size: 1.5rem;
+    font-size: $text-xl;
     color: $txt-color;
     font-weight: 600;
   }
@@ -21,26 +21,27 @@
 .search-results {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .search-section {
   h2 {
-    font-size: 1.1rem;
+    font-size: $text-base;
     color: $main-color;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 }
 
 .search-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
 }
 
 .search-empty,
 .search-hint {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
+  font-size: $text-sm;
 }

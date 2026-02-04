@@ -16,6 +16,7 @@ import {
   clearCredits,
   clearFind,
 } from '../redux/tmdbSlice/tmdbSlice';
+import { isAdultContent } from '../utils/contentFilter';
 import './details.scss';
 
 const Details = () => {
@@ -112,9 +113,16 @@ const Details = () => {
         </Link>
       </div>
       <div className="movie-section">
-        {Object.keys(data).length === 0 ? (
+        {Object.keys(data).length === 0 && (
           <div className="details-loading">Loading...</div>
-        ) : (
+        )}
+        {Object.keys(data).length > 0 && isAdultContent(data) && (
+          <div className="details-unavailable">
+            <p>This content is not displayed to keep the site family-friendly.</p>
+            <Link to="/">Back to home</Link>
+          </div>
+        )}
+        {Object.keys(data).length > 0 && !isAdultContent(data) && (
           <>
             <div className="section-left">
               <div className="movie-title">{data.Title}</div>

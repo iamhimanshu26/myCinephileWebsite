@@ -4,66 +4,60 @@
 .movie-section {
   display: flex;
   justify-content: space-evenly;
-  padding: 40px 10px 40px 0;
+  padding: 1.5rem 1rem 1.5rem 0;
   color: $txt-color;
   font-weight: 400;
-  margin-top: 80px;
-  gap: 40px;
+  margin-top: 5rem;
+  gap: 1.5rem;
   overflow-x: hidden;
-
-  @include mobile {
-    padding-right: 20px;
-  }
 }
 
 .section-left {
   width: 50%;
-  margin-left: 50px;
+  margin-left: 1rem;
 }
 
 .movie-rating {
-  padding-left: 3px;
-  margin-top: 20px;
+  margin-top: 0.75rem;
   color: $main-color;
   font-weight: 600;
+  font-size: $text-sm;
   display: flex;
   flex-direction: column;
-
-  span {
-    margin-right: 20px;
-  }
-
-  @include mobile {
-    font-size: 12px;
-  }
+  gap: 0.2rem;
 }
 
 .movie-title {
-  font-size: 30px;
+  font-size: $text-2xl;
   font-weight: 600;
   color: $txt-color;
-
-  @include mobile {
-    font-size: 24px;
-  }
 }
-.movie-plot {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  line-height: 1.4;
 
-  @include mobile {
-    margin-top: 40px;
-    font-size: 11px;
-    width: 80vw;
+.movie-plot {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  font-size: $text-sm;
+}
+
+.details-unavailable {
+  padding: 2rem;
+  text-align: center;
+  font-size: $text-base;
+
+  p {
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  a {
+    color: $main-color;
+    text-decoration: underline;
   }
 }
 
 .movie-info {
-  @include mobile {
-    width: 80vw;
-    font-size: 10px;
-  }
+  font-size: $text-sm;
 }
 
 .movie-info > div span:first-child {
@@ -123,30 +117,20 @@
 .section-right {
   img {
     width: 100%;
-    border-radius: 10px;
-
-    @include mobile {
-      width: 120px;
-      height: 120px;
-      margin-bottom: 40px;
-      margin-left: -20px;
-    }
+    max-width: 320px;
+    border-radius: $border-radius;
+    object-fit: cover;
   }
 }
 
 .back-btn {
   display: flex;
   align-items: center;
-  flex-direction: column;
   position: absolute;
-  top: 120px;
-  left: 20px;
+  top: 5rem;
+  left: 1rem;
   color: $main-color;
-  font-size: 2.3rem;
+  font-size: $text-2xl;
   font-weight: 700;
   cursor: pointer;
-
-  @include mobile {
-    top: 70px;
-  }
 }

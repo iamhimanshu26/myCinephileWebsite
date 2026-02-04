@@ -7,11 +7,20 @@ $black: #000;
 
 $box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
 
-$header-height: 6rem;
-$header-shrink-height: 5rem;
-$border-radius: 30px;
+$header-height: 4rem;
+$header-shrink-height: 3.75rem;
+$border-radius: 8px;
 
 $mobile-width: 600px;
 $tablet-width: 1024px;
 
 $font-family: 'Lato', sans-serif;
+
+// Consistent type scale (rem)
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.75rem;
