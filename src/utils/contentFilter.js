@@ -53,6 +53,13 @@ const ADULT_KEYWORDS = [
   'bdsm',
   's&m',
   's and m',
+  'fifty shades',
+  'shades of grey',
+  '50 shades',
+  '365 days',
+  '365 dni',
+  'nine 1/2 weeks',
+  '9½ weeks',
 ];
 
 function isFamilyFriendly(item) {

@@ -33,4 +33,22 @@
 
 .home__content section[id] {
   scroll-margin-top: 5rem;
+  animation: sectionFadeIn 0.5s ease backwards;
 }
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home__content section[id]:nth-child(1) { animation-delay: 0.05s; }
+.home__content section[id]:nth-child(2) { animation-delay: 0.1s; }
+.home__content section[id]:nth-child(3) { animation-delay: 0.15s; }
+.home__content section[id]:nth-child(4) { animation-delay: 0.2s; }
+.home__content section[id]:nth-child(5) { animation-delay: 0.25s; }

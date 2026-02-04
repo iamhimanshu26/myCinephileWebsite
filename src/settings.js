@@ -2,13 +2,13 @@ const Settings = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 8,
-  slidesToScroll: 4,
+  slidesToShow: 10,
+  slidesToScroll: 5,
   responsive: [
     {
       breakpoint: 1500,
       settings: {
-        slidesToShow: 6,
+        slidesToShow: 8,
         slidesToScroll: 3,
         infinite: true,
         dots: false,
@@ -17,7 +17,7 @@ const Settings = {
     {
       breakpoint: 1300,
       settings: {
-        slidesToShow: 5,
+        slidesToShow: 6,
         slidesToScroll: 3,
         infinite: true,
         dots: false,

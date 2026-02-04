@@ -11,6 +11,7 @@
 }
 
 html {
+  scroll-behavior: smooth;
   font-size: 16px;
 
   @include tablet {
@@ -49,6 +50,8 @@ a {
 button,
 input {
   outline: 0;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease,
+    border-color 0.2s ease, opacity 0.2s ease;
 }
 
 ul {
