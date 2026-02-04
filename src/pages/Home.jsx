@@ -13,8 +13,8 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAsyncMovies('movie'));
-    dispatch(fetchAsyncShows('series'));
+    dispatch(fetchAsyncMovies('family'));
+    dispatch(fetchAsyncShows('drama'));
     dispatch(fetchAsyncAnimeMovies());
     dispatch(fetchAsyncAnimeShows());
   }, [dispatch]);

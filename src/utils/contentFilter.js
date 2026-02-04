@@ -1,18 +1,58 @@
 /**
  * Filters out adult/erotic content from OMDB search results.
- * Uses title and optional poster/rating hints to exclude inappropriate items.
+ * Uses title (and optional hints) to exclude inappropriate items.
  */
 const ADULT_KEYWORDS = [
   'adult',
   'erotic',
+  'erotica',
   'xxx',
   'porn',
+  'porno',
   'sex tape',
   'playboy',
   'penthouse',
   'nude',
+  'naked',
   'hardcore',
   'softcore',
+  'hentai',
+  'ecchi',
+  'bikini',
+  'stripper',
+  'escort',
+  'lust',
+  'seduction',
+  'forbidden',
+  'taboo',
+  '18+',
+  '18 plus',
+  'adults only',
+  'blue movie',
+  'skin',
+  'virgin',
+  'mistress',
+  'affair',
+  'sex story',
+  'sex comedy',
+  'sex and',
+  'sexual',
+  'sensual',
+  'intimate',
+  'bedroom',
+  'after dark',
+  'midnight',
+  'private',
+  'secret desire',
+  'wicked',
+  'naughty',
+  'sinful',
+  'decadent',
+  'fetish',
+  'bondage',
+  'bdsm',
+  's&m',
+  's and m',
 ];
 
 function isFamilyFriendly(item) {
@@ -45,5 +85,7 @@ export function isAdultContent(data) {
   if (RESTRICTED_RATINGS.some((r) => rated.includes(r))) return true;
   const genre = (data.Genre || '').toLowerCase();
   if (genre.includes('adult')) return true;
-  return false;
+  const title = (data.Title || '').toLowerCase();
+  const hasAdultKeyword = ADULT_KEYWORDS.some((kw) => title.includes(kw));
+  return hasAdultKeyword;
 }

@@ -28,7 +28,7 @@ export const fetchAsyncAnimeMovies = createAsyncThunk(
   'movies/fetchAsyncAnimeMovies',
   async () => {
     const response = await movieApi.get(
-      `?apiKey=${APIKey}&s=anime&type=movie`
+      `?apiKey=${APIKey}&s=Studio Ghibli&type=movie`
     );
     return response.data;
   }
@@ -38,7 +38,7 @@ export const fetchAsyncAnimeShows = createAsyncThunk(
   'movies/fetchAsyncAnimeShows',
   async () => {
     const response = await movieApi.get(
-      `?apiKey=${APIKey}&s=anime&type=series`
+      `?apiKey=${APIKey}&s=animation&type=series`
     );
     return response.data;
   }
