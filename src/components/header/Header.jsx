@@ -74,8 +74,10 @@ const Header = () => {
                       className="header__dropdown-link"
                       onClick={() => setMenuOpen(false)}
                     >
-                      <i className={`fa ${item.icon}`} aria-hidden />
-                      <span>{item.name}</span>
+                      <span className="header__dropdown-icon">
+                        <i className={`fa ${item.icon}`} aria-hidden />
+                      </span>
+                      <span className="header__dropdown-text">{item.name}</span>
                     </Link>
                   </li>
                 ))}
