@@ -27,12 +27,31 @@ const selectors = {
   trendingAnime: getTrendingAnime,
 };
 
+const getItemYear = (item) => (
+  item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || ''
+);
+
 /* eslint-disable react/prop-types */
 const ContentSection = ({
-  title, sectionId, type, index = 0,
+  title, sectionId, type, index = 0, yearFilter, genreFilter, countryFilter,
 }) => {
   const data = useSelector(selectors[type]);
-  const list = (data?.Response === 'True' && data.Search) ? data.Search : [];
+  const rawList = (data?.Response === 'True' && data.Search) ? data.Search : [];
+  let list = rawList;
+  if (yearFilter && yearFilter !== 'All') {
+    list = list.filter((item) => getItemYear(item) === yearFilter);
+  }
+  if (genreFilter && genreFilter !== 'All') {
+    const genreIdNum = Number(genreFilter);
+    list = list.filter(
+      (item) => Array.isArray(item.genre_ids) && item.genre_ids.includes(genreIdNum)
+    );
+  }
+  if (countryFilter && countryFilter !== 'All') {
+    list = list.filter(
+      (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFilter)
+    );
+  }
   const error = data?.Error;
   const isEmpty = list.length === 0;
 

@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { GENRE_OPTIONS, COUNTRY_OPTIONS } from '../../constants/filters';
 import './header.scss';
+
+const currentYear = new Date().getFullYear();
+const YEAR_OPTIONS = ['All', ...Array.from({ length: 12 }, (_, i) => String(currentYear - i))];
 
 const menuItems = [
   { name: 'Home', link: '/', icon: 'bx-home-alt' },
@@ -33,9 +37,16 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const yearDropdownRef = useRef(null);
+  const genreDropdownRef = useRef(null);
+  const countryDropdownRef = useRef(null);
   const menuRef = useRef(null);
   const triggerRef = useRef(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -53,6 +64,55 @@ const Header = () => {
     }
     return () => document.removeEventListener('click', handleClickOutside);
   }, [menuOpen]);
+
+  useEffect(() => {
+    function handleClickOutsideDropdown(e) {
+      if (yearDropdownRef.current && !yearDropdownRef.current.contains(e.target)) {
+        setYearDropdownOpen(false);
+      }
+      if (genreDropdownRef.current && !genreDropdownRef.current.contains(e.target)) {
+        setGenreDropdownOpen(false);
+      }
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(e.target)) {
+        setCountryDropdownOpen(false);
+      }
+    }
+    document.addEventListener('click', handleClickOutsideDropdown);
+    return () => document.removeEventListener('click', handleClickOutsideDropdown);
+  }, []);
+
+  const currentYearParam = searchParams.get('year') || 'All';
+  const currentGenreParam = searchParams.get('genre') || 'All';
+  const currentCountryParam = searchParams.get('country') || 'All';
+
+  const updateParamsAndGoHome = (next) => {
+    const search = next.toString();
+    navigate({ pathname: '/', search: search ? `?${search}` : '' });
+  };
+
+  const handleYearSelect = (y) => {
+    setYearDropdownOpen(false);
+    const next = new URLSearchParams(searchParams);
+    if (y === 'All') next.delete('year');
+    else next.set('year', y);
+    updateParamsAndGoHome(next);
+  };
+
+  const handleGenreSelect = (genreId) => {
+    setGenreDropdownOpen(false);
+    const next = new URLSearchParams(searchParams);
+    if (genreId === 'All') next.delete('genre');
+    else next.set('genre', genreId);
+    updateParamsAndGoHome(next);
+  };
+
+  const handleCountrySelect = (countryCode) => {
+    setCountryDropdownOpen(false);
+    const next = new URLSearchParams(searchParams);
+    if (countryCode === 'All') next.delete('country');
+    else next.set('country', countryCode);
+    updateParamsAndGoHome(next);
+  };
 
   useEffect(() => {
     if (darkMode) {
@@ -121,20 +181,151 @@ const Header = () => {
             <span className="header__theme-label">Dark</span>
           </button>
           <nav className="header__nav">
-            {menuItems.map((item) => (
-              <span key={item.name} className="header__nav-item-wrap">
-                {item.hasDropdown ? (
-                  <a href={item.link} className="header__nav-link header__nav-link--dropdown">
-                    {item.name}
-                    <i className="bx bx-chevron-down" />
-                  </a>
-                ) : (
+            {menuItems.map((item) => {
+              if (item.name === 'Year') {
+                return (
+                  <span
+                    key={item.name}
+                    className="header__nav-item-wrap header__nav-item-wrap--dropdown"
+                    ref={yearDropdownRef}
+                  >
+                    <button
+                      type="button"
+                      className="header__nav-link header__nav-link--dropdown"
+                      onClick={() => {
+                        setYearDropdownOpen((o) => !o);
+                        setGenreDropdownOpen(false);
+                        setCountryDropdownOpen(false);
+                      }}
+                      aria-expanded={yearDropdownOpen}
+                      aria-haspopup="listbox"
+                    >
+                      Year {currentYearParam !== 'All' ? `(${currentYearParam})` : ''}
+                      <i className={`bx bx-chevron-${yearDropdownOpen ? 'up' : 'down'}`} />
+                    </button>
+                    {yearDropdownOpen && (
+                      <div className="header__filter-dropdown" role="listbox">
+                        {YEAR_OPTIONS.map((y) => (
+                          <button
+                            key={y}
+                            type="button"
+                            role="option"
+                            aria-selected={currentYearParam === y}
+                            className={`header__filter-option ${currentYearParam === y ? 'header__filter-option--active' : ''}`}
+                            onClick={() => handleYearSelect(y)}
+                          >
+                            {y}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </span>
+                );
+              }
+              if (item.name === 'Genre') {
+                const currentLabel = currentGenreParam === 'All'
+                  ? 'Genre'
+                  : GENRE_OPTIONS.find((g) => g.id === currentGenreParam)?.name || 'Genre';
+                return (
+                  <span key={item.name} className="header__nav-item-wrap header__nav-item-wrap--dropdown" ref={genreDropdownRef}>
+                    <button
+                      type="button"
+                      className="header__nav-link header__nav-link--dropdown"
+                      onClick={() => {
+                        setGenreDropdownOpen((o) => !o);
+                        setYearDropdownOpen(false);
+                        setCountryDropdownOpen(false);
+                      }}
+                      aria-expanded={genreDropdownOpen}
+                      aria-haspopup="listbox"
+                    >
+                      {currentLabel}
+                      <i className={`bx bx-chevron-${genreDropdownOpen ? 'up' : 'down'}`} />
+                    </button>
+                    {genreDropdownOpen && (
+                      <div className="header__filter-dropdown" role="listbox">
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={currentGenreParam === 'All'}
+                          className={`header__filter-option ${currentGenreParam === 'All' ? 'header__filter-option--active' : ''}`}
+                          onClick={() => handleGenreSelect('All')}
+                        >
+                          All
+                        </button>
+                        {GENRE_OPTIONS.map((g) => (
+                          <button
+                            key={g.id}
+                            type="button"
+                            role="option"
+                            aria-selected={currentGenreParam === g.id}
+                            className={`header__filter-option ${currentGenreParam === g.id ? 'header__filter-option--active' : ''}`}
+                            onClick={() => handleGenreSelect(g.id)}
+                          >
+                            {g.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </span>
+                );
+              }
+              if (item.name === 'Country') {
+                const currentLabel = currentCountryParam === 'All'
+                  ? 'Country'
+                  : COUNTRY_OPTIONS.find((c) => c.code === currentCountryParam)?.name || 'Country';
+                return (
+                  <span key={item.name} className="header__nav-item-wrap header__nav-item-wrap--dropdown" ref={countryDropdownRef}>
+                    <button
+                      type="button"
+                      className="header__nav-link header__nav-link--dropdown"
+                      onClick={() => {
+                        setCountryDropdownOpen((o) => !o);
+                        setYearDropdownOpen(false);
+                        setGenreDropdownOpen(false);
+                      }}
+                      aria-expanded={countryDropdownOpen}
+                      aria-haspopup="listbox"
+                    >
+                      {currentLabel}
+                      <i className={`bx bx-chevron-${countryDropdownOpen ? 'up' : 'down'}`} />
+                    </button>
+                    {countryDropdownOpen && (
+                      <div className="header__filter-dropdown" role="listbox">
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={currentCountryParam === 'All'}
+                          className={`header__filter-option ${currentCountryParam === 'All' ? 'header__filter-option--active' : ''}`}
+                          onClick={() => handleCountrySelect('All')}
+                        >
+                          All
+                        </button>
+                        {COUNTRY_OPTIONS.map((c) => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            role="option"
+                            aria-selected={currentCountryParam === c.code}
+                            className={`header__filter-option ${currentCountryParam === c.code ? 'header__filter-option--active' : ''}`}
+                            onClick={() => handleCountrySelect(c.code)}
+                          >
+                            {c.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </span>
+                );
+              }
+              return (
+                <span key={item.name} className="header__nav-item-wrap">
                   <Link to={item.link.startsWith('/') ? item.link : '/'} className="header__nav-link">
                     {item.name}
                   </Link>
-                )}
-              </span>
-            ))}
+                </span>
+              );
+            })}
           </nav>
         </div>
       </div>

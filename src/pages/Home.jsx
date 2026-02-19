@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import {
@@ -22,6 +22,7 @@ import {
 } from '../redux/moviesSlice/moviesSlice';
 import { hasTMDbKey } from '../redux/tmdbSlice/tmdbSlice';
 import { hasTraktKey } from '../api/traktApi';
+import { GENRE_OPTIONS, COUNTRY_OPTIONS } from '../constants/filters';
 import MovieCard from '../components/movieCard/MovieCard';
 import ContentSection from '../components/contentSection/ContentSection';
 import './home.scss';
@@ -38,9 +39,11 @@ const SORT_ORDER = ['Descending', 'Ascending'];
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const yearFromUrl = searchParams.get('year') || 'All';
+  const genreFromUrl = searchParams.get('genre') || 'All';
+  const countryFromUrl = searchParams.get('country') || 'All';
   const [browse, setBrowse] = useState('movies'); // 'movies' | 'series' | 'all'
-  const [genre, setGenre] = useState('All');
-  const [year, setYear] = useState('All');
   const [language, setLanguage] = useState('All');
   const [sortBy, setSortBy] = useState('Release Date');
   const [sortOrder, setSortOrder] = useState('Descending');
@@ -94,11 +97,22 @@ const Home = () => {
     });
     let list = Array.from(byId.values());
 
-    if (year !== 'All') {
+    if (yearFromUrl !== 'All') {
       list = list.filter((item) => {
         const y = item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4);
-        return y === year;
+        return y === yearFromUrl;
       });
+    }
+    if (genreFromUrl !== 'All') {
+      const genreIdNum = Number(genreFromUrl);
+      list = list.filter(
+        (item) => Array.isArray(item.genre_ids) && item.genre_ids.includes(genreIdNum)
+      );
+    }
+    if (countryFromUrl !== 'All') {
+      list = list.filter(
+        (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFromUrl)
+      );
     }
 
     const getYear = (item) => item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || '';
@@ -122,7 +136,9 @@ const Home = () => {
     return list;
   }, [
     browse,
-    year,
+    yearFromUrl,
+    genreFromUrl,
+    countryFromUrl,
     sortBy,
     sortOrder,
     hasTrakt,
@@ -132,11 +148,56 @@ const Home = () => {
     trendingShowsList,
   ]);
 
+  const handleYearChange = (y) => {
+    const next = new URLSearchParams(searchParams);
+    if (y === 'All') next.delete('year');
+    else next.set('year', y);
+    setSearchParams(next);
+  };
+
+  const handleGenreChange = (genreId) => {
+    const next = new URLSearchParams(searchParams);
+    if (genreId === 'All') next.delete('genre');
+    else next.set('genre', genreId);
+    setSearchParams(next);
+  };
+
+  const handleCountryChange = (countryCode) => {
+    const next = new URLSearchParams(searchParams);
+    if (countryCode === 'All') next.delete('country');
+    else next.set('country', countryCode);
+    setSearchParams(next);
+  };
+
   const trendingSidebarList = useMemo(() => {
-    if (trendingTab === 'day') return [...moviesList, ...trendingMoviesList].slice(0, 15);
-    if (trendingTab === 'week') return [...trendingMoviesList, ...trendingShowsList].slice(0, 15);
-    return [...showsList, ...trendingShowsList].slice(0, 15);
-  }, [trendingTab, moviesList, showsList, trendingMoviesList, trendingShowsList]);
+    const getItemYear = (item) => item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || '';
+    let items = [];
+    if (trendingTab === 'day') items = [...moviesList, ...trendingMoviesList];
+    else if (trendingTab === 'week') items = [...trendingMoviesList, ...trendingShowsList];
+    else items = [...showsList, ...trendingShowsList];
+    if (yearFromUrl !== 'All') items = items.filter((item) => getItemYear(item) === yearFromUrl);
+    if (genreFromUrl !== 'All') {
+      const genreIdNum = Number(genreFromUrl);
+      items = items.filter(
+        (item) => Array.isArray(item.genre_ids) && item.genre_ids.includes(genreIdNum)
+      );
+    }
+    if (countryFromUrl !== 'All') {
+      items = items.filter(
+        (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFromUrl)
+      );
+    }
+    return items.slice(0, 15);
+  }, [
+    trendingTab,
+    yearFromUrl,
+    genreFromUrl,
+    countryFromUrl,
+    moviesList,
+    showsList,
+    trendingMoviesList,
+    trendingShowsList,
+  ]);
 
   const dropdownClass = 'home__filter-select';
 
@@ -168,23 +229,36 @@ const Home = () => {
             <span id="filter-genre-label" className="home__filter-label">Genre</span>
             <select
               className={dropdownClass}
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
+              value={genreFromUrl}
+              onChange={(e) => handleGenreChange(e.target.value)}
               aria-labelledby="filter-genre-label"
             >
               <option value="All">All</option>
-              <option value="Action">Action</option>
-              <option value="Drama">Drama</option>
-              <option value="Comedy">Comedy</option>
-              <option value="Thriller">Thriller</option>
+              {GENRE_OPTIONS.map((g) => (
+                <option key={g.id} value={g.id}>{g.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="home__filter-group">
+            <span id="filter-country-label" className="home__filter-label">Country</span>
+            <select
+              className={dropdownClass}
+              value={countryFromUrl}
+              onChange={(e) => handleCountryChange(e.target.value)}
+              aria-labelledby="filter-country-label"
+            >
+              <option value="All">All</option>
+              {COUNTRY_OPTIONS.map((c) => (
+                <option key={c.code} value={c.code}>{c.name}</option>
+              ))}
             </select>
           </div>
           <div className="home__filter-group">
             <span id="filter-year-label" className="home__filter-label">Year</span>
             <select
               className={dropdownClass}
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
+              value={yearFromUrl}
+              onChange={(e) => handleYearChange(e.target.value)}
               aria-labelledby="filter-year-label"
             >
               {YEARS.map((y) => (
@@ -304,24 +378,36 @@ const Home = () => {
             sectionId="movies"
             type="movies"
             index={0}
+            yearFilter={yearFromUrl}
+            genreFilter={genreFromUrl}
+            countryFilter={countryFromUrl}
           />
           <ContentSection
             title="Recently Released — Series"
             sectionId="series"
             type="shows"
             index={1}
+            yearFilter={yearFromUrl}
+            genreFilter={genreFromUrl}
+            countryFilter={countryFromUrl}
           />
           <ContentSection
             title="Recently Released — Anime Movies"
             sectionId="anime"
             type="animeMovies"
             index={2}
+            yearFilter={yearFromUrl}
+            genreFilter={genreFromUrl}
+            countryFilter={countryFromUrl}
           />
           <ContentSection
             title="Recently Released — Anime Series"
             sectionId="anime-series"
             type="animeShows"
             index={3}
+            yearFilter={yearFromUrl}
+            genreFilter={genreFromUrl}
+            countryFilter={countryFromUrl}
           />
           {hasTraktKey() && (
             <>
@@ -330,12 +416,18 @@ const Home = () => {
                 sectionId="trending-movies"
                 type="trendingMovies"
                 index={4}
+                yearFilter={yearFromUrl}
+                genreFilter={genreFromUrl}
+                countryFilter={countryFromUrl}
               />
               <ContentSection
                 title="Trending — Series (Trakt)"
                 sectionId="trending-shows"
                 type="trendingShows"
                 index={5}
+                yearFilter={yearFromUrl}
+                genreFilter={genreFromUrl}
+                countryFilter={countryFromUrl}
               />
             </>
           )}
@@ -344,12 +436,18 @@ const Home = () => {
             sectionId="airing-today"
             type="airingToday"
             index={6}
+            yearFilter={yearFromUrl}
+            genreFilter={genreFromUrl}
+            countryFilter={countryFromUrl}
           />
           <ContentSection
             title="Trending — Anime (AniList)"
             sectionId="trending-anime"
             type="trendingAnime"
             index={7}
+            yearFilter={yearFromUrl}
+            genreFilter={genreFromUrl}
+            countryFilter={countryFromUrl}
           />
         </div>
       </div>

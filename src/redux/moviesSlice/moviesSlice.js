@@ -100,6 +100,8 @@ const toSearchItem = (r) => ({
   Poster: r.poster_path
     ? `https://image.tmdb.org/t/p/w300${r.poster_path}`
     : '',
+  genre_ids: r.genre_ids || [],
+  origin_country: r.origin_country || [],
 });
 
 export const fetchRecentMovies = createAsyncThunk(
