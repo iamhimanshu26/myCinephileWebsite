@@ -13,14 +13,10 @@ import {
   fetchTrendingShowsTrakt,
   fetchAiringTodayTVMaze,
   fetchTrendingAnimeAniList,
-} from '../redux/moviesSlice/moviesSlice';
-import {
   getAllMovies,
   getAllShows,
   getTrendingMovies,
   getTrendingShows,
-  getAiringToday,
-  getTrendingAnime,
 } from '../redux/moviesSlice/moviesSlice';
 import { hasTMDbKey } from '../redux/tmdbSlice/tmdbSlice';
 import { hasTraktKey } from '../api/traktApi';
@@ -51,8 +47,6 @@ const Home = () => {
   const showsData = useSelector(getAllShows);
   const trendingMoviesData = useSelector(getTrendingMovies);
   const trendingShowsData = useSelector(getTrendingShows);
-  const airingTodayData = useSelector(getAiringToday);
-  const trendingAnimeData = useSelector(getTrendingAnime);
 
   useEffect(() => {
     if (hasTMDbKey()) {
@@ -121,7 +115,17 @@ const Home = () => {
     }
 
     return list;
-  }, [browse, year, sortBy, sortOrder, hasTrakt, moviesList, showsList, trendingMoviesList, trendingShowsList]);
+  }, [
+    browse,
+    year,
+    sortBy,
+    sortOrder,
+    hasTrakt,
+    moviesList,
+    showsList,
+    trendingMoviesList,
+    trendingShowsList,
+  ]);
 
   const trendingSidebarList = useMemo(() => {
     if (trendingTab === 'day') return [...moviesList, ...trendingMoviesList].slice(0, 15);
@@ -143,12 +147,12 @@ const Home = () => {
 
         <div className="home__filters">
           <div className="home__filter-group">
-            <label className="home__filter-label">Browse</label>
+            <span id="filter-browse-label" className="home__filter-label">Browse</span>
             <select
               className={dropdownClass}
               value={browse}
               onChange={(e) => setBrowse(e.target.value)}
-              aria-label="Browse"
+              aria-labelledby="filter-browse-label"
             >
               <option value="all">All</option>
               <option value="movies">Movies</option>
@@ -156,12 +160,12 @@ const Home = () => {
             </select>
           </div>
           <div className="home__filter-group">
-            <label className="home__filter-label">Genre</label>
+            <span id="filter-genre-label" className="home__filter-label">Genre</span>
             <select
               className={dropdownClass}
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
-              aria-label="Genre"
+              aria-labelledby="filter-genre-label"
             >
               <option value="All">All</option>
               <option value="Action">Action</option>
@@ -171,12 +175,12 @@ const Home = () => {
             </select>
           </div>
           <div className="home__filter-group">
-            <label className="home__filter-label">Year</label>
+            <span id="filter-year-label" className="home__filter-label">Year</span>
             <select
               className={dropdownClass}
               value={year}
               onChange={(e) => setYear(e.target.value)}
-              aria-label="Year"
+              aria-labelledby="filter-year-label"
             >
               {YEARS.map((y) => (
                 <option key={y} value={y}>{y}</option>
@@ -184,12 +188,12 @@ const Home = () => {
             </select>
           </div>
           <div className="home__filter-group">
-            <label className="home__filter-label">Language</label>
+            <span id="filter-language-label" className="home__filter-label">Language</span>
             <select
               className={dropdownClass}
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              aria-label="Language"
+              aria-labelledby="filter-language-label"
             >
               <option value="All">All</option>
               <option value="en">English</option>
@@ -197,12 +201,12 @@ const Home = () => {
             </select>
           </div>
           <div className="home__filter-group">
-            <label className="home__filter-label">Sort By</label>
+            <span id="filter-sortby-label" className="home__filter-label">Sort By</span>
             <select
               className={dropdownClass}
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              aria-label="Sort by"
+              aria-labelledby="filter-sortby-label"
             >
               {SORT_OPTIONS.map((opt) => (
                 <option key={opt} value={opt}>{opt}</option>
@@ -210,12 +214,12 @@ const Home = () => {
             </select>
           </div>
           <div className="home__filter-group">
-            <label className="home__filter-label">Sort</label>
+            <span id="filter-sort-label" className="home__filter-label">Sort</span>
             <select
               className={dropdownClass}
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              aria-label="Sort order"
+              aria-labelledby="filter-sort-label"
             >
               {SORT_ORDER.map((opt) => (
                 <option key={opt} value={opt}>{opt}</option>
@@ -244,16 +248,19 @@ const Home = () => {
 
           <aside className="home__sidebar">
             <div className="home__sidebar-tabs">
-              {['day', 'week', 'month'].map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  className={`home__sidebar-tab ${trendingTab === tab ? 'home__sidebar-tab--active' : ''}`}
-                  onClick={() => setTrendingTab(tab)}
-                >
-                  Top {tab === 'day' ? 'Day' : tab === 'week' ? 'Week' : 'Month'}
-                </button>
-              ))}
+              {['day', 'week', 'month'].map((tab) => {
+                const tabLabel = { day: 'Day', week: 'Week', month: 'Month' }[tab];
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    className={`home__sidebar-tab ${trendingTab === tab ? 'home__sidebar-tab--active' : ''}`}
+                    onClick={() => setTrendingTab(tab)}
+                  >
+                    Top {tabLabel}
+                  </button>
+                );
+              })}
             </div>
             <ul className="home__sidebar-list">
               {trendingSidebarList.length === 0 ? (

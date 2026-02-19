@@ -4,9 +4,24 @@ import './header.scss';
 
 const menuItems = [
   { name: 'Home', link: '/', icon: 'bx-home-alt' },
-  { name: 'Genre', link: '#genre', icon: 'bx-category', hasDropdown: true },
-  { name: 'Country', link: '#country', icon: 'bx-world', hasDropdown: true },
-  { name: 'Year', link: '#year', icon: 'bx-calendar', hasDropdown: true },
+  {
+    name: 'Genre',
+    link: '#genre',
+    icon: 'bx-category',
+    hasDropdown: true,
+  },
+  {
+    name: 'Country',
+    link: '#country',
+    icon: 'bx-world',
+    hasDropdown: true,
+  },
+  {
+    name: 'Year',
+    link: '#year',
+    icon: 'bx-calendar',
+    hasDropdown: true,
+  },
   { name: 'New Movies', link: '/#movies', icon: 'bx-movie' },
   { name: 'New TV series', link: '/#series', icon: 'bx-tv' },
   { name: 'My Collection', link: '/collection', icon: 'bx-bookmark' },
