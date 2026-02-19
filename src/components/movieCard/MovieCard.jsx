@@ -66,10 +66,10 @@ const MovieCard = (props) => {
   return (
     <motion.div
       className="movie-card"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.35 }}
     >
       {!isExternal && (
         <button

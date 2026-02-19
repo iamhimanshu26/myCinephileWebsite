@@ -21,6 +21,12 @@
   font-weight: 500;
 }
 
+.home__hint {
+  font-size: $text-xs;
+  color: rgba(26, 26, 26, 0.5);
+  margin: 0.35rem 0 0;
+}
+
 .home__content {
   padding: 0 1rem;
   max-width: 1660px;

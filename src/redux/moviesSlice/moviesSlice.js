@@ -194,8 +194,12 @@ export const fetchRecentMoviesOMDb = createAsyncThunk(
       fetchOMDbSearch('the', 'movie', currentYear),
       fetchOMDbSearch('the', 'movie', currentYear - 1),
     ]);
-    const merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
-    if (merged.Response === 'True') {
+    let merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
+    if (merged.Response !== 'True' || !merged.Search.length) {
+      const fallback = await fetchOMDbSearch('action', 'movie', currentYear);
+      merged = mergeOMDbSearchResults([fallback]);
+    }
+    if (merged.Response === 'True' && merged.Search) {
       merged.Search = filterFamilyFriendly(merged.Search);
     }
     return merged;
@@ -209,8 +213,12 @@ export const fetchRecentShowsOMDb = createAsyncThunk(
       fetchOMDbSearch('the', 'series', currentYear),
       fetchOMDbSearch('the', 'series', currentYear - 1),
     ]);
-    const merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
-    if (merged.Response === 'True') {
+    let merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
+    if (merged.Response !== 'True' || !merged.Search.length) {
+      const fallback = await fetchOMDbSearch('drama', 'series', currentYear);
+      merged = mergeOMDbSearchResults([fallback]);
+    }
+    if (merged.Response === 'True' && merged.Search) {
       merged.Search = filterFamilyFriendly(merged.Search);
     }
     return merged;

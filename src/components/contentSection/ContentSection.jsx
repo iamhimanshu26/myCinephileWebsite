@@ -59,9 +59,9 @@ const ContentSection = ({
     <motion.section
       id={sectionId}
       className="content-section"
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 28 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.05 + index * 0.06 }}
+      transition={{ duration: 0.5, delay: 0.08 + index * 0.08 }}
     >
       <h2 className="content-section__title">{title}</h2>
       <div className="content-section__slider">{content}</div>

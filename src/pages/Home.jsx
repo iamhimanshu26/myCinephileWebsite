@@ -48,15 +48,20 @@ const Home = () => {
       className="home"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.5 }}
     >
       <motion.div
         className="home__hero"
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
       >
         <p className="home__tagline">Discover movies, series & anime</p>
+        {!hasTMDbKey() && (
+          <p className="home__hint">
+            Add REACT_APP_TMDB_KEY in Vercel for recently released & more sections.
+          </p>
+        )}
       </motion.div>
       <div className="home__content">
         <ContentSection
