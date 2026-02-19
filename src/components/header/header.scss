@@ -1,17 +1,23 @@
 /* stylelint-disable */
 @use '../../sass/' as *;
 
+$header-dark-bg: #2d2d30;
+$header-green: #4caf50;
+
 .header {
   height: $header-height;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: #d4d2cf;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   z-index: 9999;
   transition: background 0.2s ease;
   overflow-x: hidden;
+
+  &--dark {
+    background: $header-dark-bg;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
 
   &--menu-open {
     overflow: visible;
@@ -27,44 +33,170 @@
     position: relative;
   }
 
-  &__left {
+  &__brand {
     position: relative;
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
   }
 
   &__menu-trigger {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.75rem;
+    gap: 0.35rem;
+    padding: 0.4rem 0.6rem;
     background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: none;
     border-radius: $border-radius;
-    color: $txt-color;
+    color: $header-green;
     font-size: $text-base;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
+    transition: opacity 0.2s;
 
     &:hover {
-      border-color: $main-color;
-      color: $main-color;
+      opacity: 0.9;
     }
   }
 
-  &__menu-trigger-text {
+  &__logo-icon {
+    font-size: 1.25rem;
+    color: $header-green;
+  }
+
+  &__logo-text {
+    color: $header-green;
     letter-spacing: 0.02em;
   }
 
-  &__tagline {
+  &__chevron {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &__site-name {
+    color: #fff;
     font-size: $text-sm;
-    color: rgba(26, 26, 26, 0.7);
-    margin: 0;
+    font-weight: 500;
+  }
+
+  &__search {
+    flex: 1;
+    max-width: 360px;
+    min-width: 0;
+    margin: 0 auto;
+  }
+
+  &__search-form {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+
+  &__search-input {
+    flex: 1;
+    min-width: 0;
+    height: 2.25rem;
+    padding: 0 0.75rem;
+    font-size: $text-sm;
+    color: #1a1a1a;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-right: none;
+    border-radius: $border-radius 0 0 $border-radius;
+    outline: none;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.45);
+    }
+
+    &:focus {
+      border-color: $header-green;
+    }
+  }
+
+  &__search-btn {
+    height: 2.25rem;
+    padding: 0 1rem;
+    flex-shrink: 0;
+    font-size: $text-sm;
+    font-weight: 600;
+    color: #fff;
+    background: $header-green;
+    border: 1px solid $header-green;
+    border-radius: 0 $border-radius $border-radius 0;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+
+    &:hover {
+      background: darken($header-green, 6%);
+      opacity: 0.95;
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  &__theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.6rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: $border-radius;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: $text-xs;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    &--on {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  &__theme-label {
+    font-weight: 500;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+  }
+
+  &__nav-link {
+    color: #fff;
+    font-size: $text-xs;
+    font-weight: 500;
+    padding: 0.25rem 0;
+    transition: color 0.2s;
     white-space: nowrap;
-    @include mobile {
-      display: none;
+
+    &:hover {
+      color: $header-green;
+    }
+
+    &--dropdown {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+
+      i {
+        font-size: 0.7rem;
+        opacity: 0.8;
+      }
     }
   }
 
@@ -72,15 +204,15 @@
     position: absolute;
     top: 100%;
     left: 0;
-    margin-top: 0.35rem;
-    min-width: 10rem;
+    margin-top: 0;
+    min-width: 12rem;
     width: max-content;
-    max-width: 14rem;
+    max-width: 16rem;
     box-sizing: border-box;
-    background: #e0dedb;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #38383a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: $border-radius;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     z-index: 10000;
     animation: menuFade 0.15s ease;
   }
@@ -96,7 +228,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    color: $txt-color;
+    color: rgba(255, 255, 255, 0.9);
     font-size: $text-sm;
     font-weight: 500;
     transition: background 0.15s, color 0.15s;
@@ -104,85 +236,14 @@
 
   &__dropdown-icon {
     flex-shrink: 0;
-    width: 20px;
-    min-width: 20px;
-    height: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    i {
-      color: $main-color;
-      font-size: 0.9rem;
-      line-height: 1;
-      display: block;
-      text-align: center;
-    }
-  }
-
-  &__dropdown-text {
-    flex: 1;
-    min-width: 0;
+    font-size: 1.1rem;
+    color: $header-green;
   }
 
   &__dropdown-link:hover,
   &__dropdown-link:focus {
-    background: rgba(196, 92, 38, 0.12);
-    color: $main-color;
-  }
-
-  &__search {
-    flex: 1;
-    max-width: 320px;
-    min-width: 0;
-    margin-left: auto;
-  }
-
-  &__search-form {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    width: 100%;
-  }
-
-  &__search-input {
-    flex: 1;
-    min-width: 0;
-    height: 2.25rem;
-    padding: 0 0.75rem;
-    font-size: $text-sm;
-    color: $txt-color;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: $border-radius;
-    outline: none;
-
-    &::placeholder {
-      color: rgba(0, 0, 0, 0.45);
-    }
-
-    &:focus {
-      border-color: $main-color;
-    }
-  }
-
-  &__search-btn {
-    height: 2.25rem;
-    width: 2.5rem;
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: $main-color;
-    color: #fff;
-    border: none;
-    border-radius: $border-radius;
-    cursor: pointer;
-    font-size: 0.95rem;
-
-    &:hover {
-      opacity: 0.92;
-    }
+    background: rgba(76, 175, 80, 0.15);
+    color: $header-green;
   }
 }
 
@@ -197,10 +258,24 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .header__nav {
+    display: none;
+  }
+}
+
 @media (max-width: $mobile-width) {
+  .header__site-name {
+    display: none;
+  }
+
   .header__search {
     order: 3;
     flex: 1 1 100%;
     max-width: none;
+  }
+
+  .header__theme-toggle {
+    display: none;
   }
 }
