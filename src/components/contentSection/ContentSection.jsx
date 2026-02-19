@@ -1,11 +1,16 @@
 import React from 'react';
 import Slider from 'react-slick';
+import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import {
   getAllMovies,
   getAllShows,
   getAnimeMovies,
   getAnimeShows,
+  getTrendingMovies,
+  getTrendingShows,
+  getAiringToday,
+  getTrendingAnime,
 } from '../../redux/moviesSlice/moviesSlice';
 import MovieCard from '../movieCard/MovieCard';
 import Settings from '../../settings';
@@ -16,39 +21,51 @@ const selectors = {
   shows: getAllShows,
   animeMovies: getAnimeMovies,
   animeShows: getAnimeShows,
+  trendingMovies: getTrendingMovies,
+  trendingShows: getTrendingShows,
+  airingToday: getAiringToday,
+  trendingAnime: getTrendingAnime,
 };
 
 /* eslint-disable react/prop-types */
-const ContentSection = ({ title, sectionId, type }) => {
+const ContentSection = ({
+  title, sectionId, type, index = 0,
+}) => {
   const data = useSelector(selectors[type]);
   const list = (data?.Response === 'True' && data.Search) ? data.Search : [];
   const error = data?.Error;
+  const isEmpty = list.length === 0;
 
-  const content =
-    list.length > 0 ? (
-      <Slider
-        dots={Settings.dots}
-        infinite={Settings.infinite}
-        speed={Settings.speed}
-        slidesToShow={Settings.slidesToShow}
-        slidesToScroll={Settings.slidesToScroll}
-        responsive={Settings.responsive}
-      >
-        {list.map((item) => (
-          <MovieCard key={item.imdbID} data={item} />
-        ))}
-      </Slider>
-    ) : (
-      <p className="content-section-empty">
-        {error || 'Nothing to show yet. Try searching above.'}
-      </p>
-    );
+  const content = isEmpty ? (
+    <p className="content-section-empty">
+      {error || 'Nothing to show yet. Try searching above.'}
+    </p>
+  ) : (
+    <Slider
+      dots={Settings.dots}
+      infinite={Settings.infinite}
+      speed={Settings.speed}
+      slidesToShow={Settings.slidesToShow}
+      slidesToScroll={Settings.slidesToScroll}
+      responsive={Settings.responsive}
+    >
+      {list.map((item) => (
+        <MovieCard key={item.imdbID || item.id} data={item} />
+      ))}
+    </Slider>
+  );
 
   return (
-    <section id={sectionId} className="content-section">
+    <motion.section
+      id={sectionId}
+      className="content-section"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: 0.05 + index * 0.06 }}
+    >
       <h2 className="content-section__title">{title}</h2>
       <div className="content-section__slider">{content}</div>
-    </section>
+    </motion.section>
   );
 };
 

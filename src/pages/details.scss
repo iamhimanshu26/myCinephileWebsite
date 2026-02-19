@@ -73,6 +73,43 @@
   font-size: $text-sm;
 }
 
+.details-watch {
+  margin-top: 1rem;
+
+  .details-watch-label {
+    display: block;
+    font-size: $text-sm;
+    font-weight: 600;
+    color: $txt-color;
+    margin-bottom: 0.35rem;
+  }
+
+  .details-watch-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .details-watch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: $text-sm;
+    font-weight: 500;
+    color: $main-color;
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    i {
+      font-size: 0.85rem;
+    }
+  }
+}
+
 .details-unavailable {
   padding: 2rem;
   text-align: center;

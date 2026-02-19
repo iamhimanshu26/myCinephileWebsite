@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { motion } from 'framer-motion';
 import {
-  fetchAsyncMovies,
-  fetchAsyncShows,
-  fetchAsyncAnimeMovies,
-  fetchAsyncAnimeShows,
+  fetchRecentMovies,
+  fetchRecentShows,
+  fetchRecentAnimeMovies,
+  fetchRecentAnimeShows,
+  fetchRecentMoviesOMDb,
+  fetchRecentShowsOMDb,
+  fetchRecentAnimeMoviesOMDb,
+  fetchRecentAnimeShowsOMDb,
+  fetchTrendingMoviesTrakt,
+  fetchTrendingShowsTrakt,
+  fetchAiringTodayTVMaze,
+  fetchTrendingAnimeAniList,
 } from '../redux/moviesSlice/moviesSlice';
+import { hasTMDbKey } from '../redux/tmdbSlice/tmdbSlice';
+import { hasTraktKey } from '../api/traktApi';
 import ContentSection from '../components/contentSection/ContentSection';
 import './home.scss';
 
@@ -13,40 +24,95 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAsyncMovies('family'));
-    dispatch(fetchAsyncShows('drama'));
-    dispatch(fetchAsyncAnimeMovies());
-    dispatch(fetchAsyncAnimeShows());
+    if (hasTMDbKey()) {
+      dispatch(fetchRecentMovies());
+      dispatch(fetchRecentShows());
+      dispatch(fetchRecentAnimeMovies());
+      dispatch(fetchRecentAnimeShows());
+    } else {
+      dispatch(fetchRecentMoviesOMDb());
+      dispatch(fetchRecentShowsOMDb());
+      dispatch(fetchRecentAnimeMoviesOMDb());
+      dispatch(fetchRecentAnimeShowsOMDb());
+    }
+    if (hasTraktKey()) {
+      dispatch(fetchTrendingMoviesTrakt());
+      dispatch(fetchTrendingShowsTrakt());
+    }
+    dispatch(fetchAiringTodayTVMaze());
+    dispatch(fetchTrendingAnimeAniList());
   }, [dispatch]);
 
   return (
-    <main className="home">
-      <div className="home__hero">
+    <motion.main
+      className="home"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25 }}
+    >
+      <motion.div
+        className="home__hero"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
         <p className="home__tagline">Discover movies, series & anime</p>
-      </div>
+      </motion.div>
       <div className="home__content">
         <ContentSection
-          title="Movies"
+          title="Recently Released — Movies"
           sectionId="movies"
           type="movies"
+          index={0}
         />
         <ContentSection
-          title="Series"
+          title="Recently Released — Series"
           sectionId="series"
           type="shows"
+          index={1}
         />
         <ContentSection
-          title="Latest Anime — Movies"
+          title="Recently Released — Anime Movies"
           sectionId="anime"
           type="animeMovies"
+          index={2}
         />
         <ContentSection
-          title="Latest Anime — Series"
+          title="Recently Released — Anime Series"
           sectionId="anime-series"
           type="animeShows"
+          index={3}
+        />
+        {hasTraktKey() && (
+          <>
+            <ContentSection
+              title="Trending — Movies (Trakt)"
+              sectionId="trending-movies"
+              type="trendingMovies"
+              index={4}
+            />
+            <ContentSection
+              title="Trending — Series (Trakt)"
+              sectionId="trending-shows"
+              type="trendingShows"
+              index={5}
+            />
+          </>
+        )}
+        <ContentSection
+          title="Airing Today (TVMaze)"
+          sectionId="airing-today"
+          type="airingToday"
+          index={6}
+        />
+        <ContentSection
+          title="Trending — Anime (AniList)"
+          sectionId="trending-anime"
+          type="trendingAnime"
+          index={7}
         />
       </div>
-    </main>
+    </motion.main>
   );
 };
 

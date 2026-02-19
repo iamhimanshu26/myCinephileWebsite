@@ -51,6 +51,16 @@ export const searchPerson = createAsyncThunk(
   }
 );
 
+export const fetchWatchProviders = createAsyncThunk(
+  'tmdb/watchProviders',
+  async ({
+    id, mediaType,
+  }) => {
+    const { data } = await tmdbApi.get(`/${mediaType}/${id}/watch/providers`);
+    return data;
+  }
+);
+
 const initialState = {
   movieCredits: null,
   personDetails: null,
@@ -58,6 +68,7 @@ const initialState = {
   personTvCredits: null,
   personSearchResults: null,
   findResult: null,
+  watchProviders: null,
   status: 'idle',
 };
 
@@ -76,6 +87,9 @@ const tmdbSlice = createSlice({
     },
     clearFind: (state) => {
       state.findResult = null;
+    },
+    clearWatchProviders: (state) => {
+      state.watchProviders = null;
     },
   },
   extraReducers: (builder) => {
@@ -97,16 +111,22 @@ const tmdbSlice = createSlice({
       })
       .addCase(searchPerson.fulfilled, (state, { payload }) => {
         state.personSearchResults = payload;
+      })
+      .addCase(fetchWatchProviders.fulfilled, (state, { payload }) => {
+        state.watchProviders = payload;
       });
   },
 });
 
-export const { clearCredits, clearPerson, clearFind } = tmdbSlice.actions;
+export const {
+  clearCredits, clearPerson, clearFind, clearWatchProviders,
+} = tmdbSlice.actions;
 export const getMovieCredits = (state) => state.tmdb.movieCredits;
 export const getPersonDetails = (state) => state.tmdb.personDetails;
 export const getPersonMovieCredits = (state) => state.tmdb.personMovieCredits;
 export const getPersonTvCredits = (state) => state.tmdb.personTvCredits;
 export const getFindResult = (state) => state.tmdb.findResult;
+export const getWatchProviders = (state) => state.tmdb.watchProviders;
 export const getPersonSearchResults = (state) => state.tmdb.personSearchResults;
 export { hasTMDbKey };
 export default tmdbSlice.reducer;

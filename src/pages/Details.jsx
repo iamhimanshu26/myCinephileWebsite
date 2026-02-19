@@ -10,11 +10,14 @@ import {
 import {
   findMovieByImdbId,
   fetchMovieCredits,
+  fetchWatchProviders,
   getMovieCredits,
   getFindResult,
+  getWatchProviders,
   hasTMDbKey,
   clearCredits,
   clearFind,
+  clearWatchProviders,
 } from '../redux/tmdbSlice/tmdbSlice';
 import {
   addToCollection,
@@ -31,6 +34,7 @@ const Details = () => {
   const data = useSelector(getSelectedMovieOrShow);
   const credits = useSelector(getMovieCredits);
   const findResult = useSelector(getFindResult);
+  const watchProviders = useSelector(getWatchProviders);
   const tmdbAvailable = hasTMDbKey();
   const inCollection = useSelector(isInCollection(id));
 
@@ -38,6 +42,7 @@ const Details = () => {
     if (!id) return;
     dispatch(clearCredits());
     dispatch(clearFind());
+    dispatch(clearWatchProviders());
     if (id.startsWith('tt')) {
       dispatch(fetchAsyncMoviesOrShowsDetails(id));
     } else {
@@ -52,9 +57,14 @@ const Details = () => {
 
   useEffect(() => {
     if (!findResult) return;
-    const tmdbId =
-      findResult.movie_results?.[0]?.id ?? findResult.tv_results?.[0]?.id;
-    if (tmdbId) dispatch(fetchMovieCredits(tmdbId));
+    const movie = findResult.movie_results?.[0];
+    const tv = findResult.tv_results?.[0];
+    const tmdbId = movie?.id ?? tv?.id;
+    const mediaType = movie ? 'movie' : 'tv';
+    if (tmdbId) {
+      dispatch(fetchMovieCredits(tmdbId));
+      dispatch(fetchWatchProviders({ id: tmdbId, mediaType }));
+    }
   }, [findResult, dispatch]);
 
   const directors = credits?.crew?.filter((c) => c.job === 'Director') || [];
@@ -213,6 +223,41 @@ const Details = () => {
                   <span>{data.Awards}</span>
                 </div>
               </div>
+              {tmdbAvailable && (watchProviders || findResult) && (
+                <div className="details-watch">
+                  <span className="details-watch-label">Where to watch</span>
+                  <div className="details-watch-links">
+                    {(() => {
+                      const first = watchProviders?.results
+                        && Object.entries(watchProviders.results).find(
+                          ([, info]) => info?.link
+                        );
+                      const link = first?.[1]?.link;
+                      return link ? (
+                        <a
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="details-watch-link"
+                        >
+                          <i className="fa fa-external-link" />
+                          Watch / find streaming options on TMDb
+                        </a>
+                      ) : (
+                        <a
+                          href={`https://www.themoviedb.org/search?query=${encodeURIComponent(data.Title)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="details-watch-link"
+                        >
+                          <i className="fa fa-search" />
+                          Search for this title on TMDb
+                        </a>
+                      );
+                    })()}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="section-right">
               <img src={data.Poster} alt={data.Title} />

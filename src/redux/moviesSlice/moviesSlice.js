@@ -2,6 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import movieApi from '../../api/movieApi';
 import APIKey from '../../api/movieApiKey';
 import tmdbApi from '../../api/tmdbApi';
+import {
+  getTrendingMovies as traktTrendingMovies,
+  getTrendingShows as traktTrendingShows,
+} from '../../api/traktApi';
+import { getSchedule } from '../../api/tvmazeApi';
+import { getTrendingAnime as fetchAnilistTrending } from '../../api/anilistApi';
 import { filterFamilyFriendly } from '../../utils/contentFilter';
 
 export const fetchAsyncMovies = createAsyncThunk(
@@ -81,12 +87,265 @@ export const fetchAsyncDetailByTmdbId = createAsyncThunk(
   }
 );
 
+const toSearchItem = (r) => ({
+  id: r.id,
+  imdbID: r.imdb_id || null,
+  Title: r.title || r.name,
+  title: r.title || r.name,
+  name: r.name || r.title,
+  Year: (r.release_date || r.first_air_date || '').slice(0, 4),
+  release_date: r.release_date,
+  first_air_date: r.first_air_date,
+  poster_path: r.poster_path,
+  Poster: r.poster_path
+    ? `https://image.tmdb.org/t/p/w300${r.poster_path}`
+    : '',
+});
+
+export const fetchRecentMovies = createAsyncThunk(
+  'movies/fetchRecentMovies',
+  async () => {
+    const { data } = await tmdbApi.get('/discover/movie', {
+      params: {
+        sort_by: 'primary_release_date.desc',
+        'primary_release_date.lte': new Date().toISOString().slice(0, 10),
+        page: 1,
+      },
+    });
+    const Search = (data.results || []).map((r) => toSearchItem(r));
+    return { Response: 'True', Search };
+  }
+);
+
+export const fetchRecentShows = createAsyncThunk(
+  'movies/fetchRecentShows',
+  async () => {
+    const { data } = await tmdbApi.get('/discover/tv', {
+      params: {
+        sort_by: 'first_air_date.desc',
+        'first_air_date.lte': new Date().toISOString().slice(0, 10),
+        page: 1,
+      },
+    });
+    const Search = (data.results || []).map((r) => toSearchItem(r));
+    return { Response: 'True', Search };
+  }
+);
+
+export const fetchRecentAnimeMovies = createAsyncThunk(
+  'movies/fetchRecentAnimeMovies',
+  async () => {
+    const { data } = await tmdbApi.get('/discover/movie', {
+      params: {
+        with_genres: 16,
+        sort_by: 'primary_release_date.desc',
+        page: 1,
+      },
+    });
+    const Search = (data.results || []).map((r) => toSearchItem(r));
+    return { Response: 'True', Search };
+  }
+);
+
+export const fetchRecentAnimeShows = createAsyncThunk(
+  'movies/fetchRecentAnimeShows',
+  async () => {
+    const { data } = await tmdbApi.get('/discover/tv', {
+      params: {
+        with_genres: 16,
+        sort_by: 'first_air_date.desc',
+        page: 1,
+      },
+    });
+    const Search = (data.results || []).map((r) => toSearchItem(r));
+    return { Response: 'True', Search };
+  }
+);
+
+const currentYear = new Date().getFullYear();
+
+const fetchOMDbSearch = async (term, type, year, page = 1) => {
+  const res = await movieApi.get(
+    `?apiKey=${APIKey}&s=${encodeURIComponent(term)}&type=${type}&y=${year}&page=${page}`
+  );
+  return res.data;
+};
+
+const mergeOMDbSearchResults = (responses) => {
+  const seen = new Set();
+  const Search = [];
+  responses.forEach((data) => {
+    if (data.Response === 'True' && data.Search) {
+      data.Search.forEach((item) => {
+        if (item.imdbID && !seen.has(item.imdbID)) {
+          seen.add(item.imdbID);
+          Search.push(item);
+        }
+      });
+    }
+  });
+  return Search.length ? { Response: 'True', Search } : { Response: 'False', Error: 'No results' };
+};
+
+export const fetchRecentMoviesOMDb = createAsyncThunk(
+  'movies/fetchRecentMoviesOMDb',
+  async () => {
+    const [dataCurrent, dataPrev] = await Promise.all([
+      fetchOMDbSearch('the', 'movie', currentYear),
+      fetchOMDbSearch('the', 'movie', currentYear - 1),
+    ]);
+    const merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
+    if (merged.Response === 'True') {
+      merged.Search = filterFamilyFriendly(merged.Search);
+    }
+    return merged;
+  }
+);
+
+export const fetchRecentShowsOMDb = createAsyncThunk(
+  'movies/fetchRecentShowsOMDb',
+  async () => {
+    const [dataCurrent, dataPrev] = await Promise.all([
+      fetchOMDbSearch('the', 'series', currentYear),
+      fetchOMDbSearch('the', 'series', currentYear - 1),
+    ]);
+    const merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
+    if (merged.Response === 'True') {
+      merged.Search = filterFamilyFriendly(merged.Search);
+    }
+    return merged;
+  }
+);
+
+export const fetchRecentAnimeMoviesOMDb = createAsyncThunk(
+  'movies/fetchRecentAnimeMoviesOMDb',
+  async () => {
+    const [dataCurrent, dataPrev] = await Promise.all([
+      fetchOMDbSearch('animation', 'movie', currentYear),
+      fetchOMDbSearch('anime', 'movie', currentYear - 1),
+    ]);
+    const merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
+    if (merged.Response === 'True') {
+      merged.Search = filterFamilyFriendly(merged.Search);
+    }
+    return merged;
+  }
+);
+
+export const fetchRecentAnimeShowsOMDb = createAsyncThunk(
+  'movies/fetchRecentAnimeShowsOMDb',
+  async () => {
+    const [dataCurrent, dataPrev] = await Promise.all([
+      fetchOMDbSearch('animation', 'series', currentYear),
+      fetchOMDbSearch('anime', 'series', currentYear - 1),
+    ]);
+    const merged = mergeOMDbSearchResults([dataCurrent, dataPrev]);
+    if (merged.Response === 'True') {
+      merged.Search = filterFamilyFriendly(merged.Search);
+    }
+    return merged;
+  }
+);
+
+export const fetchTrendingMoviesTrakt = createAsyncThunk(
+  'movies/fetchTrendingMoviesTrakt',
+  async () => {
+    try {
+      const list = await traktTrendingMovies();
+      const Search = (list || [])
+        .filter((e) => e.movie && e.movie.ids && e.movie.ids.imdb)
+        .slice(0, 20)
+        .map((e) => ({
+          imdbID: e.movie.ids.imdb,
+          Title: e.movie.title,
+          Year: e.movie.year ? String(e.movie.year) : '',
+          Poster: '',
+        }));
+      return Search.length ? { Response: 'True', Search } : { Response: 'False' };
+    } catch {
+      return { Response: 'False' };
+    }
+  }
+);
+
+export const fetchTrendingShowsTrakt = createAsyncThunk(
+  'movies/fetchTrendingShowsTrakt',
+  async () => {
+    try {
+      const list = await traktTrendingShows();
+      const Search = (list || [])
+        .filter((e) => e.show && e.show.ids && e.show.ids.imdb)
+        .slice(0, 20)
+        .map((e) => ({
+          imdbID: e.show.ids.imdb,
+          Title: e.show.title,
+          Year: e.show.year ? String(e.show.year) : '',
+          Poster: '',
+        }));
+      return Search.length ? { Response: 'True', Search } : { Response: 'False' };
+    } catch {
+      return { Response: 'False' };
+    }
+  }
+);
+
+export const fetchAiringTodayTVMaze = createAsyncThunk(
+  'movies/fetchAiringTodayTVMaze',
+  async () => {
+    try {
+      const list = await getSchedule('US');
+      const seen = new Set();
+      const getShow = (ep) => ep.show || (ep._embedded && ep._embedded.show); // eslint-disable-line no-underscore-dangle,max-len
+      const Search = (list || [])
+        .map(getShow)
+        .filter((show) => show && show.id && !seen.has(show.id))
+        .slice(0, 25)
+        .map((show) => {
+          seen.add(show.id);
+          return {
+            id: `tvmaze-${show.id}`,
+            Title: show.name,
+            Poster: show.image?.medium || '',
+            Year: '',
+            externalUrl: show.url || `https://www.tvmaze.com/shows/${show.id}`,
+          };
+        });
+      return Search.length ? { Response: 'True', Search } : { Response: 'False' };
+    } catch {
+      return { Response: 'False' };
+    }
+  }
+);
+
+export const fetchTrendingAnimeAniList = createAsyncThunk(
+  'movies/fetchTrendingAnimeAniList',
+  async () => {
+    try {
+      const media = await fetchAnilistTrending(1, 24);
+      const Search = (media || []).map((m) => ({
+        id: `anilist-${m.id}`,
+        Title: m.title?.english || m.title?.romaji || 'Anime',
+        Poster: m.coverImage?.large || m.coverImage?.medium || '',
+        Year: m.startDate?.year ? String(m.startDate.year) : '',
+        externalUrl: `https://anilist.co/anime/${m.id}`,
+      }));
+      return Search.length ? { Response: 'True', Search } : { Response: 'False' };
+    } catch {
+      return { Response: 'False' };
+    }
+  }
+);
+
 const initialState = {
   status: 'idle',
   movies: {},
   shows: {},
   animeMovies: {},
   animeShows: {},
+  trendingMovies: {},
+  trendingShows: {},
+  airingToday: {},
+  trendingAnime: {},
   selectedMovieOrShow: {},
 };
 
@@ -146,6 +405,78 @@ const moviesSlice = createSlice({
     [fetchAsyncDetailByTmdbId.fulfilled]: (state, { payload }) => {
       return { ...state, selectedMovieOrShow: payload };
     },
+    [fetchRecentMovies.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, movies: payload };
+      }
+      return state;
+    },
+    [fetchRecentShows.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, shows: payload };
+      }
+      return state;
+    },
+    [fetchRecentAnimeMovies.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, animeMovies: payload };
+      }
+      return state;
+    },
+    [fetchRecentAnimeShows.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, animeShows: payload };
+      }
+      return state;
+    },
+    [fetchRecentMoviesOMDb.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, movies: payload };
+      }
+      return state;
+    },
+    [fetchRecentShowsOMDb.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, shows: payload };
+      }
+      return state;
+    },
+    [fetchRecentAnimeMoviesOMDb.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, animeMovies: payload };
+      }
+      return state;
+    },
+    [fetchRecentAnimeShowsOMDb.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, animeShows: payload };
+      }
+      return state;
+    },
+    [fetchTrendingMoviesTrakt.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, trendingMovies: payload };
+      }
+      return state;
+    },
+    [fetchTrendingShowsTrakt.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, trendingShows: payload };
+      }
+      return state;
+    },
+    [fetchAiringTodayTVMaze.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, airingToday: payload };
+      }
+      return state;
+    },
+    [fetchTrendingAnimeAniList.fulfilled]: (state, { payload }) => {
+      if (payload.Search && payload.Search.length) {
+        return { ...state, trendingAnime: payload };
+      }
+      return state;
+    },
     [fetchAsyncMovies.rejected]: (state) => {
       state.status = 'failed';
     },
@@ -158,6 +489,10 @@ export const getAllMovies = (state) => state.movies.movies;
 export const getAllShows = (state) => state.movies.shows;
 export const getAnimeMovies = (state) => state.movies.animeMovies;
 export const getAnimeShows = (state) => state.movies.animeShows;
+export const getTrendingMovies = (state) => state.movies.trendingMovies;
+export const getTrendingShows = (state) => state.movies.trendingShows;
+export const getAiringToday = (state) => state.movies.airingToday;
+export const getTrendingAnime = (state) => state.movies.trendingAnime;
 export const getSelectedMovieOrShow = (state) =>
   state.movies.selectedMovieOrShow;
 export default moviesSlice.reducer;

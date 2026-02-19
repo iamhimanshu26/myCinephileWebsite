@@ -1,6 +1,12 @@
 /* stylelint-disable at-rule-no-unknown */
 @use '../../sass/' as *;
 
+.movie-card__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .movie-card {
   position: relative;
   background: transparent;
