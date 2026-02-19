@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import {
   fetchRecentMovies,
   fetchRecentShows,
+  fetchRecentAnimeMovies,
+  fetchRecentAnimeShows,
   fetchRecentAnimeMoviesOMDb,
   fetchRecentAnimeShowsOMDb,
   fetchRecentMoviesOMDb,
@@ -21,6 +23,7 @@ import {
 import { hasTMDbKey } from '../redux/tmdbSlice/tmdbSlice';
 import { hasTraktKey } from '../api/traktApi';
 import MovieCard from '../components/movieCard/MovieCard';
+import ContentSection from '../components/contentSection/ContentSection';
 import './home.scss';
 
 const toList = (data) => {
@@ -52,6 +55,8 @@ const Home = () => {
     if (hasTMDbKey()) {
       dispatch(fetchRecentMovies());
       dispatch(fetchRecentShows());
+      dispatch(fetchRecentAnimeMovies());
+      dispatch(fetchRecentAnimeShows());
     } else {
       dispatch(fetchRecentMoviesOMDb());
       dispatch(fetchRecentShowsOMDb());
@@ -229,7 +234,7 @@ const Home = () => {
         </div>
 
         <div className="home__main-layout">
-          <section className="home__grid-section" id="movies">
+          <section className="home__grid-section" id="browse">
             <h2 className="home__section-title">
               <i className="bx bx-folder" />
               <i className="bx bx-play-circle" />
@@ -291,6 +296,61 @@ const Home = () => {
               )}
             </ul>
           </aside>
+        </div>
+
+        <div className="home__sections">
+          <ContentSection
+            title="Recently Released — Movies"
+            sectionId="movies"
+            type="movies"
+            index={0}
+          />
+          <ContentSection
+            title="Recently Released — Series"
+            sectionId="series"
+            type="shows"
+            index={1}
+          />
+          <ContentSection
+            title="Recently Released — Anime Movies"
+            sectionId="anime"
+            type="animeMovies"
+            index={2}
+          />
+          <ContentSection
+            title="Recently Released — Anime Series"
+            sectionId="anime-series"
+            type="animeShows"
+            index={3}
+          />
+          {hasTraktKey() && (
+            <>
+              <ContentSection
+                title="Trending — Movies (Trakt)"
+                sectionId="trending-movies"
+                type="trendingMovies"
+                index={4}
+              />
+              <ContentSection
+                title="Trending — Series (Trakt)"
+                sectionId="trending-shows"
+                type="trendingShows"
+                index={5}
+              />
+            </>
+          )}
+          <ContentSection
+            title="Airing Today (TVMaze)"
+            sectionId="airing-today"
+            type="airingToday"
+            index={6}
+          />
+          <ContentSection
+            title="Trending — Anime (AniList)"
+            sectionId="trending-anime"
+            type="trendingAnime"
+            index={7}
+          />
         </div>
       </div>
     </motion.main>

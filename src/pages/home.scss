@@ -73,6 +73,16 @@
   align-items: start;
 }
 
+.home__sections {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.home__sections section[id] {
+  scroll-margin-top: $header-height;
+}
+
 .home__grid-section {
   min-width: 0;
 }
