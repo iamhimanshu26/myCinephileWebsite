@@ -8,6 +8,7 @@ import {
   getAllShows,
 } from '../redux/moviesSlice/moviesSlice';
 import MovieCard from '../components/movieCard/MovieCard';
+import PageTransition from '../components/ui/PageTransition';
 import SkeletonCards from '../components/ui/SkeletonCards';
 import StateBlock from '../components/ui/StateBlock';
 import './search.scss';
@@ -57,7 +58,7 @@ const Search = () => {
   }
 
   return (
-    <div className="search-page page-shell">
+    <PageTransition className="search-page page-shell">
       <div className="search-page-header page-header">
         <h1 className="page-title">
           {q ? `Results for “${q}”` : 'Search movies & series'}
@@ -82,7 +83,7 @@ const Search = () => {
           compact
         />
       )}
-    </div>
+    </PageTransition>
   );
 };
 

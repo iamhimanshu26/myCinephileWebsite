@@ -60,7 +60,7 @@
   &:focus {
     outline: none;
     border-color: $color-accent;
-    box-shadow: 0 0 0 3px rgba(92, 124, 255, 0.2);
+    box-shadow: 0 0 0 3px rgba(48, 196, 143, 0.2);
   }
 }
 
@@ -69,6 +69,12 @@
   grid-template-columns: minmax(0, 1fr) 300px;
   gap: $space-6;
   align-items: start;
+}
+
+.home__filter-note {
+  margin: -$space-2 0 $space-5;
+  font-size: $text-xs;
+  color: $color-text-muted;
 }
 
 .home__sections {
@@ -149,7 +155,7 @@
   transition: background-color $duration-base $ease-standard, color $duration-base $ease-standard;
 
   &--active {
-    background: rgba(255, 122, 41, 0.2);
+    background: rgba(48, 196, 143, 0.2);
     color: $color-text-primary;
   }
 

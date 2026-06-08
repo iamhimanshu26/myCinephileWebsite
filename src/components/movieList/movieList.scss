@@ -41,7 +41,7 @@
       flex-shrink: 0;
       cursor: pointer;
       border: 1px solid transparent;
-      background: linear-gradient(135deg, $color-primary, #ff9d56);
+      background: linear-gradient(135deg, $color-primary, #8effd7);
       border-radius: 50%;
       color: #09101d;
     }
@@ -86,7 +86,7 @@
     z-index: 1;
 
     &:hover, &:focus {
-      background: rgba(255, 122, 41, 0.18);
+      background: rgba(48, 196, 143, 0.18);
     }
 
     &::before {

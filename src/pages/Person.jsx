@@ -12,6 +12,7 @@ import {
   clearPerson,
   hasTMDbKey,
 } from '../redux/tmdbSlice/tmdbSlice';
+import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
 import './person.scss';
 
@@ -36,7 +37,7 @@ const Person = () => {
 
   if (!tmdbAvailable) {
     return (
-      <div className="person-page page-shell">
+      <PageTransition className="person-page page-shell">
         <StateBlock
           variant="error"
           title="TMDb key required"
@@ -44,13 +45,13 @@ const Person = () => {
           actionLabel="Back to Home"
           actionTo="/"
         />
-      </div>
+      </PageTransition>
     );
   }
 
   if (!person || !person.id) {
     return (
-      <div className="person-page page-shell">
+      <PageTransition className="person-page page-shell">
         <Link to="/" className="person-back-btn">
           <IoMdArrowRoundBack /> Back
         </Link>
@@ -60,7 +61,7 @@ const Person = () => {
           description="Fetching biography and filmography details."
           compact
         />
-      </div>
+      </PageTransition>
     );
   }
 
@@ -69,7 +70,7 @@ const Person = () => {
   const combined = [...movies.slice(0, 12), ...shows.slice(0, 12)];
 
   return (
-    <div className="person-page page-shell">
+    <PageTransition className="person-page page-shell">
       <Link to="/" className="person-back-btn">
         <IoMdArrowRoundBack /> Back
       </Link>
@@ -133,7 +134,7 @@ const Person = () => {
           })}
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 };
 

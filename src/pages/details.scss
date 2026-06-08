@@ -78,7 +78,7 @@
   font-size: $text-sm;
   font-weight: 700;
   color: #09101d;
-  background: linear-gradient(135deg, $color-primary, #ff9f5a);
+  background: linear-gradient(135deg, $color-primary, #8effd7);
   border: 1px solid transparent;
   border-radius: $radius-pill;
   cursor: pointer;
@@ -93,7 +93,7 @@
 
   &:hover,
   &:focus-visible {
-    transform: translateY(-1px);
+    transform: translate3d(var(--mx, 0), calc(var(--my, 0) - 1px), 0);
     box-shadow: $shadow-sm;
     filter: saturate(1.05);
   }
@@ -157,8 +157,8 @@
 
     &:hover,
     &:focus-visible {
-      border-color: rgba(255, 122, 41, 0.4);
-      background: rgba(255, 122, 41, 0.12);
+      border-color: rgba(48, 196, 143, 0.4);
+      background: rgba(48, 196, 143, 0.12);
       transform: translateY(-1px);
     }
 

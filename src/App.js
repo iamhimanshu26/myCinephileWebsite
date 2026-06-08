@@ -1,5 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import {
+  BrowserRouter as Router, Route, Routes, useLocation,
+} from 'react-router-dom';
 import 'swiper/swiper.min.css';
 import Header from './components/header/Header';
 import Home from './pages/Home';
@@ -10,19 +13,28 @@ import Collection from './pages/Collection';
 import Footer from './components/footer/Footer';
 import './App.scss';
 
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={`${location.pathname}${location.search}`}>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/collection" element={<Collection />} />
+        <Route path="/movie/:id" element={<Details />} />
+        <Route path="/person/:personId" element={<Person />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 function App() {
   return (
     <div className="app">
       <Router>
         <Header />
         <main id="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/collection" element={<Collection />} />
-            <Route path="/movie/:id" element={<Details />} />
-            <Route path="/person/:personId" element={<Person />} />
-          </Routes>
+          <AnimatedRoutes />
         </main>
         <Footer />
       </Router>

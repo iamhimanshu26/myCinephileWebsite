@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
 import { FiFolder, FiPlayCircle } from 'react-icons/fi';
 import {
   fetchRecentMovies,
@@ -26,7 +25,9 @@ import { hasTraktKey } from '../api/traktApi';
 import { GENRE_OPTIONS, COUNTRY_OPTIONS } from '../constants/filters';
 import MovieCard from '../components/movieCard/MovieCard';
 import ContentSection from '../components/contentSection/ContentSection';
+import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
+import { applyCatalogFilters, getLanguageFilterCoverage } from '../utils/catalogFilters';
 import './home.scss';
 
 const toList = (data) => {
@@ -38,14 +39,6 @@ const currentYear = new Date().getFullYear();
 const YEARS = ['All', ...Array.from({ length: 12 }, (_, i) => String(currentYear - i))];
 const SORT_OPTIONS = ['Release Date', 'Title', 'Rating'];
 const SORT_ORDER = ['Descending', 'Ascending'];
-
-const matchesLanguage = (item, language) => {
-  if (language === 'All') return true;
-  const source = `${item.Language || ''} ${item.language || ''} ${item.original_language || ''}`.toLowerCase();
-  if (language === 'en') return source.includes('english') || source.includes('en');
-  if (language === 'ja') return source.includes('japanese') || source.includes('ja');
-  return true;
-};
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -105,53 +98,14 @@ const Home = () => {
       const id = item.imdbID || item.id;
       if (id && !byId.has(id)) byId.set(id, item);
     });
-    let list = Array.from(byId.values());
-
-    if (yearFromUrl !== 'All') {
-      list = list.filter((item) => {
-        const y = item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4);
-        return y === yearFromUrl;
-      });
-    }
-    if (genreFromUrl !== 'All') {
-      const genreIdNum = Number(genreFromUrl);
-      list = list.filter(
-        (item) => Array.isArray(item.genre_ids) && item.genre_ids.includes(genreIdNum)
-      );
-    }
-    if (countryFromUrl !== 'All') {
-      list = list.filter(
-        (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFromUrl)
-      );
-    }
-    list = list.filter((item) => matchesLanguage(item, language));
-
-    const getYear = (item) => item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || '';
-    const getTitle = (item) => (item.Title || item.title || item.name || '').toLowerCase();
-    const getRating = (item) => Number.parseFloat(item.imdbRating || item.vote_average || 0) || 0;
-
-    if (sortBy === 'Release Date') {
-      list.sort((a, b) => {
-        const ya = getYear(a);
-        const yb = getYear(b);
-        if (sortOrder === 'Descending') return (yb || '').localeCompare(ya || '');
-        return (ya || '').localeCompare(yb || '');
-      });
-    } else if (sortBy === 'Title') {
-      list.sort((a, b) => {
-        const ta = getTitle(a);
-        const tb = getTitle(b);
-        return sortOrder === 'Descending' ? tb.localeCompare(ta) : ta.localeCompare(tb);
-      });
-    } else if (sortBy === 'Rating') {
-      list.sort((a, b) => {
-        const ra = getRating(a);
-        const rb = getRating(b);
-        return sortOrder === 'Descending' ? rb - ra : ra - rb;
-      });
-    }
-
-    return list;
+    return applyCatalogFilters(Array.from(byId.values()), {
+      year: yearFromUrl,
+      genre: genreFromUrl,
+      country: countryFromUrl,
+      language,
+      sortBy,
+      sortOrder,
+    });
   }, [
     browse,
     yearFromUrl,
@@ -189,25 +143,18 @@ const Home = () => {
   };
 
   const trendingSidebarList = useMemo(() => {
-    const getItemYear = (item) => item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || '';
     let items = [];
     if (trendingTab === 'day') items = [...moviesList, ...trendingMoviesList];
     else if (trendingTab === 'week') items = [...trendingMoviesList, ...trendingShowsList];
     else items = [...showsList, ...trendingShowsList];
-    if (yearFromUrl !== 'All') items = items.filter((item) => getItemYear(item) === yearFromUrl);
-    if (genreFromUrl !== 'All') {
-      const genreIdNum = Number(genreFromUrl);
-      items = items.filter(
-        (item) => Array.isArray(item.genre_ids) && item.genre_ids.includes(genreIdNum)
-      );
-    }
-    if (countryFromUrl !== 'All') {
-      items = items.filter(
-        (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFromUrl)
-      );
-    }
-    items = items.filter((item) => matchesLanguage(item, language));
-    return items.slice(0, 15);
+    return applyCatalogFilters(items, {
+      year: yearFromUrl,
+      genre: genreFromUrl,
+      country: countryFromUrl,
+      language,
+      sortBy,
+      sortOrder,
+    }).slice(0, 15);
   }, [
     trendingTab,
     yearFromUrl,
@@ -218,17 +165,22 @@ const Home = () => {
     showsList,
     trendingMoviesList,
     trendingShowsList,
+    sortBy,
+    sortOrder,
   ]);
+
+  const languageCoverage = useMemo(
+    () => getLanguageFilterCoverage(combinedForGrid),
+    [combinedForGrid]
+  );
 
   const dropdownClass = 'home__filter-select';
 
+  const showMovieSections = browse === 'all' || browse === 'movies';
+  const showSeriesSections = browse === 'all' || browse === 'series';
+
   return (
-    <motion.main
-      className="home page-shell"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <PageTransition className="home page-shell">
       <div className="home__content">
         <div className="page-header home__header">
           <h1 className="page-title home__title">Cinephile</h1>
@@ -334,6 +286,15 @@ const Home = () => {
             </select>
           </div>
         </div>
+        {language !== 'All' && languageCoverage.unsupportedCount > 0 && (
+          <p className="home__filter-note">
+            Language filtering is applied where provider metadata exists.
+            {' '}
+            {languageCoverage.unsupportedCount}
+            {' '}
+            title(s) currently use fallback metadata and are kept visible.
+          </p>
+        )}
 
         <div className="home__main-layout">
           <section className="home__grid-section" id="browse">
@@ -411,85 +372,123 @@ const Home = () => {
         </div>
 
         <div className="home__sections">
-          <ContentSection
-            title="Recently Released — Movies"
-            sectionId="movies"
-            type="movies"
-            index={0}
-            yearFilter={yearFromUrl}
-            genreFilter={genreFromUrl}
-            countryFilter={countryFromUrl}
-          />
-          <ContentSection
-            title="Recently Released — Series"
-            sectionId="series"
-            type="shows"
-            index={1}
-            yearFilter={yearFromUrl}
-            genreFilter={genreFromUrl}
-            countryFilter={countryFromUrl}
-          />
-          <ContentSection
-            title="Recently Released — Anime Movies"
-            sectionId="anime"
-            type="animeMovies"
-            index={2}
-            yearFilter={yearFromUrl}
-            genreFilter={genreFromUrl}
-            countryFilter={countryFromUrl}
-          />
-          <ContentSection
-            title="Recently Released — Anime Series"
-            sectionId="anime-series"
-            type="animeShows"
-            index={3}
-            yearFilter={yearFromUrl}
-            genreFilter={genreFromUrl}
-            countryFilter={countryFromUrl}
-          />
-          {hasTraktKey() && (
+          {showMovieSections && (
+            <ContentSection
+              title="Recently Released — Movies"
+              sectionId="movies"
+              type="movies"
+              index={0}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {showSeriesSections && (
+            <ContentSection
+              title="Recently Released — Series"
+              sectionId="series"
+              type="shows"
+              index={1}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {showMovieSections && (
+            <ContentSection
+              title="Recently Released — Anime Movies"
+              sectionId="anime"
+              type="animeMovies"
+              index={2}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {showSeriesSections && (
+            <ContentSection
+              title="Recently Released — Anime Series"
+              sectionId="anime-series"
+              type="animeShows"
+              index={3}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {hasTraktKey() && showMovieSections && (
+            <ContentSection
+              title="Trending — Movies (Trakt)"
+              sectionId="trending-movies"
+              type="trendingMovies"
+              index={4}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {hasTraktKey() && showSeriesSections && (
+            <ContentSection
+              title="Trending — Series (Trakt)"
+              sectionId="trending-shows"
+              type="trendingShows"
+              index={5}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {showSeriesSections && (
+            <ContentSection
+              title="Airing Today (TVMaze)"
+              sectionId="airing-today"
+              type="airingToday"
+              index={6}
+              yearFilter={yearFromUrl}
+              genreFilter={genreFromUrl}
+              countryFilter={countryFromUrl}
+              languageFilter={language}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          )}
+          {(showMovieSections || showSeriesSections) && (
             <>
               <ContentSection
-                title="Trending — Movies (Trakt)"
-                sectionId="trending-movies"
-                type="trendingMovies"
-                index={4}
+                title="Trending — Anime (AniList)"
+                sectionId="trending-anime"
+                type="trendingAnime"
+                index={7}
                 yearFilter={yearFromUrl}
                 genreFilter={genreFromUrl}
                 countryFilter={countryFromUrl}
-              />
-              <ContentSection
-                title="Trending — Series (Trakt)"
-                sectionId="trending-shows"
-                type="trendingShows"
-                index={5}
-                yearFilter={yearFromUrl}
-                genreFilter={genreFromUrl}
-                countryFilter={countryFromUrl}
+                languageFilter={language}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
               />
             </>
           )}
-          <ContentSection
-            title="Airing Today (TVMaze)"
-            sectionId="airing-today"
-            type="airingToday"
-            index={6}
-            yearFilter={yearFromUrl}
-            genreFilter={genreFromUrl}
-            countryFilter={countryFromUrl}
-          />
-          <ContentSection
-            title="Trending — Anime (AniList)"
-            sectionId="trending-anime"
-            type="trendingAnime"
-            index={7}
-            yearFilter={yearFromUrl}
-            genreFilter={genreFromUrl}
-            countryFilter={countryFromUrl}
-          />
         </div>
       </div>
-    </motion.main>
+    </PageTransition>
   );
 };
 

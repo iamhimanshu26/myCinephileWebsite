@@ -1,14 +1,19 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiX } from 'react-icons/fi';
 import { getCollectionItems, removeFromCollection } from '../redux/collectionSlice/collectionSlice';
 import MovieCard from '../components/movieCard/MovieCard';
+import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
 import './collection.scss';
 
 const Collection = () => {
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
   const items = useSelector(getCollectionItems);
+  const view = searchParams.get('view');
+  const isWatchlistView = view === 'watchlist';
 
   const toCardData = (item) => ({
     imdbID: item.id,
@@ -19,12 +24,12 @@ const Collection = () => {
   });
 
   return (
-    <div className="collection-page page-shell">
+    <PageTransition className="collection-page page-shell">
       <div className="collection-page-header page-header">
-        <h1 className="page-title">My Collection</h1>
+        <h1 className="page-title">{isWatchlistView ? 'My Watchlist' : 'My Collection'}</h1>
         <p className="collection-page-sub page-subtitle">
           {items.length === 0
-            ? 'Save movies and series here to find them quickly.'
+            ? `${isWatchlistView ? 'Bookmark' : 'Save'} movies and series here to find them quickly.`
             : `${items.length} item${items.length === 1 ? '' : 's'} saved`}
         </p>
       </div>
@@ -53,7 +58,7 @@ const Collection = () => {
           ))}
         </div>
       )}
-    </div>
+    </PageTransition>
   );
 };
 

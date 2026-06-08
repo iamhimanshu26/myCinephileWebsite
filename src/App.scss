@@ -78,7 +78,10 @@ body {
   font-family: var(--font-family);
   font-size: var(--font-body);
   line-height: 1.5;
-  background: radial-gradient(circle at top right, #1f2a3f 0%, var(--color-bg) 45%);
+  background:
+    radial-gradient(circle at top right, rgba(49, 184, 138, 0.18) 0%, transparent 38%),
+    radial-gradient(circle at 20% 18%, rgba(103, 248, 204, 0.1) 0%, transparent 44%),
+    var(--color-bg);
   color: var(--color-text-primary);
   overflow-x: hidden;
 }
@@ -210,7 +213,7 @@ h4 {
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, var(--color-primary), #ff944d);
+  background: linear-gradient(135deg, var(--color-primary), #8effd7);
   color: #09101d;
 }
 
@@ -242,8 +245,15 @@ h4 {
 .input:focus,
 .select:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(92, 124, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(48, 196, 143, 0.2);
   outline: none;
+}
+
+.magnetic {
+  --mx: 0px;
+  --my: 0px;
+  transform: translate3d(var(--mx), var(--my), 0);
+  will-change: transform;
 }
 
 .badge {

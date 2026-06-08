@@ -9,13 +9,16 @@ import {
   isInCollection,
   removeFromCollection,
 } from '../../redux/collectionSlice/collectionSlice';
+import useMagneticHover from '../../hooks/useMagneticHover';
 import './movieCard.scss';
 
 /* eslint-disable react/prop-types */
 const MovieCard = (props) => {
   const { data } = props;
   const [imgError, setImgError] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const dispatch = useDispatch();
+  const collectionButtonRef = useMagneticHover(4);
   const itemId = data.imdbID || data.id;
   const inCollection = useSelector(isInCollection(itemId));
 
@@ -44,8 +47,10 @@ const MovieCard = (props) => {
         ) : (
           <img
             src={posterUrl}
+            className={`card-poster-image ${imgLoaded ? 'is-loaded' : ''}`}
             alt={data.Title || data.title || data.name || 'Poster'}
             loading="lazy"
+            onLoad={() => setImgLoaded(true)}
             onError={() => setImgError(true)}
           />
         )}
@@ -75,8 +80,9 @@ const MovieCard = (props) => {
     >
       {!isExternal && (
         <button
+          ref={collectionButtonRef}
           type="button"
-          className={`movie-card__collection-btn ${inCollection ? 'movie-card__collection-btn--saved' : ''}`}
+          className={`movie-card__collection-btn magnetic ${inCollection ? 'movie-card__collection-btn--saved' : ''}`}
           onClick={handleCollectionClick}
           aria-label={inCollection ? 'Remove from collection' : 'Add to collection'}
           title={inCollection ? 'Remove from collection' : 'Add to collection'}

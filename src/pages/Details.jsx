@@ -29,6 +29,8 @@ import {
   isInCollection,
 } from '../redux/collectionSlice/collectionSlice';
 import { isAdultContent } from '../utils/contentFilter';
+import useMagneticHover from '../hooks/useMagneticHover';
+import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
 import './details.scss';
 
@@ -41,6 +43,7 @@ const Details = () => {
   const watchProviders = useSelector(getWatchProviders);
   const tmdbAvailable = hasTMDbKey();
   const inCollection = useSelector(isInCollection(id));
+  const collectionActionRef = useMagneticHover(6);
 
   useEffect(() => {
     if (!id) return;
@@ -127,7 +130,7 @@ const Details = () => {
   };
 
   return (
-    <div className="details-page page-shell">
+    <PageTransition className="details-page page-shell">
       <div className="back-container">
         <Link to="/" className="details-back-btn">
           <IoMdArrowRoundBack />
@@ -158,8 +161,9 @@ const Details = () => {
               <div className="details-collection">
                 {inCollection ? (
                   <button
+                    ref={collectionActionRef}
                     type="button"
-                    className="details-collection-btn details-collection-btn--remove"
+                    className="details-collection-btn details-collection-btn--remove magnetic"
                     onClick={() => dispatch(removeFromCollection(id))}
                   >
                     <FiBookmark />
@@ -167,8 +171,9 @@ const Details = () => {
                   </button>
                 ) : (
                   <button
+                    ref={collectionActionRef}
                     type="button"
-                    className="details-collection-btn"
+                    className="details-collection-btn magnetic"
                     onClick={() => dispatch(
                       addToCollection(normalizeCollectionItem({ ...data, id })),
                     )}
@@ -277,7 +282,7 @@ const Details = () => {
           </>
         )}
       </div>
-    </div>
+    </PageTransition>
   );
 };
 

@@ -7,10 +7,13 @@ import {
   FiHelpCircle,
   FiShield,
 } from 'react-icons/fi';
+import useMagneticHover from '../../hooks/useMagneticHover';
 import './footer.scss';
 
 /* eslint-disable arrow-body-style */
 const Footer = () => {
+  const backTopRef = useMagneticHover(4);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -53,8 +56,9 @@ const Footer = () => {
         <div className="footer__row footer__row--copyright">
           <p>Cinephile © 2026. Built for modern movie discovery.</p>
           <button
+            ref={backTopRef}
             type="button"
-            className="footer__back-top"
+            className="footer__back-top magnetic"
             onClick={scrollToTop}
             aria-label="Back to top"
           >

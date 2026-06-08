@@ -16,6 +16,7 @@ import MovieCard from '../movieCard/MovieCard';
 import StateBlock from '../ui/StateBlock';
 import SkeletonCards from '../ui/SkeletonCards';
 import Settings from '../../settings';
+import { applyCatalogFilters } from '../../utils/catalogFilters';
 import './contentSection.scss';
 
 const selectors = {
@@ -29,32 +30,30 @@ const selectors = {
   trendingAnime: getTrendingAnime,
 };
 
-const getItemYear = (item) => (
-  item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || ''
-);
-
 /* eslint-disable react/prop-types */
 const ContentSection = ({
-  title, sectionId, type, index = 0, yearFilter, genreFilter, countryFilter,
+  title,
+  sectionId,
+  type,
+  index = 0,
+  yearFilter,
+  genreFilter,
+  countryFilter,
+  languageFilter,
+  sortBy,
+  sortOrder,
 }) => {
   const data = useSelector(selectors[type]);
   const loading = !data || Object.keys(data).length === 0;
   const rawList = (data?.Response === 'True' && data.Search) ? data.Search : [];
-  let list = rawList;
-  if (yearFilter && yearFilter !== 'All') {
-    list = list.filter((item) => getItemYear(item) === yearFilter);
-  }
-  if (genreFilter && genreFilter !== 'All') {
-    const genreIdNum = Number(genreFilter);
-    list = list.filter(
-      (item) => Array.isArray(item.genre_ids) && item.genre_ids.includes(genreIdNum)
-    );
-  }
-  if (countryFilter && countryFilter !== 'All') {
-    list = list.filter(
-      (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFilter)
-    );
-  }
+  const list = applyCatalogFilters(rawList, {
+    year: yearFilter,
+    genre: genreFilter,
+    country: countryFilter,
+    language: languageFilter,
+    sortBy,
+    sortOrder,
+  });
   const error = data?.Response === 'False' ? data.Error : '';
   const isEmpty = list.length === 0;
 
@@ -91,8 +90,9 @@ const ContentSection = ({
       id={sectionId}
       className="content-section"
       initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.08 + index * 0.08 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.45, delay: 0.06 + index * 0.05 }}
     >
       <h2 className="content-section__title">{title}</h2>
       <div className="content-section__slider">{content}</div>

@@ -41,20 +41,25 @@
 
     &:hover,
     &:focus-visible {
-      border-color: rgba(255, 122, 41, 0.6);
-      background: rgba(255, 122, 41, 0.2);
-      transform: translateY(-1px);
+      border-color: rgba(48, 196, 143, 0.6);
+      background: rgba(48, 196, 143, 0.2);
+      transform: translate3d(var(--mx, 0), calc(var(--my, 0) - 1px), 0);
     }
 
     &--saved {
       color: #09101d;
       border-color: transparent;
-      background: linear-gradient(135deg, $color-primary, #ff9f5a);
+      background: linear-gradient(135deg, $color-primary, #8effd7);
+      animation: favoritePulse 380ms $ease-standard;
     }
   }
 
   &:hover {
-    filter: brightness(1.06);
+    filter: brightness(1.05);
+  }
+
+  &:hover .card-top img {
+    transform: scale(1.06);
   }
 }
 
@@ -78,11 +83,23 @@
     object-fit: cover;
   }
 
+  img {
+    transform: scale(1.01);
+    opacity: 0;
+    transition:
+      transform $duration-slow $ease-standard,
+      opacity $duration-slow $ease-standard;
+  }
+
+  .card-poster-image.is-loaded {
+    opacity: 1;
+  }
+
   .card-poster-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(255, 122, 41, 0.18), rgba(92, 124, 255, 0.16));
+    background: linear-gradient(135deg, rgba(48, 196, 143, 0.24), rgba(146, 255, 217, 0.18));
     color: rgba(255, 255, 255, 0.75);
     font-size: 1.45rem;
   }
@@ -120,5 +137,19 @@
     width: 1.6rem;
     height: 1.6rem;
     font-size: 0.72rem;
+  }
+}
+
+@keyframes favoritePulse {
+  0% {
+    transform: scale(0.86);
+  }
+
+  65% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
