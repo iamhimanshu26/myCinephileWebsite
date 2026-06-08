@@ -41,7 +41,12 @@ const PRIORITIES = ['Low', 'Medium', 'High', 'Critical'];
 const STATUSES = ['Saved', 'Under Review', 'Planned', 'In Progress', 'Completed', 'Deferred'];
 const SORT_OPTIONS = ['Latest', 'Oldest', 'Priority', 'Status'];
 
-const PRIORITY_WEIGHT = { Critical: 4, High: 3, Medium: 2, Low: 1 };
+const PRIORITY_WEIGHT = {
+  Critical: 4,
+  High: 3,
+  Medium: 2,
+  Low: 1,
+};
 const STATUS_WEIGHT = {
   'In Progress': 5,
   Planned: 4,
@@ -163,11 +168,16 @@ const AnyIdea = () => {
         <section className="any-idea-hero surface-card">
           <h1 className="page-title">Any Idea?</h1>
           <p className="page-subtitle">
-            Capture new improvement ideas during development and save them for future implementation.
+            Capture new improvement ideas during development and save them
+            {' '}
+            for future implementation.
           </p>
           <p className="any-idea-hero__description">
             Not every good idea is part of the original roadmap. Use this space to capture future
-            improvements, product thoughts, UI changes, technical upgrades, and feature ideas for Cinephile.
+            {' '}
+            improvements, product thoughts, UI changes, technical upgrades,
+            {' '}
+            and feature ideas for Cinephile.
           </p>
         </section>
 
