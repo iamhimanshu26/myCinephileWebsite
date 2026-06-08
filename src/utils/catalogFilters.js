@@ -88,4 +88,3 @@ export const getLanguageFilterCoverage = (list) => {
     unsupportedCount: Math.max(0, list.length - supportedCount),
   };
 };
-

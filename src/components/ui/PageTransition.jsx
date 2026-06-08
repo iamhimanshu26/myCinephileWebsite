@@ -24,4 +24,3 @@ PageTransition.defaultProps = {
 };
 
 export default PageTransition;
-

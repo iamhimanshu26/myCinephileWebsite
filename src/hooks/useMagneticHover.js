@@ -39,4 +39,3 @@ const useMagneticHover = (strength = 8) => {
 };
 
 export default useMagneticHover;
-
