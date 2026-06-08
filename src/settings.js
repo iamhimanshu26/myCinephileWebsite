@@ -1,26 +1,23 @@
 const Settings = {
   dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 10,
-  slidesToScroll: 5,
+  infinite: false,
+  speed: 420,
+  slidesToShow: 7,
+  slidesToScroll: 3,
   responsive: [
     {
-      breakpoint: 1500,
+      breakpoint: 1440,
       settings: {
-        slidesToShow: 8,
+        slidesToShow: 6,
         slidesToScroll: 3,
-        infinite: true,
         dots: false,
       },
     },
     {
-      breakpoint: 1300,
+      breakpoint: 1180,
       settings: {
-        slidesToShow: 6,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: false,
+        slidesToShow: 5,
+        slidesToScroll: 2,
       },
     },
     {
@@ -42,6 +39,7 @@ const Settings = {
       settings: {
         slidesToShow: 2,
         slidesToScroll: 1,
+        dots: true,
       },
     },
   ],

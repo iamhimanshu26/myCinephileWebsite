@@ -8,6 +8,8 @@ import {
   getAllShows,
 } from '../redux/moviesSlice/moviesSlice';
 import MovieCard from '../components/movieCard/MovieCard';
+import SkeletonCards from '../components/ui/SkeletonCards';
+import StateBlock from '../components/ui/StateBlock';
 import './search.scss';
 
 const Search = () => {
@@ -23,26 +25,44 @@ const Search = () => {
     }
   }, [q, dispatch]);
 
-  const renderMovies =
-    movies.Response === 'True' ? (
-      movies.Search.map((movie) => <MovieCard key={movie.imdbID} data={movie} />)
-    ) : (
-      <p className="search-empty">{movies.Error || 'No movies found'}</p>
-    );
+  const isMoviesLoading = q && Object.keys(movies || {}).length === 0;
+  const isShowsLoading = q && Object.keys(shows || {}).length === 0;
 
-  const renderShows =
-    shows.Response === 'True' ? (
-      shows.Search.map((show) => <MovieCard key={show.imdbID} data={show} />)
-    ) : (
-      <p className="search-empty">{shows.Error || 'No series found'}</p>
+  let renderMovies = movies.Response === 'True'
+    ? movies.Search.map((movie) => <MovieCard key={movie.imdbID} data={movie} />)
+    : (
+      <StateBlock
+        variant={movies.Error ? 'error' : 'empty'}
+        title={movies.Error ? 'Movies could not be loaded' : 'No movies found'}
+        description={movies.Error || 'Try searching with a different keyword.'}
+        compact
+      />
     );
+  if (isMoviesLoading) {
+    renderMovies = <SkeletonCards count={8} />;
+  }
+
+  let renderShows = shows.Response === 'True'
+    ? shows.Search.map((show) => <MovieCard key={show.imdbID} data={show} />)
+    : (
+      <StateBlock
+        variant={shows.Error ? 'error' : 'empty'}
+        title={shows.Error ? 'Series could not be loaded' : 'No series found'}
+        description={shows.Error || 'Try searching with a different keyword.'}
+        compact
+      />
+    );
+  if (isShowsLoading) {
+    renderShows = <SkeletonCards count={8} />;
+  }
 
   return (
-    <div className="search-page">
-      <div className="search-page-header">
-        <h1>
+    <div className="search-page page-shell">
+      <div className="search-page-header page-header">
+        <h1 className="page-title">
           {q ? `Results for “${q}”` : 'Search movies & series'}
         </h1>
+        <p className="page-subtitle">Search across movies and TV series powered by OMDb.</p>
       </div>
       {q ? (
         <div className="search-results">
@@ -56,7 +76,11 @@ const Search = () => {
           </section>
         </div>
       ) : (
-        <p className="search-hint">Use the search bar above to find movies and series.</p>
+        <StateBlock
+          title="Start your search"
+          description="Use the search bar in the header to find movies and series."
+          compact
+        />
       )}
     </div>
   );

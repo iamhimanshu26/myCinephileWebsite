@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import {
+  FiBookmark, FiCalendar, FiClock, FiExternalLink, FiSearch, FiStar, FiThumbsUp,
+} from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchAsyncMoviesOrShowsDetails,
@@ -26,6 +29,7 @@ import {
   isInCollection,
 } from '../redux/collectionSlice/collectionSlice';
 import { isAdultContent } from '../utils/contentFilter';
+import StateBlock from '../components/ui/StateBlock';
 import './details.scss';
 
 const Details = () => {
@@ -123,21 +127,29 @@ const Details = () => {
   };
 
   return (
-    <div>
+    <div className="details-page page-shell">
       <div className="back-container">
-        <Link to="/" className="back-btn">
+        <Link to="/" className="details-back-btn">
           <IoMdArrowRoundBack />
+          <span>Back to home</span>
         </Link>
       </div>
       <div className="movie-section">
         {Object.keys(data).length === 0 && (
-          <div className="details-loading">Loading...</div>
+          <StateBlock
+            variant="loading"
+            title="Loading title details"
+            description="Fetching cast, ratings, and streaming providers."
+          />
         )}
         {Object.keys(data).length > 0 && isAdultContent(data) && (
-          <div className="details-unavailable">
-            <p>This content is not displayed to keep the site family-friendly.</p>
-            <Link to="/">Back to home</Link>
-          </div>
+          <StateBlock
+            variant="empty"
+            title="This title is hidden"
+            description="This content is not displayed to keep the platform family-friendly."
+            actionLabel="Back to home"
+            actionTo="/"
+          />
         )}
         {Object.keys(data).length > 0 && !isAdultContent(data) && (
           <>
@@ -150,7 +162,7 @@ const Details = () => {
                     className="details-collection-btn details-collection-btn--remove"
                     onClick={() => dispatch(removeFromCollection(id))}
                   >
-                    <i className="fa fa-bookmark" />
+                    <FiBookmark />
                     Remove from collection
                   </button>
                 ) : (
@@ -161,7 +173,7 @@ const Details = () => {
                       addToCollection(normalizeCollectionItem({ ...data, id })),
                     )}
                   >
-                    <i className="fa fa-bookmark-o" />
+                    <FiBookmark />
                     Add to collection
                   </button>
                 )}
@@ -169,7 +181,7 @@ const Details = () => {
               <div className="movie-rating">
                 <span>
                   IMDB Rating
-                  <i className="fa fa-star" />
+                  <FiStar />
                   {' '}
                   :
                   {' '}
@@ -177,7 +189,7 @@ const Details = () => {
                 </span>
                 <span>
                   IMDB Votes
-                  <i className="fa fa-thumbs-up" />
+                  <FiThumbsUp />
                   {' '}
                   :
                   {' '}
@@ -185,7 +197,7 @@ const Details = () => {
                 </span>
                 <span>
                   Runtime
-                  <i className="fa fa-film" />
+                  <FiClock />
                   {' '}
                   :
                   {' '}
@@ -193,7 +205,7 @@ const Details = () => {
                 </span>
                 <span>
                   Year
-                  <i className="fa fa-calendar" />
+                  <FiCalendar />
                   {' '}
                   :
                   {' '}
@@ -240,7 +252,7 @@ const Details = () => {
                           rel="noopener noreferrer"
                           className="details-watch-link"
                         >
-                          <i className="fa fa-external-link" />
+                          <FiExternalLink />
                           Watch / find streaming options on TMDb
                         </a>
                       ) : (
@@ -250,7 +262,7 @@ const Details = () => {
                           rel="noopener noreferrer"
                           className="details-watch-link"
                         >
-                          <i className="fa fa-search" />
+                          <FiSearch />
                           Search for this title on TMDb
                         </a>
                       );

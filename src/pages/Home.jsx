@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import { FiFolder, FiPlayCircle } from 'react-icons/fi';
 import {
   fetchRecentMovies,
   fetchRecentShows,
@@ -25,6 +26,7 @@ import { hasTraktKey } from '../api/traktApi';
 import { GENRE_OPTIONS, COUNTRY_OPTIONS } from '../constants/filters';
 import MovieCard from '../components/movieCard/MovieCard';
 import ContentSection from '../components/contentSection/ContentSection';
+import StateBlock from '../components/ui/StateBlock';
 import './home.scss';
 
 const toList = (data) => {
@@ -36,6 +38,14 @@ const currentYear = new Date().getFullYear();
 const YEARS = ['All', ...Array.from({ length: 12 }, (_, i) => String(currentYear - i))];
 const SORT_OPTIONS = ['Release Date', 'Title', 'Rating'];
 const SORT_ORDER = ['Descending', 'Ascending'];
+
+const matchesLanguage = (item, language) => {
+  if (language === 'All') return true;
+  const source = `${item.Language || ''} ${item.language || ''} ${item.original_language || ''}`.toLowerCase();
+  if (language === 'en') return source.includes('english') || source.includes('en');
+  if (language === 'ja') return source.includes('japanese') || source.includes('ja');
+  return true;
+};
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -114,9 +124,11 @@ const Home = () => {
         (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFromUrl)
       );
     }
+    list = list.filter((item) => matchesLanguage(item, language));
 
     const getYear = (item) => item.Year || item.release_date?.slice(0, 4) || item.first_air_date?.slice(0, 4) || '';
     const getTitle = (item) => (item.Title || item.title || item.name || '').toLowerCase();
+    const getRating = (item) => Number.parseFloat(item.imdbRating || item.vote_average || 0) || 0;
 
     if (sortBy === 'Release Date') {
       list.sort((a, b) => {
@@ -131,6 +143,12 @@ const Home = () => {
         const tb = getTitle(b);
         return sortOrder === 'Descending' ? tb.localeCompare(ta) : ta.localeCompare(tb);
       });
+    } else if (sortBy === 'Rating') {
+      list.sort((a, b) => {
+        const ra = getRating(a);
+        const rb = getRating(b);
+        return sortOrder === 'Descending' ? rb - ra : ra - rb;
+      });
     }
 
     return list;
@@ -139,6 +157,7 @@ const Home = () => {
     yearFromUrl,
     genreFromUrl,
     countryFromUrl,
+    language,
     sortBy,
     sortOrder,
     hasTrakt,
@@ -187,12 +206,14 @@ const Home = () => {
         (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFromUrl)
       );
     }
+    items = items.filter((item) => matchesLanguage(item, language));
     return items.slice(0, 15);
   }, [
     trendingTab,
     yearFromUrl,
     genreFromUrl,
     countryFromUrl,
+    language,
     moviesList,
     showsList,
     trendingMoviesList,
@@ -203,13 +224,20 @@ const Home = () => {
 
   return (
     <motion.main
-      className="home"
+      className="home page-shell"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <div className="home__content">
-        <h1 className="home__title">Cinephile — Watch Movies Online Free</h1>
+        <div className="page-header home__header">
+          <h1 className="page-title home__title">Cinephile</h1>
+          <p className="page-subtitle">
+            Explore recently released, trending, and curated titles
+            {' '}
+            with one consistent discovery experience.
+          </p>
+        </div>
 
         <div className="home__filters">
           <div className="home__filter-group">
@@ -310,13 +338,17 @@ const Home = () => {
         <div className="home__main-layout">
           <section className="home__grid-section" id="browse">
             <h2 className="home__section-title">
-              <i className="bx bx-folder" />
-              <i className="bx bx-play-circle" />
+              <FiFolder />
+              <FiPlayCircle />
               Cinephile Top Movies
             </h2>
             <div className="home__movie-grid">
               {combinedForGrid.length === 0 ? (
-                <p className="home__empty">Nothing to show yet. Try changing filters or search above.</p>
+                <StateBlock
+                  title="No matches for current filters"
+                  description="Try changing genre, country, year, or language filters."
+                  compact
+                />
               ) : (
                 combinedForGrid.map((item) => (
                   <MovieCard key={item.imdbID || item.id} data={item} />
@@ -343,7 +375,13 @@ const Home = () => {
             </div>
             <ul className="home__sidebar-list">
               {trendingSidebarList.length === 0 ? (
-                <li className="home__sidebar-empty">No trending items yet.</li>
+                <li className="home__sidebar-empty">
+                  <StateBlock
+                    title="No trending items"
+                    description="Trending lists will appear when provider data is available."
+                    compact
+                  />
+                </li>
               ) : (
                 trendingSidebarList.map((item) => {
                   const id = item.imdbID || item.id;

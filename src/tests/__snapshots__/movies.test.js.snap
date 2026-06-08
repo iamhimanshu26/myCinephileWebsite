@@ -8,19 +8,52 @@ exports[`renders correctly 1`] = `
     <form
       onSubmit={[Function]}
     >
-      <input
-        onChange={[Function]}
-        placeholder="search movies"
-        type="text"
-        value=""
-      />
-      <button
-        type="submit"
+      <div
+        className="form-group"
       >
-        <i
-          className="fa fa-search"
+        <input
+          aria-label="Search Movies and Shows"
+          id="movie-search"
+          name="movie-search"
+          onChange={[Function]}
+          placeholder="Movies and Shows"
+          type="text"
+          value=""
         />
-      </button>
+        <button
+          aria-label="Search"
+          type="submit"
+        >
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            style={
+              Object {
+                "color": undefined,
+              }
+            }
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="11"
+              cy="11"
+              r="8"
+            />
+            <line
+              x1="21"
+              x2="16.65"
+              y1="21"
+              y2="16.65"
+            />
+          </svg>
+        </button>
+      </div>
     </form>
   </div>
   <div
@@ -81,34 +114,7 @@ exports[`renders correctly 1`] = `
                     }
                     tabIndex={-1}
                   >
-                    <h3 />
-                  </div>
-                </div>
-              </div>
-              <div
-                aria-hidden={false}
-                className="slick-slide slick-active slick-cloned"
-                data-index={1}
-                onClick={[Function]}
-                style={
-                  Object {
-                    "width": 0,
-                  }
-                }
-                tabIndex="-1"
-              >
-                <div>
-                  <div
-                    className="movies-error"
-                    style={
-                      Object {
-                        "display": "inline-block",
-                        "width": "100%",
-                      }
-                    }
-                    tabIndex={-1}
-                  >
-                    <h3 />
+                    No movies found
                   </div>
                 </div>
               </div>
@@ -172,34 +178,7 @@ exports[`renders correctly 1`] = `
                     }
                     tabIndex={-1}
                   >
-                    <h3 />
-                  </div>
-                </div>
-              </div>
-              <div
-                aria-hidden={false}
-                className="slick-slide slick-active slick-cloned"
-                data-index={1}
-                onClick={[Function]}
-                style={
-                  Object {
-                    "width": 0,
-                  }
-                }
-                tabIndex="-1"
-              >
-                <div>
-                  <div
-                    className="shows-error"
-                    style={
-                      Object {
-                        "display": "inline-block",
-                        "width": "100%",
-                      }
-                    }
-                    tabIndex={-1}
-                  >
-                    <h3 />
+                    No shows found
                   </div>
                 </div>
               </div>

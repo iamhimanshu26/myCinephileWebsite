@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
+import { FiBookmark, FiCheck, FiFilm } from 'react-icons/fi';
 import {
   addToCollection,
   normalizeCollectionItem,
   isInCollection,
+  removeFromCollection,
 } from '../../redux/collectionSlice/collectionSlice';
 import './movieCard.scss';
 
@@ -28,9 +30,8 @@ const MovieCard = (props) => {
   const handleCollectionClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!inCollection) {
-      dispatch(addToCollection(normalizeCollectionItem(data)));
-    }
+    if (inCollection) dispatch(removeFromCollection(itemId));
+    else dispatch(addToCollection(normalizeCollectionItem(data)));
   };
 
   const cardContent = (
@@ -38,12 +39,13 @@ const MovieCard = (props) => {
       <div className="card-top">
         {usePlaceholder ? (
           <div className="card-poster-placeholder" aria-hidden>
-            <i className="fa fa-film" />
+            <FiFilm />
           </div>
         ) : (
           <img
             src={posterUrl}
             alt={data.Title || data.title || data.name || 'Poster'}
+            loading="lazy"
             onError={() => setImgError(true)}
           />
         )}
@@ -76,10 +78,10 @@ const MovieCard = (props) => {
           type="button"
           className={`movie-card__collection-btn ${inCollection ? 'movie-card__collection-btn--saved' : ''}`}
           onClick={handleCollectionClick}
-          aria-label={inCollection ? 'In collection' : 'Add to collection'}
-          title={inCollection ? 'In collection' : 'Add to collection'}
+          aria-label={inCollection ? 'Remove from collection' : 'Add to collection'}
+          title={inCollection ? 'Remove from collection' : 'Add to collection'}
         >
-          <i className={`fa ${inCollection ? 'fa-bookmark' : 'fa-bookmark-o'}`} aria-hidden />
+          {inCollection ? <FiCheck aria-hidden /> : <FiBookmark aria-hidden />}
         </button>
       )}
       {isExternal ? (

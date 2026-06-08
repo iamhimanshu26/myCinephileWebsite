@@ -2,42 +2,43 @@
 @use '../sass/' as *;
 
 .person-page {
-  padding: 5rem 1rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
+  width: min(100% - 2rem, 1200px);
+  margin-inline: auto;
 }
 
-.back-btn {
+.person-back-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: $main-color;
-  font-size: 1rem;
+  gap: $space-2;
+  color: $color-text-secondary;
+  font-size: $text-sm;
   font-weight: 600;
-  margin-bottom: 1.5rem;
-  cursor: pointer;
+  margin-bottom: $space-5;
 
   &:hover {
-    color: $txt-color;
+    color: $color-text-primary;
   }
 }
 
 .person-loading {
-  color: $txt-color;
+  color: $color-text-primary;
   text-align: center;
-  padding: 3rem;
+  padding: $space-10;
 }
 
 .person-hero {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: $space-8;
+  margin-bottom: $space-8;
+  padding: $space-6;
+  border-radius: $radius-lg;
+  border: 1px solid $color-border;
+  background: rgba(18, 25, 37, 0.88);
+  box-shadow: $shadow-md;
 
-  @include mobile {
-    flex-direction: column;
-    align-items: center;
+  @include tablet {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -45,18 +46,28 @@
   flex-shrink: 0;
 
   img {
-    width: 200px;
-    height: 300px;
+    width: 220px;
+    height: 330px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: $radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: $shadow-sm;
   }
 }
 
 .person-poster-placeholder {
-  width: 200px;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  width: 220px;
+  height: 330px;
+  border-radius: $radius-lg;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.06)
+    );
+  background-size: 420px 100%;
+  animation: shimmer 1.4s infinite linear;
 }
 
 .person-info {
@@ -64,58 +75,62 @@
   min-width: 0;
 
   h1 {
-    font-size: 2rem;
-    color: $txt-color;
-    margin-bottom: 0.5rem;
+    font-size: clamp(1.65rem, 2.3vw, $text-h1);
+    color: $color-text-primary;
+    margin-bottom: $space-2;
   }
 
   .meta {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
+    color: $color-text-secondary;
+    font-size: $text-sm;
+    margin-bottom: $space-1;
   }
 
   .person-bio {
-    margin-top: 1rem;
+    margin-top: $space-5;
 
     h3 {
-      font-size: 1rem;
-      color: $main-color;
-      margin-bottom: 0.5rem;
+      font-size: $text-h4;
+      color: $color-text-primary;
+      margin-bottom: $space-2;
     }
 
     p {
-      color: $txt-color;
-      line-height: 1.6;
-      font-size: 0.95rem;
+      color: $color-text-secondary;
+      line-height: 1.7;
+      font-size: $text-sm;
     }
   }
 }
 
 .person-filmography {
-  margin-top: 2rem;
+  margin-top: $space-8;
 
   h2 {
-    color: $main-color;
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    color: $color-text-primary;
+    font-size: $text-h3;
+    margin-bottom: $space-4;
   }
 }
 
 .filmography-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: $space-4;
 }
 
 .filmography-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  border-radius: $radius-md;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
   overflow: hidden;
-  transition: transform 0.2s;
+  transition:
+    transform $duration-base $ease-standard,
+    border-color $duration-base $ease-standard;
 
   &:hover {
-    transform: scale(1.03);
+    transform: translateY(-2px);
+    border-color: rgba(255, 122, 41, 0.45);
   }
 
   img {
@@ -127,18 +142,26 @@
   .poster-placeholder {
     width: 100%;
     aspect-ratio: 2/3;
-    background: rgba(255, 255, 255, 0.1);
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.06)
+      );
+    background-size: 420px 100%;
+    animation: shimmer 1.4s infinite linear;
   }
 
   .filmography-info {
-    padding: 0.5rem;
+    padding: $space-3;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: $space-1;
 
     .title {
-      font-size: 0.85rem;
-      color: $txt-color;
+      font-size: $text-sm;
+      color: $color-text-primary;
       font-weight: 600;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -147,8 +170,30 @@
     }
 
     .year, .type {
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.6);
+      font-size: $text-xs;
+      color: $color-text-muted;
     }
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .person-page {
+    width: min(100% - 1rem, 1200px);
+  }
+
+  .person-hero {
+    padding: $space-4;
+    gap: $space-5;
+  }
+
+  .person-poster img,
+  .person-poster-placeholder {
+    width: 180px;
+    height: 270px;
+  }
+
+  .filmography-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-3;
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { useDispatch, useSelector } from 'react-redux';
+import { FiSearch } from 'react-icons/fi';
 import {
   getAllMovies,
   getAllShows,
@@ -72,7 +73,7 @@ const MovieList = () => {
               aria-label="Search Movies and Shows"
             />
             <button type="submit" aria-label="Search">
-              <i className="fa fa-search" />
+              <FiSearch />
             </button>
           </div>
         </form>

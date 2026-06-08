@@ -94,8 +94,10 @@ const toSearchItem = (r) => ({
   title: r.title || r.name,
   name: r.name || r.title,
   Year: (r.release_date || r.first_air_date || '').slice(0, 4),
+  imdbRating: typeof r.vote_average === 'number' ? String(r.vote_average.toFixed(1)) : '',
   release_date: r.release_date,
   first_air_date: r.first_air_date,
+  original_language: r.original_language,
   poster_path: r.poster_path,
   Poster: r.poster_path
     ? `https://image.tmdb.org/t/p/w300${r.poster_path}`

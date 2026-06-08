@@ -3,123 +3,159 @@
 
 .footer {
   position: relative;
-  padding: 1rem 1rem 0.75rem;
-  background: #e4e2df;
-  margin-top: 2rem;
+  margin-top: $space-12;
+  padding: $space-8 0 $space-6;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(18, 25, 37, 0.96), rgba(13, 17, 23, 0.96));
   overflow: hidden;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .footer__overlay {
   position: absolute;
   inset: 0;
-  background: transparent;
+  background: radial-gradient(circle at center top, rgba(255, 122, 41, 0.1), transparent 58%);
   pointer-events: none;
 }
 
 .footer__content {
   position: relative;
   z-index: 1;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
 .footer__row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem 1.5rem;
+  display: grid;
+  gap: $space-4;
 
   &--main {
-    justify-content: center;
-    align-items: flex-end;
-    gap: 1.5rem 2rem;
-
-    @include mobile {
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-    }
+    grid-template-columns: 2fr 1fr 1fr 1.3fr;
+    align-items: start;
   }
 
   &--copyright {
-    justify-content: center;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    margin-top: $space-6;
+    padding-top: $space-4;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    grid-template-columns: 1fr auto;
+    align-items: center;
   }
 }
 
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
 .footer__logo-link {
-  font-size: $text-base;
-  font-weight: 700;
-  color: $txt-color;
-  transition: color 0.25s ease;
+  font-size: $text-h3;
+  font-weight: 800;
+  color: $color-text-primary;
+  transition: color $duration-base $ease-standard;
 
   &:hover {
-    color: $main-color;
+    color: $color-primary;
   }
+}
+
+.footer__tagline {
+  max-width: 32ch;
+  color: $color-text-secondary;
+  font-size: $text-sm;
+  line-height: 1.55;
 }
 
 .footer__nav {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-2;
 }
 
 .footer__menu-label {
-  font-size: $text-xs;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $text-sm;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: $main-color;
-  margin-right: 0.25rem;
+  color: $color-primary;
 }
 
 .footer__link {
   font-size: $text-sm;
   font-weight: 500;
-  color: $txt-color;
-  opacity: 0.85;
-  padding: 0.15rem 0;
-  transition: color 0.2s ease, opacity 0.2s ease;
+  color: $color-text-secondary;
+  transition: color $duration-base $ease-standard, transform $duration-base $ease-standard;
 
   &:hover {
-    color: $main-color;
-    opacity: 1;
-
-    @include mobile {
-      transform: none;
-    }
+    color: $color-text-primary;
+    transform: translateX(2px);
   }
 }
 
-.footer__row--copyright {
-  p {
-    font-size: $text-xs;
-    color: rgba(26, 26, 26, 0.65);
-    margin: 0;
-  }
+.footer__meta {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.footer__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $text-sm;
+  color: $color-text-secondary;
+}
+
+.footer__row--copyright p {
+  font-size: $text-sm;
+  color: $color-text-muted;
+  margin: 0;
 }
 
 .footer__back-top {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  background: rgba(196, 92, 38, 0.15);
-  border: 1px solid $main-color;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: rgba(255, 122, 41, 0.12);
+  border: 1px solid rgba(255, 122, 41, 0.45);
   border-radius: 50%;
-  color: $main-color;
+  color: $color-primary;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color $duration-base $ease-standard,
+    color $duration-base $ease-standard,
+    transform $duration-base $ease-standard;
 
-  &:hover {
-    background: $main-color;
-    color: #fff;
+  &:hover,
+  &:focus-visible {
+    background: $color-primary;
+    color: #09101d;
     transform: translateY(-2px);
+  }
+}
+
+@media (max-width: $tablet-width) {
+  .footer__row--main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .footer {
+    margin-top: $space-10;
+    padding: $space-6 0 $space-5;
+  }
+
+  .footer__row--main {
+    grid-template-columns: 1fr;
+  }
+
+  .footer__row--copyright {
+    grid-template-columns: 1fr;
+    justify-items: start;
   }
 }

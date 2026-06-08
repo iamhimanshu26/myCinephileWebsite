@@ -2,63 +2,23 @@
 @use '../sass/' as *;
 
 .collection-page {
-  padding: 5rem 1rem 1.5rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: 80vh;
-  animation: pageFadeIn 0.4s ease;
-}
-
-@keyframes pageFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  width: min(100% - 2rem, 1400px);
+  margin-inline: auto;
 }
 
 .collection-page-header {
-  margin-bottom: 1rem;
-
-  h1 {
-    font-size: $text-xl;
-    color: $txt-color;
-    font-weight: 600;
-  }
+  margin-bottom: $space-6;
 }
 
 .collection-page-sub {
   font-size: $text-sm;
-  color: rgba(26, 26, 26, 0.7);
-  margin: 0.25rem 0 0;
-}
-
-.collection-empty {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: rgba(26, 26, 26, 0.6);
-
-  i {
-    font-size: 3rem;
-    color: $main-color;
-    opacity: 0.6;
-    margin-bottom: 0.75rem;
-    display: block;
-  }
-
-  p {
-    font-size: $text-sm;
-    max-width: 320px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
+  color: $color-text-secondary;
 }
 
 .collection-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: $space-4;
 }
 
 .collection-card-wrap {
@@ -66,26 +26,42 @@
 
   .collection-remove {
     position: absolute;
-    top: 0.25rem;
-    right: 0.25rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    top: $space-2;
+    right: $space-2;
+    width: 1.75rem;
+    height: 1.75rem;
     padding: 0;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.65);
-    color: #fff;
+    background: rgba(18, 25, 37, 0.85);
+    color: $color-text-primary;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     z-index: 2;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition:
+      background-color $duration-base $ease-standard,
+      border-color $duration-base $ease-standard,
+      transform $duration-base $ease-standard;
 
-    &:hover {
-      background: #c45c26;
-      transform: scale(1.1);
+    &:hover,
+    &:focus-visible {
+      border-color: rgba(196, 50, 57, 0.7);
+      background: rgba(196, 50, 57, 0.2);
+      transform: translateY(-1px);
     }
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .collection-page {
+    width: min(100% - 1rem, 1400px);
+  }
+
+  .collection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-3;
   }
 }

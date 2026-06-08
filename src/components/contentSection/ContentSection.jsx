@@ -13,6 +13,8 @@ import {
   getTrendingAnime,
 } from '../../redux/moviesSlice/moviesSlice';
 import MovieCard from '../movieCard/MovieCard';
+import StateBlock from '../ui/StateBlock';
+import SkeletonCards from '../ui/SkeletonCards';
 import Settings from '../../settings';
 import './contentSection.scss';
 
@@ -36,6 +38,7 @@ const ContentSection = ({
   title, sectionId, type, index = 0, yearFilter, genreFilter, countryFilter,
 }) => {
   const data = useSelector(selectors[type]);
+  const loading = !data || Object.keys(data).length === 0;
   const rawList = (data?.Response === 'True' && data.Search) ? data.Search : [];
   let list = rawList;
   if (yearFilter && yearFilter !== 'All') {
@@ -52,14 +55,10 @@ const ContentSection = ({
       (item) => Array.isArray(item.origin_country) && item.origin_country.includes(countryFilter)
     );
   }
-  const error = data?.Error;
+  const error = data?.Response === 'False' ? data.Error : '';
   const isEmpty = list.length === 0;
 
-  const content = isEmpty ? (
-    <p className="content-section-empty">
-      {error || 'Nothing to show yet. Try searching above.'}
-    </p>
-  ) : (
+  let content = (
     <Slider
       dots={Settings.dots}
       infinite={Settings.infinite}
@@ -73,6 +72,19 @@ const ContentSection = ({
       ))}
     </Slider>
   );
+
+  if (loading) {
+    content = <SkeletonCards count={8} compact />;
+  } else if (isEmpty) {
+    content = (
+      <StateBlock
+        variant={error ? 'error' : 'empty'}
+        title={error ? 'Could not load this section' : 'No titles available yet'}
+        description={error || 'Try another filter or refresh the page.'}
+        compact
+      />
+    );
+  }
 
   return (
     <motion.section

@@ -1,0 +1,73 @@
+@use '../../sass/' as *;
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--color-text-secondary);
+
+  &--compact {
+    padding: var(--space-6) var(--space-3);
+  }
+
+  &__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.625rem;
+    height: 2.625rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  &__icon {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+  }
+
+  &__icon--spin {
+    animation: spin 900ms linear infinite;
+  }
+
+  &__title {
+    font-size: var(--font-h4);
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  &__description {
+    max-width: 34rem;
+    font-size: var(--font-caption);
+    color: var(--color-text-secondary);
+  }
+
+  &__action {
+    margin-top: var(--space-2);
+  }
+
+  &--error {
+    border-color: rgba(196, 50, 57, 0.5);
+
+    .state-block__icon {
+      color: var(--color-error);
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

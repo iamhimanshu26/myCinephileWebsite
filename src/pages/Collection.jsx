@@ -1,7 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FiX } from 'react-icons/fi';
 import { getCollectionItems, removeFromCollection } from '../redux/collectionSlice/collectionSlice';
 import MovieCard from '../components/movieCard/MovieCard';
+import StateBlock from '../components/ui/StateBlock';
 import './collection.scss';
 
 const Collection = () => {
@@ -17,20 +19,22 @@ const Collection = () => {
   });
 
   return (
-    <div className="collection-page">
-      <div className="collection-page-header">
-        <h1>My Collection</h1>
-        <p className="collection-page-sub">
+    <div className="collection-page page-shell">
+      <div className="collection-page-header page-header">
+        <h1 className="page-title">My Collection</h1>
+        <p className="collection-page-sub page-subtitle">
           {items.length === 0
             ? 'Save movies and series here to find them quickly.'
             : `${items.length} item${items.length === 1 ? '' : 's'} saved`}
         </p>
       </div>
       {items.length === 0 ? (
-        <div className="collection-empty">
-          <i className="fa fa-bookmark-o" aria-hidden />
-          <p>No items yet. Add movies or series from the home page, search, or detail pages.</p>
-        </div>
+        <StateBlock
+          title="Your collection is empty"
+          description="Save movies and series from Home, Search, or Details to build your watchlist."
+          actionLabel="Discover titles"
+          actionTo="/"
+        />
       ) : (
         <div className="collection-grid">
           {items.map((item) => (
@@ -43,7 +47,7 @@ const Collection = () => {
                 aria-label={`Remove ${item.title} from collection`}
                 title="Remove from collection"
               >
-                <i className="fa fa-times" />
+                <FiX />
               </button>
             </div>
           ))}

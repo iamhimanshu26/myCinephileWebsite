@@ -10,7 +10,9 @@ import {
   getPersonMovieCredits,
   getPersonTvCredits,
   clearPerson,
+  hasTMDbKey,
 } from '../redux/tmdbSlice/tmdbSlice';
+import StateBlock from '../components/ui/StateBlock';
 import './person.scss';
 
 const IMAGE_BASE = 'https://image.tmdb.org/t/p/w300';
@@ -21,6 +23,7 @@ const Person = () => {
   const person = useSelector(getPersonDetails);
   const movieCredits = useSelector(getPersonMovieCredits);
   const tvCredits = useSelector(getPersonTvCredits);
+  const tmdbAvailable = hasTMDbKey();
 
   useEffect(() => {
     dispatch(clearPerson());
@@ -31,13 +34,32 @@ const Person = () => {
     }
   }, [dispatch, personId]);
 
+  if (!tmdbAvailable) {
+    return (
+      <div className="person-page page-shell">
+        <StateBlock
+          variant="error"
+          title="TMDb key required"
+          description="Person profiles require a TMDb API key. Add REACT_APP_TMDB_KEY to enable this page."
+          actionLabel="Back to Home"
+          actionTo="/"
+        />
+      </div>
+    );
+  }
+
   if (!person || !person.id) {
     return (
-      <div className="person-page">
-        <Link to="/" className="back-btn">
+      <div className="person-page page-shell">
+        <Link to="/" className="person-back-btn">
           <IoMdArrowRoundBack /> Back
         </Link>
-        <div className="person-loading">Loading...</div>
+        <StateBlock
+          variant="loading"
+          title="Loading person profile"
+          description="Fetching biography and filmography details."
+          compact
+        />
       </div>
     );
   }
@@ -47,8 +69,8 @@ const Person = () => {
   const combined = [...movies.slice(0, 12), ...shows.slice(0, 12)];
 
   return (
-    <div className="person-page">
-      <Link to="/" className="back-btn">
+    <div className="person-page page-shell">
+      <Link to="/" className="person-back-btn">
         <IoMdArrowRoundBack /> Back
       </Link>
       <div className="person-hero">

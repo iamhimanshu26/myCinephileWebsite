@@ -1,128 +1,118 @@
 /* stylelint-disable at-rule-no-unknown */
-@import '../../sass/';
+@use '../../sass/' as *;
 
 .movie-wrapper {
-  padding: 30px;
-  margin-top: 60px;
+  padding: $space-8;
+  margin-top: calc(#{$header-height} + #{$space-4});
 }
 
 .search-bar {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 20px auto;
-  padding: 0 20px;
+  margin: $space-4 auto;
+  padding: 0 $space-4;
 
   form {
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 800px;
+    max-width: 52rem;
 
     .form-group {
       display: flex;
       width: 100%;
+      gap: $space-2;
     }
 
     input {
-      font-size: 18px;
+      font-size: $text-sm;
       flex: 4;
-      padding: 5px 10px;
-      height: 38px;
-      outline: none;
-      border: none;
-      border-radius: 10px;
-      background: #272727;
-      color: $txt-color;
+      min-height: 2.5rem;
+      padding: 0 $space-3;
+      border: 1px solid $color-border;
+      border-radius: $radius-pill;
+      background: $color-surface;
+      color: $color-text-primary;
     }
 
     button {
-      flex: 1;
-      padding: 0 8px;
-      font-size: 20px;
+      width: 2.5rem;
+      flex-shrink: 0;
       cursor: pointer;
-      height: 35px;
-      border: none;
-      background: #FF9933;
-      outline: none;
-      border-radius: 8px;
-      margin-left: 8px;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, $color-primary, #ff9d56);
+      border-radius: 50%;
+      color: #09101d;
     }
   }
 }
 
 .movie-list,
 .shows-list {
-  margin: 20px 0;
+  margin: $space-6 0;
 
   h2 {
-    color: #FF9933;
-    margin-bottom: 10px;
-    font-size: 16px;
+    color: $color-text-primary;
+    margin-bottom: $space-2;
+    font-size: $text-h4;
     font-weight: 700;
-    text-transform: uppercase;
   }
 }
 
-// Styles specifically for the slider container
 .movie-container {
-  margin: 0 -10px;
-  
+  margin: 0 -$space-2;
+
   .slick-slide {
-    padding: 0 10px;
+    padding: 0 $space-2;
   }
-  
-  // Make sure cards are visible
+
   .slick-track {
     display: flex;
-    
-    // This ensures cards have equal height
+
     .slick-slide {
       height: auto;
-      
+
       & > div {
         height: 100%;
       }
     }
   }
-  
-  // Style the arrow buttons
+
   .slick-arrow {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(18, 25, 37, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 50%;
     z-index: 1;
-    
+
     &:hover, &:focus {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(255, 122, 41, 0.18);
     }
-    
+
     &::before {
-      color: #FF9933;
+      color: $color-primary;
     }
   }
-  
-  // Adjust prev arrow position
+
   .slick-prev {
-    left: 10px;
+    left: $space-2;
   }
-  
-  // Adjust next arrow position
+
   .slick-next {
-    right: 10px;
+    right: $space-2;
   }
 }
 
-// Responsive adjustments
 @include mobile {
   .search-bar {
     form {
       max-width: 100%;
     }
   }
-  
+
   .movie-container {
     .slick-arrow {
-      display: none !important;
+      display: none !important; /* stylelint-disable-line declaration-no-important */
     }
   }
 }
