@@ -72,9 +72,14 @@ const ARCHITECTURE_LAYERS = [
     icon: <FiServer />,
   },
   {
-    title: 'Recommendation Layer',
-    text: 'Any Idea assistant uses fallback logic now, future Gemini/OpenAI later.',
+    title: 'Development Idea Tracking Layer',
+    text: 'Any Idea stores, filters, sorts, edits, and manages internal product ideas with localStorage now and future database persistence later.',
     icon: <FiTarget />,
+  },
+  {
+    title: 'Future Recommendation Layer',
+    text: 'AI-powered recommendation logic is planned as a separate module (Gemini/OpenAI), independent from Any Idea.',
+    icon: <FiActivity />,
   },
   {
     title: 'Booking Layer',
@@ -139,11 +144,11 @@ const PHASES = [
     status: 'Future',
   },
   {
-    name: 'Phase 7 — Any Idea Assistant',
-    problem: 'Users need suggestion help when they are unsure what to watch.',
-    solution: 'Planned prompt-based assistant with mood/context matching and fallbacks.',
-    result: 'Recommendation assistant logic model prepared.',
-    status: 'In Progress',
+    name: 'Phase 7 — Any Idea Development Tracker',
+    problem: 'Strong product and UI improvement ideas appear during development and get lost.',
+    solution: 'Created a development-focused idea tracker to save unplanned product improvements, UI ideas, technical enhancements, and future feature suggestions during the project lifecycle.',
+    result: 'Lightweight internal backlog is available inside Cinephile for structured follow-up.',
+    status: 'Completed',
   },
   {
     name: 'Phase 8 — Performance & Accessibility',
@@ -169,7 +174,7 @@ const ROADMAP_SECTIONS = [
       'Improved navigation',
       'Working discovery filters',
       'Watchlist/favorites foundation',
-      'Any Idea recommendation assistant',
+      'Any Idea development backlog',
       'How We Built It case-study page',
     ],
   },
@@ -198,7 +203,7 @@ const ROADMAP_SECTIONS = [
   {
     title: 'Future',
     items: [
-      'Gemini/OpenAI recommendations',
+      'Gemini/OpenAI recommendation module',
       'Streaming availability',
       'Social features',
       'Mobile app',
@@ -214,7 +219,7 @@ const DISCOVERY_STEPS = [
   { title: 'Open movie details', description: 'Checks metadata, context, and watch options.' },
   { title: 'Save to watchlist or favorites', description: 'Stores options for later decisions.' },
   { title: 'View related suggestions', description: 'Receives contextual title recommendations.' },
-  { title: 'Use Any Idea assistant', description: 'Gets prompt-driven suggestions when uncertain.' },
+  { title: 'Capture product improvements in Any Idea', description: 'Saves UI, UX, and technical ideas for later planning and execution.' },
 ];
 
 const BOOKING_STEPS = [
@@ -229,35 +234,43 @@ const BOOKING_STEPS = [
   { title: 'Save booking history', description: 'Persist entry in profile booking log.' },
 ];
 
-const ANY_IDEA_PROMPTS = [
-  'I want something emotional but not too slow.',
-  'Suggest movies like Interstellar.',
-  'Anime movies for the weekend.',
-  'Thriller under 2 hours.',
-  'Something good for a date night.',
-  'Something dark and suspenseful.',
+const ANY_IDEA_EXAMPLES = [
+  'Improve movie card hover interaction',
+  'Add trailer preview modal',
+  'Add better empty states',
+  'Add booking cancellation flow',
+  'Add user profile statistics',
+  'Add recently viewed section',
+  'Add database-backed watchlist later',
+  'Add animation improvements',
+  'Add accessibility improvements',
+  'Add portfolio presentation improvements',
 ];
 
 const ANY_IDEA_LOGIC = [
   {
-    title: 'Input Understanding',
-    text: 'Reads user mood, genre, situation, runtime, and context from natural prompts.',
+    title: 'Idea Capture',
+    text: 'Allows adding new feature ideas, UI improvements, technical tasks, or future product enhancements.',
   },
   {
-    title: 'Recommendation Matching',
-    text: 'Maps prompts to tags, genres, runtime windows, and similar-title heuristics.',
+    title: 'Categorization',
+    text: 'Each idea is grouped by category such as UI/UX, Movie Discovery, Booking Flow, AI Features, Database, Performance, Accessibility, Documentation, or Other.',
   },
   {
-    title: 'Fallback Engine',
-    text: 'Works without AI API by using local rule sets and available catalog metadata.',
+    title: 'Prioritization',
+    text: 'Each idea can be marked as Low, Medium, High, or Critical priority.',
   },
   {
-    title: 'Future AI Layer',
-    text: 'Can connect to Gemini/OpenAI for stronger semantic recommendation quality.',
+    title: 'Status Tracking',
+    text: 'Each idea can move through statuses such as Saved, Under Review, Planned, In Progress, Completed, or Deferred.',
   },
   {
-    title: 'Result Explanation',
-    text: 'Each suggestion includes why it matches the submitted idea.',
+    title: 'Local Persistence',
+    text: 'Ideas are stored locally for now using localStorage through ideaService.',
+  },
+  {
+    title: 'Future Database Upgrade',
+    text: 'The current structure supports future migration to Neon PostgreSQL or another database.',
   },
 ];
 
@@ -349,7 +362,7 @@ const TECH_STACK = [
   {
     name: 'Gemini/OpenAI',
     purpose: 'Advanced recommendation intelligence',
-    note: 'Planned semantic reasoning for Any Idea assistant.',
+    note: 'Planned semantic reasoning for a future recommendation module, separate from Any Idea.',
     status: 'Future',
   },
   {
@@ -393,7 +406,8 @@ const HowWeBuiltIt = () => {
           >
             <p>
               Cinephile helps users explore movies, TV series, anime, save favorites, build
-              watchlists, view details, and receive recommendations through the Any Idea assistant.
+              watchlists, view details, and capture future improvements through the Any Idea
+              development tracker.
             </p>
           </CaseStudyCard>
 
@@ -408,8 +422,8 @@ const HowWeBuiltIt = () => {
 
           <CaseStudyCard title="Demo Notice" icon={<FiBookOpen />}>
             <p>
-              This project is under active development. Some movie, booking, and recommendation
-              data may be simulated for demonstration purposes.
+              This project is under active development. Some movie and booking data may be
+              simulated for demonstration purposes.
             </p>
           </CaseStudyCard>
         </div>
@@ -483,17 +497,22 @@ const HowWeBuiltIt = () => {
     if (activeTab === 'any-idea-logic') {
       return (
         <div className="how-built-grid">
-          <CaseStudyCard title="Any Idea Assistant Purpose" icon={<FiTarget />}>
+          <CaseStudyCard title="Any Idea Purpose" icon={<FiTarget />}>
             <p>
-              Any Idea is a movie suggestion assistant. Users describe what they feel like
-              watching and Cinephile proposes titles that fit the context.
+              Any Idea is a development-focused idea capture space where new product ideas, UI
+              improvements, technical enhancements, future features, and unplanned development
+              thoughts can be saved for later review.
+            </p>
+            <p>
+              It works like a lightweight product backlog during the project lifecycle, so strong
+              ideas are captured without interrupting current implementation priorities.
             </p>
           </CaseStudyCard>
 
-          <CaseStudyCard title="Example Prompts" icon={<FiActivity />}>
+          <CaseStudyCard title="Example Ideas" icon={<FiActivity />}>
             <ul className="prompt-list">
-              {ANY_IDEA_PROMPTS.map((prompt) => (
-                <li key={prompt} className="badge">{prompt}</li>
+              {ANY_IDEA_EXAMPLES.map((idea) => (
+                <li key={idea} className="badge">{idea}</li>
               ))}
             </ul>
           </CaseStudyCard>
@@ -580,7 +599,7 @@ const HowWeBuiltIt = () => {
           <h1 className="page-title">How We Built Cinephile</h1>
           <p className="page-subtitle">
             Walk through how Cinephile evolved from a simple movie search app into a cinematic
-            movie discovery, watchlist, booking, and AI recommendation platform.
+            movie discovery, watchlist, booking, and scalable product platform.
           </p>
         </section>
 
