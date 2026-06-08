@@ -1,0 +1,130 @@
+@use '../sass/' as *;
+
+.how-built-page {
+  &__container {
+    width: min(100% - 2rem, 1440px);
+    margin-inline: auto;
+    display: grid;
+    gap: $space-5;
+  }
+}
+
+.how-built-hero {
+  padding: $space-6;
+  background:
+    linear-gradient(160deg, rgba(28, 84, 67, 0.4), rgba(13, 31, 26, 0.75)),
+    radial-gradient(circle at 90% 5%, rgba(255, 194, 115, 0.2), transparent 32%);
+  border-color: rgba(131, 220, 184, 0.3);
+
+  &__label {
+    display: inline-flex;
+    padding: 0.28rem 0.62rem;
+    margin-bottom: $space-2;
+    border-radius: $radius-pill;
+    border: 1px solid rgba(255, 194, 115, 0.4);
+    background: rgba(255, 194, 115, 0.15);
+    color: #ffd79f;
+    font-size: $text-xs;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .page-subtitle {
+    max-width: 74ch;
+  }
+}
+
+.how-built-content {
+  min-height: 24rem;
+}
+
+.how-built-grid {
+  display: grid;
+  gap: $space-4;
+
+  &--cards {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+.how-built-metrics {
+  padding: $space-5;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: $space-3;
+
+  article {
+    padding: $space-3;
+    border-radius: $radius-md;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  h4 {
+    font-size: $text-xs;
+    color: #ffd49a;
+    margin-bottom: $space-1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  p {
+    font-size: $text-sm;
+    color: $color-text-primary;
+  }
+}
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: $space-3;
+}
+
+.prompt-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.prompt-list .badge {
+  color: $color-text-primary;
+  background: rgba(255, 194, 115, 0.16);
+  border-color: rgba(255, 194, 115, 0.32);
+}
+
+.table-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-3;
+}
+
+.table-chip-grid .badge {
+  color: $color-text-primary;
+  background: rgba(48, 196, 143, 0.2);
+}
+
+@media (max-width: 1180px) {
+  .how-built-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .how-built-page {
+    &__container {
+      width: min(100% - 1rem, 1440px);
+      gap: $space-4;
+    }
+  }
+
+  .how-built-hero {
+    padding: $space-4;
+  }
+
+  .how-built-metrics {
+    grid-template-columns: 1fr;
+    padding: $space-4;
+  }
+}

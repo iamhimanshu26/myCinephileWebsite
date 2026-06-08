@@ -11,6 +11,7 @@ import Person from './pages/Person';
 import Search from './pages/Search';
 import Collection from './pages/Collection';
 import AnyIdea from './pages/AnyIdea';
+import HowWeBuiltIt from './pages/HowWeBuiltIt';
 import Footer from './components/footer/Footer';
 import './App.scss';
 
@@ -23,6 +24,7 @@ const AnimatedRoutes = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/collection" element={<Collection />} />
         <Route path="/any-idea" element={<AnyIdea />} />
+        <Route path="/how-we-built-it" element={<HowWeBuiltIt />} />
         <Route path="/movie/:id" element={<Details />} />
         <Route path="/person/:personId" element={<Person />} />
       </Routes>

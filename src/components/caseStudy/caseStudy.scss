@@ -1,0 +1,158 @@
+@use '../../sass/' as *;
+
+.case-tabs {
+  display: flex;
+  gap: $space-2;
+  overflow-x: auto;
+  padding-bottom: $space-2;
+  scrollbar-width: thin;
+
+  &__item {
+    flex: 0 0 auto;
+    min-height: 2.35rem;
+    padding: 0 $space-3;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-pill;
+    background: rgba(255, 255, 255, 0.03);
+    color: $color-text-secondary;
+    font-size: $text-sm;
+    font-weight: 600;
+    transition:
+      background-color $duration-base $ease-standard,
+      border-color $duration-base $ease-standard,
+      color $duration-base $ease-standard,
+      transform $duration-base $ease-standard;
+  }
+
+  &__item:hover,
+  &__item:focus-visible {
+    transform: translateY(-1px);
+    color: $color-text-primary;
+    border-color: rgba(255, 195, 116, 0.4);
+  }
+
+  &__item.is-active {
+    background: linear-gradient(135deg, rgba(48, 196, 143, 0.3), rgba(255, 196, 120, 0.25));
+    border-color: rgba(255, 206, 135, 0.5);
+    color: $color-text-primary;
+  }
+}
+
+.case-card {
+  padding: $space-5;
+  display: grid;
+  gap: $space-3;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $space-3;
+  }
+
+  &__title-wrap {
+    h3 {
+      font-size: $text-h4;
+      margin-bottom: $space-1;
+    }
+
+    p {
+      font-size: $text-sm;
+      color: $color-text-secondary;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 50%;
+    background: rgba(255, 194, 115, 0.2);
+    color: #ffd49a;
+  }
+
+  &__content {
+    color: $color-text-secondary;
+    font-size: $text-sm;
+    line-height: 1.6;
+  }
+}
+
+.phase-card__list,
+.roadmap-card__list {
+  display: grid;
+  gap: $space-2;
+}
+
+.phase-card__list li,
+.roadmap-card__list li {
+  color: $color-text-secondary;
+}
+
+.roadmap-card__list li::before {
+  content: '•';
+  color: #ffc681;
+  margin-right: $space-2;
+}
+
+.workflow-step {
+  position: relative;
+  padding: $space-4;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+
+  &__index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: $text-sm;
+    background: linear-gradient(135deg, $color-primary, #ffd088);
+    color: #082116;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  h4 {
+    margin-bottom: $space-1;
+    font-size: $text-base;
+    color: $color-text-primary;
+  }
+
+  p {
+    font-size: $text-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.tech-card {
+  transition:
+    transform $duration-base $ease-standard,
+    box-shadow $duration-base $ease-standard;
+}
+
+.tech-card:hover {
+  transform: translateY(-2px);
+}
+
+.tech-card--current .badge {
+  background: rgba(48, 196, 143, 0.2);
+  color: #c8ffe9;
+}
+
+.tech-card--future .badge {
+  background: rgba(255, 194, 115, 0.2);
+  color: #ffdcae;
+}

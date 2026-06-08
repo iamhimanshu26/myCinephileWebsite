@@ -27,11 +27,7 @@ const primaryNavItems = [
 const utilityNavItems = [
   { name: 'Watchlist', to: '/collection?view=watchlist', icon: FiBookmark },
   { name: 'Any Idea', to: '/any-idea', icon: FiEdit3 },
-  {
-    name: 'How We Built It',
-    href: 'https://github.com/iamhimanshu26/myCinephileWebsite#readme',
-    icon: FiCompass,
-  },
+  { name: 'How We Built It', to: '/how-we-built-it', icon: FiCompass },
 ];
 
 const Header = () => {
