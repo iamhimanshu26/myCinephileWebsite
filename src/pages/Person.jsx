@@ -14,9 +14,9 @@ import {
 } from '../redux/tmdbSlice/tmdbSlice';
 import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
+import ImageWithFallback from '../components/media/ImageWithFallback';
+import { getMediaType, getMediaYear, getPosterUrl } from '../utils/media';
 import './person.scss';
-
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/w300';
 
 const Person = () => {
   const { personId } = useParams();
@@ -76,14 +76,13 @@ const Person = () => {
       </Link>
       <div className="person-hero">
         <div className="person-poster">
-          {person.profile_path ? (
-            <img
-              src={`${IMAGE_BASE}${person.profile_path}`}
-              alt={person.name}
-            />
-          ) : (
-            <div className="person-poster-placeholder" />
-          )}
+          <ImageWithFallback
+            src={getPosterUrl({ profile_path: person.profile_path }, 'w500')}
+            alt={person.name}
+            title={person.name}
+            type="Person"
+            loading="eager"
+          />
         </div>
         <div className="person-info">
           <h1>{person.name}</h1>
@@ -108,9 +107,6 @@ const Person = () => {
             const title = item.title || item.name;
             const date = (item.release_date || item.first_air_date) || '';
             const year = date.slice(0, 4);
-            const poster = item.poster_path
-              ? `${IMAGE_BASE}${item.poster_path}`
-              : null;
             const isMovie = !!item.title;
             const type = isMovie ? 'movie' : 'series';
             return (
@@ -119,11 +115,13 @@ const Person = () => {
                 to={`/movie/${item.id}`}
                 className="filmography-card"
               >
-                {poster ? (
-                  <img src={poster} alt={title} />
-                ) : (
-                  <div className="poster-placeholder" />
-                )}
+                <ImageWithFallback
+                  src={getPosterUrl(item, 'w500')}
+                  alt={`${title} poster`}
+                  title={title}
+                  year={getMediaYear(item)}
+                  type={getMediaType({ ...item, type })}
+                />
                 <div className="filmography-info">
                   <span className="title">{title}</span>
                   <span className="year">{year}</span>

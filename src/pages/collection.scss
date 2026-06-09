@@ -31,9 +31,9 @@
     width: 1.75rem;
     height: 1.75rem;
     padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(34, 94, 58, 0.2);
     border-radius: 50%;
-    background: rgba(18, 25, 37, 0.85);
+    background: rgba(255, 255, 255, 0.84);
     color: $color-text-primary;
     cursor: pointer;
     display: inline-flex;
@@ -49,7 +49,7 @@
     &:hover,
     &:focus-visible {
       border-color: rgba(196, 50, 57, 0.7);
-      background: rgba(196, 50, 57, 0.2);
+      background: rgba(255, 229, 229, 0.9);
       transform: translateY(-1px);
     }
   }

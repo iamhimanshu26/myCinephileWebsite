@@ -32,6 +32,9 @@ import { isAdultContent } from '../utils/contentFilter';
 import useMagneticHover from '../hooks/useMagneticHover';
 import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
+import ImageWithFallback from '../components/media/ImageWithFallback';
+import { addRecentlyViewed } from '../services/recentlyViewedService';
+import { getMediaType, getMediaYear, getPosterUrl } from '../utils/media';
 import './details.scss';
 
 const Details = () => {
@@ -73,6 +76,17 @@ const Details = () => {
       dispatch(fetchWatchProviders({ id: tmdbId, mediaType }));
     }
   }, [findResult, dispatch]);
+
+  useEffect(() => {
+    if (!data || Object.keys(data).length === 0) return;
+    if (isAdultContent(data)) return;
+    addRecentlyViewed({
+      ...data,
+      id,
+      type: data.Type || getMediaType(data),
+      Year: data.Year || getMediaYear(data),
+    });
+  }, [data, id]);
 
   const directors = credits?.crew?.filter((c) => c.job === 'Director') || [];
   const cast = credits?.cast?.slice(0, 15) || [];
@@ -277,7 +291,16 @@ const Details = () => {
               )}
             </div>
             <div className="section-right">
-              <img src={data.Poster} alt={data.Title} />
+              <div className="details-poster">
+                <ImageWithFallback
+                  src={getPosterUrl(data, 'w500')}
+                  alt={`${data.Title} poster`}
+                  title={data.Title}
+                  year={getMediaYear(data)}
+                  type={getMediaType(data)}
+                  loading="eager"
+                />
+              </div>
             </div>
           </>
         )}

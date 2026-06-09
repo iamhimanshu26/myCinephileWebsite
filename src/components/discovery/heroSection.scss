@@ -1,0 +1,115 @@
+@use '../../sass/' as *;
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 22rem;
+  display: flex;
+  align-items: stretch;
+}
+
+.hero-section__backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.02);
+}
+
+.hero-section__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, rgba(244, 255, 248, 0.95) 12%, rgba(244, 255, 248, 0.7) 55%, rgba(244, 255, 248, 0.44) 100%),
+    radial-gradient(circle at 85% 10%, rgba(201, 122, 43, 0.2), transparent 34%);
+}
+
+.hero-section__content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 42rem);
+  padding: $space-8;
+  display: grid;
+  align-content: center;
+  gap: $space-3;
+}
+
+.hero-section__eyebrow {
+  display: inline-flex;
+  justify-self: start;
+  min-height: 1.35rem;
+  padding: 0 0.55rem;
+  border-radius: $radius-pill;
+  border: 1px solid rgba(201, 122, 43, 0.26);
+  background: rgba(255, 244, 231, 0.72);
+  color: #89531f;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hero-section__title {
+  margin: 0;
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  line-height: 1.12;
+  color: $color-text-primary;
+}
+
+.hero-section__subtitle {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $text-body-lg;
+  line-height: 1.6;
+}
+
+.hero-section__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.hero-section__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: #89531f;
+}
+
+.hero-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-1;
+}
+
+.hero-section__fallback {
+  padding: $space-8;
+  display: grid;
+  gap: $space-3;
+}
+
+@media (max-width: $tablet-width) {
+  .hero-section {
+    min-height: 19rem;
+  }
+
+  .hero-section__content {
+    width: 100%;
+    padding: $space-6;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .hero-section {
+    min-height: 17rem;
+  }
+
+  .hero-section__content {
+    padding: $space-4;
+  }
+
+  .hero-section__subtitle {
+    font-size: $text-sm;
+  }
+}

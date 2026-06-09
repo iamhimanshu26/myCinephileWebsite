@@ -111,9 +111,9 @@ const PHASES = [
   {
     name: 'Phase 2 — Cinematic Homepage',
     problem: 'Homepage needed stronger storytelling and module hierarchy.',
-    solution: 'Plan includes hero, trending rails, anime/TV blocks, and discovery cues.',
-    result: 'Cinematic home module direction is defined.',
-    status: 'Planned',
+    solution: 'Implemented cinematic hero, lighter sage/emerald theme pass, discovery sections backed by a configurable discovery strategy, Movie/TV/Anime browsing tabs, poster fallback quality upgrades, and recently viewed integration.',
+    result: 'Homepage now delivers curated discovery flows with stronger media quality, cleaner card alignment, and resilient poster loading behavior.',
+    status: 'In Progress',
   },
   {
     name: 'Phase 3 — Discovery System',
@@ -175,6 +175,7 @@ const ROADMAP_SECTIONS = [
       'Working discovery filters',
       'Watchlist/favorites foundation',
       'Any Idea development backlog',
+      'Poster fallback and image quality improvements',
       'How We Built It case-study page',
     ],
   },

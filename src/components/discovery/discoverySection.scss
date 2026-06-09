@@ -1,0 +1,60 @@
+@use '../../sass/' as *;
+
+.discovery-section {
+  display: grid;
+  gap: $space-3;
+  margin-bottom: $space-8;
+}
+
+.discovery-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: $space-3;
+
+  h2 {
+    margin: 0;
+    font-size: $text-h3;
+    color: $color-text-primary;
+  }
+
+  p {
+    margin-top: $space-1;
+    color: $color-text-secondary;
+    font-size: $text-sm;
+  }
+}
+
+.discovery-section__rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(162px, 1fr);
+  gap: $space-4;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: $space-2;
+}
+
+.discovery-section__card {
+  scroll-snap-align: start;
+}
+
+.discovery-section__rail::-webkit-scrollbar {
+  height: 8px;
+}
+
+.discovery-section__rail::-webkit-scrollbar-thumb {
+  background: rgba(34, 94, 58, 0.22);
+  border-radius: $radius-pill;
+}
+
+@media (max-width: $mobile-width) {
+  .discovery-section {
+    margin-bottom: $space-6;
+  }
+
+  .discovery-section__rail {
+    grid-auto-columns: minmax(146px, 1fr);
+    gap: $space-3;
+  }
+}

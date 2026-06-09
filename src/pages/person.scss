@@ -34,7 +34,7 @@
   padding: $space-6;
   border-radius: $radius-lg;
   border: 1px solid $color-border;
-  background: rgba(18, 25, 37, 0.88);
+  background: rgba(255, 255, 255, 0.74);
   box-shadow: $shadow-md;
 
   @include tablet {
@@ -44,30 +44,11 @@
 
 .person-poster {
   flex-shrink: 0;
-
-  img {
-    width: 220px;
-    height: 330px;
-    object-fit: cover;
-    border-radius: $radius-lg;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: $shadow-sm;
-  }
-}
-
-.person-poster-placeholder {
   width: 220px;
-  height: 330px;
   border-radius: $radius-lg;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06),
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.06)
-    );
-  background-size: 420px 100%;
-  animation: shimmer 1.4s infinite linear;
+  overflow: hidden;
+  border: 1px solid rgba(34, 94, 58, 0.14);
+  box-shadow: $shadow-sm;
 }
 
 .person-info {
@@ -121,8 +102,8 @@
 
 .filmography-card {
   border-radius: $radius-md;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(34, 94, 58, 0.14);
+  background: rgba(255, 255, 255, 0.66);
   overflow: hidden;
   transition:
     transform $duration-base $ease-standard,
@@ -133,24 +114,8 @@
     border-color: rgba(48, 196, 143, 0.45);
   }
 
-  img {
-    width: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-  }
-
-  .poster-placeholder {
-    width: 100%;
-    aspect-ratio: 2/3;
-    background:
-      linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.06),
-        rgba(255, 255, 255, 0.12),
-        rgba(255, 255, 255, 0.06)
-      );
-    background-size: 420px 100%;
-    animation: shimmer 1.4s infinite linear;
+  .image-with-fallback {
+    border-radius: 0;
   }
 
   .filmography-info {
@@ -186,10 +151,8 @@
     gap: $space-5;
   }
 
-  .person-poster img,
-  .person-poster-placeholder {
+  .person-poster {
     width: 180px;
-    height: 270px;
   }
 
   .filmography-grid {

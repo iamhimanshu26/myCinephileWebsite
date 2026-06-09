@@ -5,15 +5,15 @@
   position: relative;
   margin-top: $space-12;
   padding: $space-8 0 $space-6;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(18, 25, 37, 0.96), rgba(13, 17, 23, 0.96));
+  border-top: 1px solid rgba(34, 94, 58, 0.16);
+  background: linear-gradient(180deg, rgba(233, 247, 239, 0.9), rgba(219, 239, 228, 0.92));
   overflow: hidden;
 }
 
 .footer__overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center top, rgba(48, 196, 143, 0.16), transparent 58%);
+  background: radial-gradient(circle at center top, rgba(47, 143, 91, 0.18), transparent 58%);
   pointer-events: none;
 }
 
@@ -34,7 +34,7 @@
   &--copyright {
     margin-top: $space-6;
     padding-top: $space-4;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(34, 94, 58, 0.16);
     grid-template-columns: 1fr auto;
     align-items: center;
   }
@@ -120,8 +120,8 @@
   justify-content: center;
   width: 2.4rem;
   height: 2.4rem;
-  background: rgba(48, 196, 143, 0.12);
-  border: 1px solid rgba(48, 196, 143, 0.45);
+  background: rgba(47, 143, 91, 0.12);
+  border: 1px solid rgba(47, 143, 91, 0.42);
   border-radius: 50%;
   color: $color-primary;
   cursor: pointer;
@@ -132,8 +132,8 @@
 
   &:hover,
   &:focus-visible {
-    background: $color-primary;
-    color: #09101d;
+    background: $color-primary-dark;
+    color: #f4fff8;
     transform: translate3d(var(--mx, 0), calc(var(--my, 0) - 2px), 0);
   }
 }

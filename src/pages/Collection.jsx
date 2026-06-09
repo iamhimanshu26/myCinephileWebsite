@@ -21,6 +21,7 @@ const Collection = () => {
     Title: item.title,
     Year: item.year,
     Poster: item.poster || '',
+    Type: item.type || '',
   });
 
   return (

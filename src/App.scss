@@ -79,8 +79,9 @@ body {
   font-size: var(--font-body);
   line-height: 1.5;
   background:
-    radial-gradient(circle at top right, rgba(49, 184, 138, 0.18) 0%, transparent 38%),
-    radial-gradient(circle at 20% 18%, rgba(103, 248, 204, 0.1) 0%, transparent 44%),
+    radial-gradient(circle at top right, rgba(80, 170, 120, 0.22) 0%, transparent 40%),
+    radial-gradient(circle at 15% 10%, rgba(201, 122, 43, 0.12) 0%, transparent 34%),
+    radial-gradient(circle at 78% 28%, rgba(47, 143, 91, 0.14) 0%, transparent 42%),
     var(--color-bg);
   color: var(--color-text-primary);
   overflow-x: hidden;
@@ -164,11 +165,11 @@ h4 {
 }
 
 .surface-card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.68), rgba(239, 251, 244, 0.74));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .page-header {
@@ -213,14 +214,14 @@ h4 {
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, var(--color-primary), #8effd7);
-  color: #09101d;
+  background: linear-gradient(135deg, #2f8f5b, #5fbf85);
+  color: #f7fff9;
 }
 
 .btn--ghost {
   border-color: var(--color-border);
   color: var(--color-text-primary);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .input,
@@ -230,7 +231,7 @@ h4 {
   padding: 0 var(--space-3);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.86);
   color: var(--color-text-primary);
   font-size: var(--font-caption);
   transition:
@@ -244,8 +245,8 @@ h4 {
 
 .input:focus,
 .select:focus {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(48, 196, 143, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 143, 91, 0.18);
   outline: none;
 }
 
@@ -265,8 +266,8 @@ h4 {
   font-size: var(--font-small);
   font-weight: 600;
   color: var(--color-text-secondary);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(34, 94, 58, 0.16);
 }
 
 @keyframes shimmer {

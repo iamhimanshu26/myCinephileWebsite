@@ -41,9 +41,9 @@
       flex-shrink: 0;
       cursor: pointer;
       border: 1px solid transparent;
-      background: linear-gradient(135deg, $color-primary, #8effd7);
+      background: linear-gradient(135deg, $color-primary-dark, $color-primary);
       border-radius: 50%;
-      color: #09101d;
+      color: #f4fff8;
     }
   }
 }
@@ -80,13 +80,13 @@
   }
 
   .slick-arrow {
-    background: rgba(18, 25, 37, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(34, 94, 58, 0.16);
     border-radius: 50%;
     z-index: 1;
 
     &:hover, &:focus {
-      background: rgba(48, 196, 143, 0.18);
+      background: rgba(226, 248, 235, 0.9);
     }
 
     &::before {
