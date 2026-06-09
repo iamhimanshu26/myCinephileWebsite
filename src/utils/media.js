@@ -17,7 +17,6 @@ export const getMediaType = (item = {}) => {
     item.Type
     || item.type
     || item.media_type
-    || item._type
     || ''
   ).toString().toLowerCase();
   if (!rawType) return '';

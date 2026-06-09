@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiRotateCcw } from 'react-icons/fi';
@@ -34,7 +39,10 @@ import {
 } from '../redux/collectionSlice/collectionSlice';
 import { GENRE_OPTIONS, COUNTRY_OPTIONS } from '../constants/filters';
 import PageTransition from '../components/ui/PageTransition';
-import { applyCatalogFilters, getLanguageFilterCoverage } from '../utils/catalogFilters';
+import {
+  applyCatalogFilters,
+  getLanguageFilterCoverage,
+} from '../utils/catalogFilters';
 import {
   buildDiscoverySections,
   DISCOVERY_MEDIA_TABS,
@@ -58,7 +66,10 @@ const YEARS = ['All', ...Array.from({ length: 12 }, (_, i) => String(currentYear
 const SORT_OPTIONS = ['Release Date', 'Title', 'Rating'];
 const SORT_ORDER = ['Descending', 'Ascending'];
 
-const annotateCategory = (list, category) => list.map((item) => ({ ...item, __category: category }));
+const annotateCategory = (list, category) => list.map((item) => ({
+  ...item,
+  categoryTag: category,
+}));
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -71,7 +82,9 @@ const Home = () => {
   const [language, setLanguage] = useState('All');
   const [sortBy, setSortBy] = useState('Release Date');
   const [sortOrder, setSortOrder] = useState('Descending');
-  const [recentlyViewed, setRecentlyViewed] = useState(() => getRecentlyViewed());
+  const [recentlyViewed, setRecentlyViewed] = useState(
+    () => getRecentlyViewed()
+  );
 
   const moviesData = useSelector(getAllMovies);
   const showsData = useSelector(getAllShows);
@@ -129,11 +142,18 @@ const Home = () => {
 
   const pools = useMemo(() => {
     const movies = annotateCategory(
-      [...moviesList, ...trendingMoviesList.filter((item) => hasRenderablePoster(item))],
+      [
+        ...moviesList,
+        ...trendingMoviesList.filter((item) => hasRenderablePoster(item)),
+      ],
       'movies'
     );
     const shows = annotateCategory(
-      [...showsList, ...trendingShowsList.filter((item) => hasRenderablePoster(item)), ...airingTodayList],
+      [
+        ...showsList,
+        ...trendingShowsList.filter((item) => hasRenderablePoster(item)),
+        ...airingTodayList,
+      ],
       'series'
     );
     const anime = annotateCategory(
@@ -145,15 +165,26 @@ const Home = () => {
       'movies'
     ).map((item) => {
       if (anime.some((animeItem) => getMediaId(animeItem) === getMediaId(item))) {
-        return { ...item, __category: 'anime' };
+        return {
+          ...item,
+          categoryTag: 'anime',
+        };
       }
       if (shows.some((showItem) => getMediaId(showItem) === getMediaId(item))) {
-        return { ...item, __category: 'series' };
+        return {
+          ...item,
+          categoryTag: 'series',
+        };
       }
       return item;
     });
 
-    return { movies, shows, anime, trending };
+    return {
+      movies,
+      shows,
+      anime,
+      trending,
+    };
   }, [
     moviesList,
     showsList,
@@ -193,7 +224,12 @@ const Home = () => {
       const candidate = section?.items?.find((entry) => hasRenderablePoster(entry));
       if (candidate) return candidate;
     }
-    return discoverySections.flatMap((section) => section.items).find((entry) => hasRenderablePoster(entry)) || null;
+    return (
+      discoverySections
+        .flatMap((section) => section.items)
+        .find((entry) => hasRenderablePoster(entry))
+      || null
+    );
   }, [discoverySections]);
 
   const heroId = getMediaId(heroItem || {});

@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiBookmark, FiCheck, FiPlayCircle, FiStar } from 'react-icons/fi';
+import {
+  FiBookmark,
+  FiCheck,
+  FiPlayCircle,
+  FiStar,
+} from 'react-icons/fi';
 import {
   getMediaId,
   getMediaRating,
@@ -60,7 +65,8 @@ const HeroSection = ({
         <span className="hero-section__eyebrow">Featured Pick</span>
         <h1 className="hero-section__title">{title}</h1>
         <p className="hero-section__subtitle">
-          A highlighted discovery with high visual quality and curated metadata from current feeds.
+          A highlighted discovery with high visual quality and curated metadata from
+          current feeds.
         </p>
         <div className="hero-section__meta">
           {year && <span className="badge">{year}</span>}

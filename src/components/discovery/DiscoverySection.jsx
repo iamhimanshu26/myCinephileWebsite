@@ -68,7 +68,12 @@ DiscoverySection.propTypes = {
   section: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string.isRequired,
-    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        imdbID: PropTypes.string,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      })
+    ).isRequired,
   }).isRequired,
   index: PropTypes.number,
 };

@@ -106,7 +106,7 @@ const sortWithPosterPriority = (list) => (
 );
 
 const inferCategory = (item = {}) => {
-  if (item.__category) return item.__category;
+  if (item.categoryTag) return item.categoryTag;
   const type = getMediaType(item).toLowerCase();
   if (type.includes('anime')) return 'anime';
   if (type.includes('series')) return 'series';
