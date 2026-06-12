@@ -51,6 +51,11 @@
   color: #854040;
 }
 
+.booking-card__status--completed {
+  background: rgba(229, 242, 255, 0.9);
+  color: #355b7a;
+}
+
 .booking-card__actions {
   display: flex;
   flex-wrap: wrap;

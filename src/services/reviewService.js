@@ -1,4 +1,4 @@
-const REVIEWS_STORAGE_KEY = 'cinephile_reviews';
+export const REVIEWS_STORAGE_KEY = 'cinephile_reviews';
 
 const safeParse = (raw) => {
   try {
@@ -27,7 +27,7 @@ export const getReviewsByMovieId = (movieId) => (
     .sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt))
 );
 
-export const saveReview = ({
+const upsertReview = ({
   id,
   movieId,
   movieTitle,
@@ -51,6 +51,46 @@ export const saveReview = ({
     : [normalized, ...all];
   return saveReviews(next);
 };
+
+export const addReview = ({
+  movieId,
+  movieTitle,
+  rating,
+  reviewText,
+}) => upsertReview({
+  movieId,
+  movieTitle,
+  rating,
+  reviewText,
+});
+
+export const updateReview = ({
+  id,
+  movieId,
+  movieTitle,
+  rating,
+  reviewText,
+}) => upsertReview({
+  id,
+  movieId,
+  movieTitle,
+  rating,
+  reviewText,
+});
+
+export const saveReview = ({
+  id,
+  movieId,
+  movieTitle,
+  rating,
+  reviewText,
+}) => upsertReview({
+  id,
+  movieId,
+  movieTitle,
+  rating,
+  reviewText,
+});
 
 export const deleteReview = (reviewId) => {
   const next = getAllReviews().filter((entry) => entry.id !== reviewId);

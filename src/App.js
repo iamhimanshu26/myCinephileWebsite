@@ -12,7 +12,7 @@ import Search from './pages/Search';
 import Collection from './pages/Collection';
 import AnyIdea from './pages/AnyIdea';
 import HowWeBuiltIt from './pages/HowWeBuiltIt';
-import BookingFlow from './pages/BookingFlow';
+import Booking from './pages/Booking';
 import BookingConfirmation from './pages/BookingConfirmation';
 import Bookings from './pages/Bookings';
 import Profile from './pages/Profile';
@@ -31,7 +31,7 @@ const AnimatedRoutes = () => {
         <Route path="/how-we-built-it" element={<HowWeBuiltIt />} />
         <Route path="/movie/:id" element={<Details />} />
         <Route path="/person/:personId" element={<Person />} />
-        <Route path="/booking/:movieId" element={<BookingFlow />} />
+        <Route path="/booking/:movieId" element={<Booking />} />
         <Route path="/booking-confirmation/:bookingId" element={<BookingConfirmation />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/profile" element={<Profile />} />

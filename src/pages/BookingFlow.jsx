@@ -21,14 +21,15 @@ import {
 import { createBooking } from '../services/bookingService';
 import { addActivity } from '../services/activityService';
 import { getMediaTitle, getPosterUrl } from '../utils/media';
-import './bookingFlow.scss';
+import './booking.scss';
 
 const STEP_LABELS = [
   'Select Date',
-  'Select Theatre',
+  'Select Theatre / Screen',
   'Select Showtime',
   'Select Seats',
   'Review Booking',
+  'Confirm Reservation',
 ];
 
 const BookingFlow = () => {
@@ -105,9 +106,9 @@ const BookingFlow = () => {
       addActivity({
         type: 'booking',
         title: `Booked ${movieTitle} for ${showtime}`,
-        metadata: { bookingId: booking.bookingId },
+        metadata: { bookingId: booking.id || booking.bookingId },
       });
-      navigate(`/booking-confirmation/${booking.bookingId}`);
+      navigate(`/booking-confirmation/${booking.id || booking.bookingId}`);
       return;
     }
     setActiveStep((prev) => prev + 1);
@@ -229,20 +230,50 @@ const BookingFlow = () => {
       );
     }
 
+    if (activeStep === 4) {
+      return (
+        <section className="booking-step">
+          <BookingSummaryCard
+            movieTitle={movieTitle}
+            poster={moviePoster}
+            date={date}
+            theatre={selectedTheatre?.name || ''}
+            screen={screen}
+            showtime={showtime}
+            seats={selectedSeats}
+            ticketCount={ticketCount}
+            pricePerTicket={averagePrice}
+            totalAmount={totalAmount}
+          />
+          <p className="booking-step__demo-note">
+            Demo reservation flow only. No real payment will be processed.
+          </p>
+        </section>
+      );
+    }
+
     return (
       <section className="booking-step">
-        <BookingSummaryCard
-          movieTitle={movieTitle}
-          poster={moviePoster}
-          date={date}
-          theatre={selectedTheatre?.name || ''}
-          screen={screen}
-          showtime={showtime}
-          seats={selectedSeats}
-          ticketCount={ticketCount}
-          pricePerTicket={averagePrice}
-          totalAmount={totalAmount}
-        />
+        <div className="surface-card booking-confirm-step">
+          <h2>Confirm Reservation</h2>
+          <p>
+            You are about to confirm
+            {' '}
+            <strong>{movieTitle || 'your reservation'}</strong>
+            .
+          </p>
+          <ul>
+            <li><strong>Date:</strong> {date}</li>
+            <li><strong>Theatre:</strong> {selectedTheatre?.name || '-'}</li>
+            <li><strong>Screen:</strong> {screen || '-'}</li>
+            <li><strong>Showtime:</strong> {showtime || '-'}</li>
+            <li><strong>Seats:</strong> {selectedSeats.length ? selectedSeats.join(', ') : '-'}</li>
+            <li><strong>Total Amount:</strong> ${totalAmount.toFixed(2)}</li>
+          </ul>
+          <p className="booking-step__demo-note">
+            Demo reservation only — this does not process real-world payments.
+          </p>
+        </div>
       </section>
     );
   };

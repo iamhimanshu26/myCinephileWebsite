@@ -1,4 +1,4 @@
-const BOOKING_STORAGE_KEY = 'cinephile_bookings';
+export const BOOKING_STORAGE_KEY = 'cinephile_bookings';
 
 const safeParse = (raw) => {
   try {
@@ -18,19 +18,21 @@ const createBookingId = () => (
   `CPH-${new Date().getFullYear()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`
 );
 
-export const getAllBookings = () => {
+export const getBookings = () => {
   const raw = localStorage.getItem(BOOKING_STORAGE_KEY);
   return safeParse(raw).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 };
 
 export const getBookingById = (bookingId) => (
-  getAllBookings().find((entry) => entry.bookingId === bookingId)
+  getBookings().find((entry) => entry.bookingId === bookingId || entry.id === bookingId)
 );
 
 export const createBooking = (payload) => {
   const now = new Date().toISOString();
+  const bookingId = createBookingId();
   const nextBooking = {
-    bookingId: createBookingId(),
+    id: bookingId,
+    bookingId,
     movieId: payload.movieId,
     movieTitle: payload.movieTitle || 'Untitled',
     poster: payload.poster || '',
@@ -46,22 +48,25 @@ export const createBooking = (payload) => {
     createdAt: now,
     updatedAt: now,
   };
-  const current = getAllBookings();
+  const current = getBookings();
   saveBookings([nextBooking, ...current]);
   return nextBooking;
 };
 
 export const updateBookingStatus = (bookingId, status) => {
   const now = new Date().toISOString();
-  const current = getAllBookings();
+  const current = getBookings();
   const next = current.map((entry) => (
-    entry.bookingId === bookingId
+    entry.bookingId === bookingId || entry.id === bookingId
       ? { ...entry, status, updatedAt: now }
       : entry
   ));
   saveBookings(next);
-  return next.find((entry) => entry.bookingId === bookingId) || null;
+  return next.find((entry) => entry.bookingId === bookingId || entry.id === bookingId) || null;
 };
+
+export const cancelBooking = (bookingId) => updateBookingStatus(bookingId, 'Cancelled');
+export const getAllBookings = getBookings;
 
 export const clearBookings = () => saveBookings([]);
 

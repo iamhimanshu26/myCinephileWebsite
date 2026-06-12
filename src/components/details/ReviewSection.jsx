@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 import StateBlock from '../ui/StateBlock';
 import {
+  addReview,
   deleteReview,
   getAverageRatingByMovieId,
   getReviewsByMovieId,
-  saveReview,
+  updateReview,
 } from '../../services/reviewService';
 
 const ratingOptions = [1, 2, 3, 4, 5];
@@ -29,13 +30,22 @@ const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!reviewText.trim()) return;
-    saveReview({
-      id: editingId || undefined,
-      movieId,
-      movieTitle,
-      rating,
-      reviewText,
-    });
+    if (editingId) {
+      updateReview({
+        id: editingId,
+        movieId,
+        movieTitle,
+        rating,
+        reviewText,
+      });
+    } else {
+      addReview({
+        movieId,
+        movieTitle,
+        rating,
+        reviewText,
+      });
+    }
     setReviewText('');
     setRating(4);
     setEditingId('');
@@ -63,7 +73,7 @@ const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
   return (
     <section className="detail-reviews">
       <div className="detail-reviews__header">
-        <h2>Ratings & Reviews</h2>
+        <h2>Reviews & Ratings</h2>
         <p>
           Average user rating:
           {' '}

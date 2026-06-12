@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
 import ImageWithFallback from '../components/media/ImageWithFallback';
-import { getAllBookings, updateBookingStatus } from '../services/bookingService';
+import { cancelBooking, getBookings } from '../services/bookingService';
 import { addActivity } from '../services/activityService';
 import './bookings.scss';
 
 const Bookings = () => {
-  const [bookings, setBookings] = useState(() => getAllBookings());
+  const [bookings, setBookings] = useState(() => getBookings());
 
   const stats = useMemo(() => ({
     total: bookings.length,
@@ -17,14 +17,14 @@ const Bookings = () => {
   }), [bookings]);
 
   const handleCancel = (bookingId) => {
-    const updated = updateBookingStatus(bookingId, 'Cancelled');
+    const updated = cancelBooking(bookingId);
     if (updated) {
       addActivity({
         type: 'booking',
         title: `Cancelled booking ${bookingId}`,
       });
     }
-    setBookings(getAllBookings());
+    setBookings(getBookings());
   };
 
   return (
@@ -57,7 +57,7 @@ const Bookings = () => {
         ) : (
           <div className="bookings-grid">
             {bookings.map((booking) => (
-              <article key={booking.bookingId} className="booking-card surface-card">
+              <article key={booking.id || booking.bookingId} className="booking-card surface-card">
                 <div className="booking-card__poster">
                   <ImageWithFallback
                     src={booking.poster}
@@ -67,9 +67,10 @@ const Bookings = () => {
                 </div>
                 <div className="booking-card__info">
                   <h2>{booking.movieTitle}</h2>
-                  <p><strong>Booking ID:</strong> {booking.bookingId}</p>
+                  <p><strong>Booking ID:</strong> {booking.id || booking.bookingId}</p>
                   <p><strong>Date:</strong> {booking.date}</p>
                   <p><strong>Theatre:</strong> {booking.theatre}</p>
+                  <p><strong>Screen:</strong> {booking.screen}</p>
                   <p><strong>Showtime:</strong> {booking.showtime}</p>
                   <p><strong>Seats:</strong> {booking.seats.join(', ')}</p>
                   <p><strong>Total:</strong> ${Number(booking.totalAmount).toFixed(2)}</p>
@@ -83,7 +84,7 @@ const Bookings = () => {
                       <button
                         type="button"
                         className="btn btn--ghost"
-                        onClick={() => handleCancel(booking.bookingId)}
+                        onClick={() => handleCancel(booking.id || booking.bookingId)}
                       >
                         Cancel Booking
                       </button>

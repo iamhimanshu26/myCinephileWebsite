@@ -1,0 +1,22 @@
+@use './bookingFlow.scss';
+@use '../sass/' as *;
+
+.booking-step__demo-note {
+  margin-top: $space-3;
+  color: $color-text-muted;
+  font-size: $text-sm;
+}
+
+.booking-confirm-step {
+  padding: $space-5;
+  display: grid;
+  gap: $space-2;
+}
+
+.booking-confirm-step ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: $color-text-secondary;
+  display: grid;
+  gap: $space-1;
+}

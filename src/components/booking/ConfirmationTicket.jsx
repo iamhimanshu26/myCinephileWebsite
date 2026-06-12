@@ -17,7 +17,7 @@ const ConfirmationTicket = ({ booking }) => (
         />
       </div>
       <div className="confirmation-ticket__details">
-        <p><strong>Booking ID:</strong> {booking.bookingId}</p>
+        <p><strong>Booking ID:</strong> {booking.id || booking.bookingId}</p>
         <p><strong>Movie:</strong> {booking.movieTitle}</p>
         <p><strong>Date:</strong> {booking.date}</p>
         <p><strong>Theatre:</strong> {booking.theatre}</p>
@@ -35,6 +35,7 @@ const ConfirmationTicket = ({ booking }) => (
 
 ConfirmationTicket.propTypes = {
   booking: PropTypes.shape({
+    id: PropTypes.string,
     bookingId: PropTypes.string,
     movieTitle: PropTypes.string,
     poster: PropTypes.string,

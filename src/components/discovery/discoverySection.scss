@@ -28,7 +28,7 @@
 .discovery-section__rail {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(162px, 1fr);
+  grid-auto-columns: clamp(160px, 18vw, 220px);
   gap: $space-4;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -54,7 +54,7 @@
   }
 
   .discovery-section__rail {
-    grid-auto-columns: minmax(146px, 1fr);
+    grid-auto-columns: clamp(144px, 42vw, 184px);
     gap: $space-3;
   }
 }
