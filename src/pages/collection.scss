@@ -15,6 +15,18 @@
   color: $color-text-secondary;
 }
 
+.collection-view-switch {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.collection-view-switch .badge.is-active {
+  border-color: rgba(47, 143, 91, 0.44);
+  background: rgba(226, 248, 235, 0.9);
+  color: $color-text-primary;
+}
+
 .collection-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
@@ -52,6 +64,15 @@
       background: rgba(255, 229, 229, 0.9);
       transform: translateY(-1px);
     }
+  }
+
+  .collection-book {
+    position: absolute;
+    left: $space-2;
+    bottom: $space-2;
+    min-height: 1.9rem;
+    padding: 0 $space-2;
+    font-size: $text-xs;
   }
 }
 

@@ -193,7 +193,7 @@ const Header = () => {
         </nav>
 
         <div className="header__profile">
-          <Link className="header__profile-btn magnetic" to="/collection" aria-label="Profile and watchlist">
+          <Link className="header__profile-btn magnetic" to="/profile" aria-label="Profile and activity">
             <FiUser aria-hidden />
           </Link>
         </div>

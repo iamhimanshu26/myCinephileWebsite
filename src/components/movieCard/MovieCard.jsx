@@ -9,6 +9,7 @@ import {
   isInCollection,
   removeFromCollection,
 } from '../../redux/collectionSlice/collectionSlice';
+import { addActivity } from '../../services/activityService';
 import useMagneticHover from '../../hooks/useMagneticHover';
 import ImageWithFallback from '../media/ImageWithFallback';
 import {
@@ -36,8 +37,19 @@ const MovieCard = (props) => {
   const handleCollectionClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (inCollection) dispatch(removeFromCollection(itemId));
-    else dispatch(addToCollection(normalizeCollectionItem(data)));
+    if (inCollection) {
+      dispatch(removeFromCollection(itemId));
+      addActivity({
+        type: 'watchlist',
+        title: `Removed ${title} from Watchlist`,
+      });
+    } else {
+      dispatch(addToCollection(normalizeCollectionItem(data)));
+      addActivity({
+        type: 'watchlist',
+        title: `Added ${title} to Watchlist`,
+      });
+    }
   };
 
   const cardContent = (

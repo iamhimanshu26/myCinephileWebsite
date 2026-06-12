@@ -1,11 +1,22 @@
-import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import {
-  FiBookmark, FiCalendar, FiClock, FiExternalLink, FiSearch, FiStar, FiThumbsUp,
-} from 'react-icons/fi';
+import { FiExternalLink, FiSearch } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  getAllMovies,
+  getAllShows,
+  getAnimeMovies,
+  getAnimeShows,
+  getTrendingMovies,
+  getTrendingShows,
+  getAiringToday,
+  getTrendingAnime,
   fetchAsyncMoviesOrShowsDetails,
   fetchAsyncDetailByTmdbId,
   getSelectedMovieOrShow,
@@ -24,29 +35,54 @@ import {
 } from '../redux/tmdbSlice/tmdbSlice';
 import {
   addToCollection,
+  addToFavorites,
   removeFromCollection,
+  removeFromFavorites,
   normalizeCollectionItem,
   isInCollection,
+  isInFavorites,
 } from '../redux/collectionSlice/collectionSlice';
 import { isAdultContent } from '../utils/contentFilter';
-import useMagneticHover from '../hooks/useMagneticHover';
 import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
-import ImageWithFallback from '../components/media/ImageWithFallback';
 import { addRecentlyViewed } from '../services/recentlyViewedService';
-import { getMediaType, getMediaYear, getPosterUrl } from '../utils/media';
+import { addActivity } from '../services/activityService';
+import MovieDetailHero from '../components/details/MovieDetailHero';
+import MovieMetadataGrid from '../components/details/MovieMetadataGrid';
+import CastCrewSection from '../components/details/CastCrewSection';
+import ReviewSection from '../components/details/ReviewSection';
+import SimilarMoviesSection from '../components/details/SimilarMoviesSection';
+import { getMediaTitle, getMediaType, getMediaYear } from '../utils/media';
+import { getSimilarTitles } from '../utils/similarMovies';
 import './details.scss';
 
 const Details = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector(getSelectedMovieOrShow);
+  const allMovies = useSelector(getAllMovies);
+  const allShows = useSelector(getAllShows);
+  const animeMovies = useSelector(getAnimeMovies);
+  const animeShows = useSelector(getAnimeShows);
+  const trendingMovies = useSelector(getTrendingMovies);
+  const trendingShows = useSelector(getTrendingShows);
+  const airingToday = useSelector(getAiringToday);
+  const trendingAnime = useSelector(getTrendingAnime);
   const credits = useSelector(getMovieCredits);
   const findResult = useSelector(getFindResult);
   const watchProviders = useSelector(getWatchProviders);
   const tmdbAvailable = hasTMDbKey();
-  const inCollection = useSelector(isInCollection(id));
-  const collectionActionRef = useMagneticHover(6);
+  const inWatchlist = useSelector(isInCollection(id));
+  const inFavorites = useSelector(isInFavorites(id));
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const feedbackTimerRef = useRef(null);
+
+  const toList = (payload) => (
+    payload && payload.Response === 'True' && Array.isArray(payload.Search)
+      ? payload.Search
+      : []
+  );
 
   useEffect(() => {
     if (!id) return;
@@ -88,59 +124,103 @@ const Details = () => {
     });
   }, [data, id]);
 
-  const directors = credits?.crew?.filter((c) => c.job === 'Director') || [];
-  const cast = credits?.cast?.slice(0, 15) || [];
+  useEffect(
+    () => () => {
+      if (feedbackTimerRef.current) {
+        window.clearTimeout(feedbackTimerRef.current);
+      }
+    },
+    []
+  );
 
-  const renderNames = (namesStr, type) => {
-    if (!namesStr) return null;
-    const list = namesStr.split(',').map((s) => s.trim());
-    if (type === 'director' && directors.length > 0) {
-      return list.map((name, i) => {
-        const person = directors.find(
-          (d) => d.name.toLowerCase() === name.toLowerCase()
-        );
-        if (person) {
-          return (
-            <React.Fragment key={person.id}>
-              {i > 0 && ', '}
-              <Link to={`/person/${person.id}`} className="person-link">
-                {name}
-              </Link>
-            </React.Fragment>
-          );
-        }
-        return (
-          <span key={name}>
-            {i > 0 && ', '}
-            {name}
-          </span>
-        );
-      });
+  const cast = useMemo(
+    () => (credits?.cast || []).slice(0, 16),
+    [credits]
+  );
+
+  const similarItems = useMemo(() => getSimilarTitles({
+    currentItem: data,
+    candidatePools: [
+      toList(allMovies),
+      toList(allShows),
+      toList(animeMovies),
+      toList(animeShows),
+      toList(trendingMovies),
+      toList(trendingShows),
+      toList(airingToday),
+      toList(trendingAnime),
+    ],
+    limit: 10,
+  }), [
+    data,
+    allMovies,
+    allShows,
+    animeMovies,
+    animeShows,
+    trendingMovies,
+    trendingShows,
+    airingToday,
+    trendingAnime,
+  ]);
+
+  const showFeedback = (message) => {
+    setFeedbackMessage(message);
+    if (feedbackTimerRef.current) {
+      window.clearTimeout(feedbackTimerRef.current);
     }
-    if (type === 'cast' && cast.length > 0) {
-      return list.map((name, i) => {
-        const person = cast.find(
-          (c) => c.name.toLowerCase() === name.toLowerCase()
-        );
-        if (person) {
-          return (
-            <React.Fragment key={person.id}>
-              {i > 0 && ', '}
-              <Link to={`/person/${person.id}`} className="person-link">
-                {name}
-              </Link>
-            </React.Fragment>
-          );
-        }
-        return (
-          <span key={name}>
-            {i > 0 && ', '}
-            {name}
-          </span>
-        );
+    feedbackTimerRef.current = window.setTimeout(() => setFeedbackMessage(''), 1800);
+  };
+
+  const normalizedItem = useMemo(
+    () => normalizeCollectionItem({ ...data, id }),
+    [data, id]
+  );
+
+  const handleToggleWatchlist = () => {
+    if (inWatchlist) {
+      dispatch(removeFromCollection(id));
+      addActivity({
+        type: 'watchlist',
+        title: `Removed ${getMediaTitle(data)} from Watchlist`,
       });
+      showFeedback('Removed from watchlist');
+      return;
     }
-    return <span>{namesStr}</span>;
+    dispatch(addToCollection(normalizedItem));
+    addActivity({
+      type: 'watchlist',
+      title: `Added ${getMediaTitle(data)} to Watchlist`,
+    });
+    showFeedback('Added to watchlist');
+  };
+
+  const handleToggleFavorite = () => {
+    if (inFavorites) {
+      dispatch(removeFromFavorites(id));
+      addActivity({
+        type: 'favorite',
+        title: `Removed ${getMediaTitle(data)} from Favorites`,
+      });
+      showFeedback('Removed from favorites');
+      return;
+    }
+    dispatch(addToFavorites({ ...normalizedItem, watchlist: normalizedItem.watchlist || false }));
+    addActivity({
+      type: 'favorite',
+      title: `Added ${getMediaTitle(data)} to Favorites`,
+    });
+    showFeedback('Added to favorites');
+  };
+
+  const handleBookTicket = () => {
+    navigate(`/booking/${id}`);
+  };
+
+  const handleReviewSaved = () => {
+    addActivity({
+      type: 'review',
+      title: `Updated review for ${getMediaTitle(data)}`,
+    });
   };
 
   return (
@@ -170,92 +250,35 @@ const Details = () => {
         )}
         {Object.keys(data).length > 0 && !isAdultContent(data) && (
           <>
-            <div className="section-left">
-              <div className="movie-title">{data.Title}</div>
-              <div className="details-collection">
-                {inCollection ? (
-                  <button
-                    ref={collectionActionRef}
-                    type="button"
-                    className="details-collection-btn details-collection-btn--remove magnetic"
-                    onClick={() => dispatch(removeFromCollection(id))}
-                  >
-                    <FiBookmark />
-                    Remove from collection
-                  </button>
-                ) : (
-                  <button
-                    ref={collectionActionRef}
-                    type="button"
-                    className="details-collection-btn magnetic"
-                    onClick={() => dispatch(
-                      addToCollection(normalizeCollectionItem({ ...data, id })),
-                    )}
-                  >
-                    <FiBookmark />
-                    Add to collection
-                  </button>
-                )}
-              </div>
-              <div className="movie-rating">
-                <span>
-                  IMDB Rating
-                  <FiStar />
-                  {' '}
-                  :
-                  {' '}
-                  {data.imdbRating}
-                </span>
-                <span>
-                  IMDB Votes
-                  <FiThumbsUp />
-                  {' '}
-                  :
-                  {' '}
-                  {data.imdbVotes}
-                </span>
-                <span>
-                  Runtime
-                  <FiClock />
-                  {' '}
-                  :
-                  {' '}
-                  {data.Runtime}
-                </span>
-                <span>
-                  Year
-                  <FiCalendar />
-                  {' '}
-                  :
-                  {' '}
-                  {data.Year}
-                </span>
-              </div>
-              <div className="movie-plot">{data.Plot}</div>
-              <div className="movie-info">
-                <div>
-                  <span>Director</span>
-                  <span>{renderNames(data.Director, 'director')}</span>
-                </div>
-                <div>
-                  <span>Stars</span>
-                  <span>{renderNames(data.Actors, 'cast')}</span>
-                </div>
-                <div>
-                  <span>Genres</span>
-                  <span>{data.Genre}</span>
-                </div>
-                <div>
-                  <span>Languages</span>
-                  <span>{data.Language}</span>
-                </div>
-                <div>
-                  <span>Awards</span>
-                  <span>{data.Awards}</span>
-                </div>
-              </div>
+            <div className="details-stack">
+              {!!feedbackMessage && (
+                <div className="details-feedback badge">{feedbackMessage}</div>
+              )}
+              <MovieDetailHero
+                data={data}
+                inWatchlist={inWatchlist}
+                inFavorites={inFavorites}
+                onToggleWatchlist={handleToggleWatchlist}
+                onToggleFavorite={handleToggleFavorite}
+                onBookTicket={handleBookTicket}
+              />
+
+              <section className="detail-storyline surface-card">
+                <h2>Storyline</h2>
+                <p>{data.Plot || 'No storyline available for this title yet.'}</p>
+              </section>
+
+              <MovieMetadataGrid data={data} />
+              <CastCrewSection cast={cast} />
+              <ReviewSection
+                movieId={id}
+                movieTitle={data.Title || ''}
+                onReviewSaved={handleReviewSaved}
+              />
+              <SimilarMoviesSection items={similarItems} movieId={id} />
+
               {tmdbAvailable && (watchProviders || findResult) && (
-                <div className="details-watch">
+                <section className="details-watch surface-card">
                   <span className="details-watch-label">Where to watch</span>
                   <div className="details-watch-links">
                     {(() => {
@@ -287,20 +310,8 @@ const Details = () => {
                       );
                     })()}
                   </div>
-                </div>
+                </section>
               )}
-            </div>
-            <div className="section-right">
-              <div className="details-poster">
-                <ImageWithFallback
-                  src={getPosterUrl(data, 'w500')}
-                  alt={`${data.Title} poster`}
-                  title={data.Title}
-                  year={getMediaYear(data)}
-                  type={getMediaType(data)}
-                  loading="eager"
-                />
-              </div>
             </div>
           </>
         )}

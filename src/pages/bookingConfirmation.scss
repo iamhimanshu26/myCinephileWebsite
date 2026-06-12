@@ -1,0 +1,92 @@
+@use '../sass/' as *;
+
+.booking-confirmation__container {
+  width: min(100% - 2rem, 1100px);
+  margin-inline: auto;
+  display: grid;
+  gap: $space-4;
+}
+
+.confirmation-ticket {
+  padding: $space-5;
+}
+
+.confirmation-ticket__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.confirmation-ticket__status {
+  min-height: 1.35rem;
+  padding: 0 0.55rem;
+  border-radius: $radius-pill;
+  border: 1px solid rgba(47, 143, 91, 0.36);
+  background: rgba(226, 248, 235, 0.92);
+  color: $color-text-primary;
+  font-size: $text-xs;
+  font-weight: 700;
+}
+
+.confirmation-ticket__body {
+  display: grid;
+  grid-template-columns: 170px 1fr auto;
+  gap: $space-4;
+}
+
+.confirmation-ticket__poster {
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.confirmation-ticket__details {
+  display: grid;
+  gap: $space-1;
+}
+
+.confirmation-ticket__details p {
+  font-size: $text-sm;
+  color: $color-text-secondary;
+}
+
+.confirmation-ticket__qr-box {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: $radius-md;
+  border: 1px dashed rgba(34, 94, 58, 0.26);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(226, 248, 235, 0.94));
+  font-size: $text-xs;
+  font-weight: 700;
+  color: $color-text-muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.booking-confirmation__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.booking-confirmation__note {
+  color: $color-text-secondary;
+  font-size: $text-sm;
+}
+
+@media (max-width: $mobile-width) {
+  .booking-confirmation__container {
+    width: min(100% - 1rem, 1100px);
+  }
+
+  .confirmation-ticket {
+    padding: $space-4;
+  }
+
+  .confirmation-ticket__body {
+    grid-template-columns: 1fr;
+  }
+}

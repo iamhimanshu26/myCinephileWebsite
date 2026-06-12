@@ -1,0 +1,69 @@
+@use '../sass/' as *;
+
+.bookings-page__container {
+  width: min(100% - 2rem, 1200px);
+  margin-inline: auto;
+}
+
+.bookings-grid {
+  display: grid;
+  gap: $space-3;
+}
+
+.booking-card {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: $space-4;
+  padding: $space-4;
+}
+
+.booking-card__poster {
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.booking-card__info {
+  display: grid;
+  gap: $space-1;
+}
+
+.booking-card__info h2 {
+  font-size: $text-h3;
+  margin-bottom: $space-1;
+}
+
+.booking-card__info p {
+  font-size: $text-sm;
+  color: $color-text-secondary;
+}
+
+.booking-card__status {
+  justify-self: start;
+  margin-top: $space-1;
+}
+
+.booking-card__status--confirmed {
+  background: rgba(226, 248, 235, 0.92);
+}
+
+.booking-card__status--cancelled {
+  background: rgba(255, 229, 229, 0.92);
+  color: #854040;
+}
+
+.booking-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-2;
+}
+
+@media (max-width: $mobile-width) {
+  .bookings-page__container {
+    width: min(100% - 1rem, 1200px);
+  }
+
+  .booking-card {
+    grid-template-columns: 1fr;
+  }
+}

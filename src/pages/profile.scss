@@ -1,0 +1,100 @@
+@use '../sass/' as *;
+
+.profile-page__container {
+  width: min(100% - 2rem, 1200px);
+  margin-inline: auto;
+  display: grid;
+  gap: $space-4;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+.profile-stat {
+  padding: $space-4;
+}
+
+.profile-stat h3 {
+  color: $color-text-secondary;
+  font-size: $text-sm;
+}
+
+.profile-stat p {
+  margin-top: $space-1;
+  font-size: $text-h3;
+  font-weight: 700;
+}
+
+.profile-lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+.profile-list {
+  padding: $space-4;
+}
+
+.profile-list h2 {
+  margin-bottom: $space-2;
+}
+
+.profile-list ul {
+  display: grid;
+  gap: $space-1;
+}
+
+.profile-list li {
+  color: $color-text-secondary;
+  font-size: $text-sm;
+}
+
+.profile-activity {
+  padding: $space-4;
+}
+
+.profile-activity h2 {
+  margin-bottom: $space-3;
+}
+
+.profile-activity ul {
+  display: grid;
+  gap: $space-2;
+}
+
+.profile-activity li {
+  border-radius: $radius-md;
+  border: 1px solid rgba(34, 94, 58, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  padding: $space-3;
+}
+
+.profile-activity li p {
+  color: $color-text-primary;
+  font-size: $text-sm;
+}
+
+.profile-activity li span {
+  color: $color-text-muted;
+  font-size: $text-xs;
+}
+
+@media (max-width: $tablet-width) {
+  .profile-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .profile-page__container {
+    width: min(100% - 1rem, 1200px);
+  }
+
+  .profile-stats,
+  .profile-lists {
+    grid-template-columns: 1fr;
+  }
+}
