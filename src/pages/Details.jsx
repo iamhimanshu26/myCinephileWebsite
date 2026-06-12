@@ -53,7 +53,7 @@ import CastCrewSection from '../components/details/CastCrewSection';
 import ReviewSection from '../components/details/ReviewSection';
 import SimilarMoviesSection from '../components/details/SimilarMoviesSection';
 import { getMediaTitle, getMediaType, getMediaYear } from '../utils/media';
-import { getSimilarTitles } from '../utils/similarMovies';
+import getSimilarTitles from '../utils/similarMovies';
 import './details.scss';
 
 const Details = () => {

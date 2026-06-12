@@ -60,18 +60,34 @@ const Profile = () => {
           <article className="surface-card profile-list">
             <h2>Saved Movies</h2>
             {watchlistItems.length === 0 ? (
-              <StateBlock title="No saved movies yet" description="Use watchlist actions to save titles." compact />
+              <StateBlock
+                title="No saved movies yet"
+                description="Use watchlist actions to save titles."
+                compact
+              />
             ) : (
-              <ul>{watchlistItems.slice(0, 8).map((item) => <li key={item.id}>{item.title}</li>)}</ul>
+              <ul>
+                {watchlistItems.slice(0, 8).map((item) => (
+                  <li key={item.id}>{item.title}</li>
+                ))}
+              </ul>
             )}
           </article>
 
           <article className="surface-card profile-list">
             <h2>Favorite Movies</h2>
             {favoriteItems.length === 0 ? (
-              <StateBlock title="No favorites yet" description="Mark favorite titles from details pages." compact />
+              <StateBlock
+                title="No favorites yet"
+                description="Mark favorite titles from details pages."
+                compact
+              />
             ) : (
-              <ul>{favoriteItems.slice(0, 8).map((item) => <li key={item.id}>{item.title}</li>)}</ul>
+              <ul>
+                {favoriteItems.slice(0, 8).map((item) => (
+                  <li key={item.id}>{item.title}</li>
+                ))}
+              </ul>
             )}
           </article>
         </section>
@@ -79,7 +95,11 @@ const Profile = () => {
         <section className="surface-card profile-activity">
           <h2>Recent Activity Timeline</h2>
           {activityFeed.length === 0 ? (
-            <StateBlock title="No activity yet" description="Your actions will appear here once you interact with the platform." compact />
+            <StateBlock
+              title="No activity yet"
+              description="Your actions will appear here once you interact with the platform."
+              compact
+            />
           ) : (
             <ul>
               {activityFeed.map((entry) => (

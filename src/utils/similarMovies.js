@@ -13,7 +13,7 @@ const normalizeWords = (value = '') => (
     .filter((token) => token.length > 2)
 );
 
-export const getSimilarTitles = ({
+const getSimilarTitles = ({
   currentItem,
   candidatePools = [],
   limit = 12,
@@ -39,7 +39,9 @@ export const getSimilarTitles = ({
     score += wordOverlap * 3;
 
     const candidateGenres = Array.isArray(item.genre_ids) ? item.genre_ids : [];
-    const genreOverlap = candidateGenres.filter((genreId) => currentGenres.includes(genreId)).length;
+    const genreOverlap = candidateGenres
+      .filter((genreId) => currentGenres.includes(genreId))
+      .length;
     score += genreOverlap * 4;
 
     const year = Number.parseInt(getMediaYear(item), 10) || 0;
@@ -60,3 +62,5 @@ export const getSimilarTitles = ({
     .slice(0, limit)
     .map((entry) => entry.item);
 };
+
+export default getSimilarTitles;

@@ -12,7 +12,9 @@ export const buildSeatLayout = () => (
       const isPremium = PREMIUM_ROWS.has(row);
       const isReserved = RESERVED_SEATS.has(code);
       const isUnavailable = UNAVAILABLE_SEATS.has(code);
-      const state = isUnavailable ? 'unavailable' : (isReserved ? 'reserved' : 'available');
+      let state = 'available';
+      if (isUnavailable) state = 'unavailable';
+      else if (isReserved) state = 'reserved';
       return {
         code,
         row,

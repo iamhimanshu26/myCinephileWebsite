@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FiBookmark, FiCalendar, FiClock, FiHeart, FiPlayCircle, FiStar } from 'react-icons/fi';
+import {
+  FiBookmark,
+  FiCalendar,
+  FiClock,
+  FiHeart,
+  FiPlayCircle,
+  FiStar,
+} from 'react-icons/fi';
 import ImageWithFallback from '../media/ImageWithFallback';
 import { getMediaType, getMediaYear, getPosterUrl } from '../../utils/media';
 

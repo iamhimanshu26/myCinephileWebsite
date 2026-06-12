@@ -24,11 +24,24 @@ const Collection = () => {
   const view = searchParams.get('view');
   const isWatchlistView = view === 'watchlist';
   const isFavoritesView = view === 'favorites';
+  const isAllView = !isWatchlistView && !isFavoritesView;
 
-  const items = isFavoritesView
-    ? favoriteItems
-    : (isWatchlistView ? watchlistItems : allEntries);
-  const title = isFavoritesView ? 'My Favorites' : (isWatchlistView ? 'My Watchlist' : 'My Collection');
+  let items = allEntries;
+  let title = 'My Collection';
+  if (isFavoritesView) {
+    items = favoriteItems;
+    title = 'My Favorites';
+  } else if (isWatchlistView) {
+    items = watchlistItems;
+    title = 'My Watchlist';
+  }
+
+  let subtitle = `${items.length} item${items.length === 1 ? '' : 's'} saved`;
+  if (items.length === 0) {
+    if (isFavoritesView) subtitle = 'Favorite movies and series here to find them quickly.';
+    else if (isWatchlistView) subtitle = 'Bookmark movies and series here to find them quickly.';
+    else subtitle = 'Save movies and series here to find them quickly.';
+  }
 
   const toCardData = (item) => ({
     imdbID: item.id,
@@ -50,14 +63,12 @@ const Collection = () => {
           <Link className={`badge ${isFavoritesView ? 'is-active' : ''}`} to="/collection?view=favorites">
             Favorites
           </Link>
-          <Link className={`badge ${!isWatchlistView && !isFavoritesView ? 'is-active' : ''}`} to="/collection">
+          <Link className={`badge ${isAllView ? 'is-active' : ''}`} to="/collection">
             All Saved
           </Link>
         </div>
         <p className="collection-page-sub page-subtitle">
-          {items.length === 0
-            ? `${isFavoritesView ? 'Favorite' : isWatchlistView ? 'Bookmark' : 'Save'} movies and series here to find them quickly.`
-            : `${items.length} item${items.length === 1 ? '' : 's'} saved`}
+          {subtitle}
         </p>
       </div>
       {items.length === 0 ? (
