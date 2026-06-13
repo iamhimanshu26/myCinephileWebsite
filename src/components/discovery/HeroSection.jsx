@@ -102,6 +102,9 @@ const HeroSection = ({
           <button type="button" className="btn btn--ghost" onClick={onExplore}>
             Explore Movies
           </button>
+          <Link to="/cinephile-ai" className="btn btn--ghost">
+            Try Cinephile AI
+          </Link>
         </div>
       </motion.div>
     </section>

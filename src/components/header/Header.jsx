@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
+  FiCpu,
   FiBookmark,
   FiCompass,
   FiFilm,
@@ -26,6 +27,7 @@ const primaryNavItems = [
 
 const utilityNavItems = [
   { name: 'Watchlist', to: '/collection?view=watchlist', icon: FiBookmark },
+  { name: 'Cinephile AI', to: '/cinephile-ai', icon: FiCpu },
   { name: 'Any Idea', to: '/any-idea', icon: FiEdit3 },
   { name: 'How We Built It', to: '/how-we-built-it', icon: FiCompass },
 ];

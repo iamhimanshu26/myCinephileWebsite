@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiEdit2, FiStar, FiTrash2 } from 'react-icons/fi';
 import StateBlock from '../ui/StateBlock';
 import {
   addReview,
@@ -11,6 +11,13 @@ import {
 } from '../../services/reviewService';
 
 const ratingOptions = [1, 2, 3, 4, 5];
+const renderStars = (value) => (
+  <span className="detail-reviews__stars" aria-label={`${value} stars`}>
+    {Array.from({ length: 5 }, (_, index) => (
+      <FiStar key={`${value}-star-${index}`} className={index < value ? 'is-active' : ''} />
+    ))}
+  </span>
+);
 
 const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
   const [rating, setRating] = useState(4);
@@ -46,11 +53,16 @@ const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
         reviewText,
       });
     }
+    const actionType = editingId ? 'updated' : 'created';
     setReviewText('');
     setRating(4);
     setEditingId('');
     refresh();
-    onReviewSaved();
+    onReviewSaved({
+      action: actionType,
+      rating,
+      reviewText,
+    });
   };
 
   const handleEdit = (review) => {
@@ -67,7 +79,10 @@ const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
       setRating(4);
     }
     refresh();
-    onReviewSaved();
+    onReviewSaved({
+      action: 'deleted',
+      rating: reviewId === editingId ? rating : 0,
+    });
   };
 
   return (
@@ -78,6 +93,12 @@ const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
           Average user rating:
           {' '}
           <strong>{averageRating ? averageRating.toFixed(1) : 'N/A'}</strong>
+          {' '}
+          ·
+          {' '}
+          <strong>{reviews.length}</strong>
+          {' '}
+          review(s)
         </p>
       </div>
 
@@ -141,7 +162,10 @@ const ReviewSection = ({ movieId, movieTitle, onReviewSaved }) => {
           {reviews.map((review) => (
             <article key={review.id} className="detail-reviews__card surface-card">
               <header>
-                <strong>{review.rating}/5</strong>
+                <strong>
+                  {renderStars(review.rating || 0)}
+                  <span>{review.rating}/5</span>
+                </strong>
                 <span>{new Date(review.updatedAt || review.createdAt).toLocaleString()}</span>
               </header>
               <p>{review.reviewText}</p>

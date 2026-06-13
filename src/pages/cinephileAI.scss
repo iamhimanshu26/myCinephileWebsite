@@ -1,0 +1,254 @@
+@use '../sass/' as *;
+
+.cinephile-ai__container {
+  width: min(100% - 2rem, 1220px);
+  margin-inline: auto;
+  display: grid;
+  gap: $space-4;
+}
+
+.cinephile-ai__hero,
+.cinephile-ai__prompt,
+.cinephile-ai__planner {
+  padding: $space-5;
+}
+
+.cinephile-ai__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  padding: 0 0.55rem;
+  border-radius: $radius-pill;
+  border: 1px solid rgba(201, 122, 43, 0.28);
+  background: rgba(255, 244, 231, 0.82);
+  color: #89531f;
+  font-size: $text-xs;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.cinephile-ai__demo-note {
+  margin-top: $space-2;
+  color: $color-text-muted;
+  font-size: $text-sm;
+}
+
+.cinephile-ai__prompt h2 {
+  margin-bottom: $space-3;
+}
+
+.cinephile-ai__prompt form {
+  display: grid;
+  gap: $space-3;
+}
+
+.cinephile-ai__textarea {
+  resize: vertical;
+  min-height: 7rem;
+  padding: $space-3;
+}
+
+.cinephile-ai__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-3;
+}
+
+.cinephile-ai__chip {
+  cursor: pointer;
+  transition: transform $duration-base $ease-standard;
+}
+
+.cinephile-ai__chip:hover {
+  transform: translateY(-1px);
+}
+
+.cinephile-ai__loading {
+  padding: $space-5;
+  display: grid;
+  gap: $space-2;
+}
+
+.cinephile-ai__loading h3 {
+  margin: 0;
+}
+
+.cinephile-ai__loading-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.cinephile-ai__loading-dots span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: rgba(47, 143, 91, 0.72);
+  animation: ai-dot-bounce 900ms ease-in-out infinite;
+}
+
+.cinephile-ai__loading-dots span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.cinephile-ai__loading-dots span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.is-spinning {
+  animation: ai-spin 0.8s linear infinite;
+}
+
+.cinephile-ai__results {
+  display: grid;
+  gap: $space-3;
+}
+
+.cinephile-ai__explanation {
+  padding: $space-4;
+  display: grid;
+  gap: $space-2;
+}
+
+.cinephile-ai__results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+.cinephile-ai-card {
+  display: grid;
+  grid-template-columns: minmax(138px, 168px) 1fr;
+  gap: $space-3;
+  padding: $space-3;
+}
+
+.cinephile-ai-card__poster {
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.cinephile-ai-card__content {
+  display: grid;
+  gap: $space-2;
+}
+
+.cinephile-ai-card__content h3 {
+  margin: 0;
+  font-size: $text-h3;
+}
+
+.cinephile-ai-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+}
+
+.cinephile-ai-card__genre {
+  margin: 0;
+  color: $color-text-muted;
+  font-size: $text-sm;
+}
+
+.cinephile-ai-card__reason {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $text-sm;
+  line-height: 1.55;
+}
+
+.cinephile-ai-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-1;
+}
+
+.cinephile-ai__planner {
+  display: grid;
+  gap: $space-3;
+}
+
+.cinephile-ai__planner-header p {
+  margin-top: $space-1;
+  color: $color-text-secondary;
+}
+
+.cinephile-ai__planner-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: $space-2;
+}
+
+.cinephile-ai__planner-grid label {
+  display: grid;
+  gap: $space-1;
+  color: $color-text-secondary;
+  font-size: $text-sm;
+}
+
+.cinephile-ai__planner-result {
+  padding: $space-4;
+  display: grid;
+  gap: $space-2;
+}
+
+.cinephile-ai__planner-result h3 {
+  margin: 0;
+}
+
+.cinephile-ai__planner-result p {
+  color: $color-text-secondary;
+}
+
+.cinephile-ai__planner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-1;
+}
+
+@keyframes ai-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ai-dot-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-4px); opacity: 1; }
+}
+
+@media (max-width: $tablet-width) {
+  .cinephile-ai__results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cinephile-ai__planner-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .cinephile-ai__container {
+    width: min(100% - 1rem, 1220px);
+  }
+
+  .cinephile-ai__hero,
+  .cinephile-ai__prompt,
+  .cinephile-ai__planner {
+    padding: $space-4;
+  }
+
+  .cinephile-ai-card {
+    grid-template-columns: 1fr;
+  }
+
+  .cinephile-ai-card__actions .btn {
+    width: 100%;
+  }
+
+  .cinephile-ai__planner-grid {
+    grid-template-columns: 1fr;
+  }
+}

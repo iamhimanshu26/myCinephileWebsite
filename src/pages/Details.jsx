@@ -36,6 +36,7 @@ import {
 import {
   addToCollection,
   addToFavorites,
+  getAllCollectionEntries,
   removeFromCollection,
   removeFromFavorites,
   normalizeCollectionItem,
@@ -45,8 +46,15 @@ import {
 import { isAdultContent } from '../utils/contentFilter';
 import PageTransition from '../components/ui/PageTransition';
 import StateBlock from '../components/ui/StateBlock';
-import { addRecentlyViewed } from '../services/recentlyViewedService';
+import {
+  addRecentlyViewed,
+  getRecentlyViewed,
+} from '../services/recentlyViewedService';
 import { addActivity } from '../services/activityService';
+import { getBookings } from '../services/bookingService';
+import { getAllReviews } from '../services/reviewService';
+import { buildTasteProfile } from '../services/personalizationService';
+import { getFallbackRecommendations } from '../services/recommendationService';
 import MovieDetailHero from '../components/details/MovieDetailHero';
 import MovieMetadataGrid from '../components/details/MovieMetadataGrid';
 import CastCrewSection from '../components/details/CastCrewSection';
@@ -75,6 +83,7 @@ const Details = () => {
   const tmdbAvailable = hasTMDbKey();
   const inWatchlist = useSelector(isInCollection(id));
   const inFavorites = useSelector(isInFavorites(id));
+  const collectionEntries = useSelector(getAllCollectionEntries);
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const feedbackTimerRef = useRef(null);
 
@@ -116,11 +125,17 @@ const Details = () => {
   useEffect(() => {
     if (!data || Object.keys(data).length === 0) return;
     if (isAdultContent(data)) return;
+    const title = getMediaTitle(data);
     addRecentlyViewed({
       ...data,
       id,
       type: data.Type || getMediaType(data),
       Year: data.Year || getMediaYear(data),
+    });
+    addActivity({
+      type: 'view',
+      title: `Viewed ${title}`,
+      metadata: { movieId: id },
     });
   }, [data, id]);
 
@@ -137,6 +152,41 @@ const Details = () => {
     () => (credits?.cast || []).slice(0, 16),
     [credits]
   );
+
+  const catalogPools = useMemo(() => ({
+    movies: toList(allMovies),
+    shows: toList(allShows),
+    anime: [...toList(animeMovies), ...toList(animeShows), ...toList(trendingAnime)],
+    trending: [...toList(trendingMovies), ...toList(trendingShows), ...toList(trendingAnime)],
+    airingToday: toList(airingToday),
+  }), [
+    allMovies,
+    allShows,
+    animeMovies,
+    animeShows,
+    trendingMovies,
+    trendingShows,
+    trendingAnime,
+    airingToday,
+  ]);
+
+  const tasteProfile = useMemo(() => buildTasteProfile({
+    recentlyViewed: getRecentlyViewed(),
+    reviews: getAllReviews(),
+    bookings: getBookings(),
+    collectionEntries,
+    catalog: Object.values(catalogPools).flat(),
+  }), [catalogPools, collectionEntries]);
+
+  const aiRecommendationPack = useMemo(() => {
+    if (!data || Object.keys(data).length === 0) return null;
+    return getFallbackRecommendations({
+      prompt: `Like ${getMediaTitle(data)} with ${data.Genre || 'strong storytelling'}`,
+      catalogPools,
+      tasteProfile,
+      limit: 8,
+    });
+  }, [data, catalogPools, tasteProfile]);
 
   const similarItems = useMemo(() => getSimilarTitles({
     currentItem: data,
@@ -162,6 +212,18 @@ const Details = () => {
     airingToday,
     trendingAnime,
   ]);
+
+  const watchNextItems = useMemo(() => {
+    const fromAI = (aiRecommendationPack?.results || []).map((entry) => entry.item);
+    const combined = [...fromAI, ...similarItems];
+    const byId = new Map();
+    combined.forEach((item) => {
+      const mediaId = item.imdbID || item.id;
+      if (!mediaId || mediaId === id || byId.has(mediaId)) return;
+      byId.set(mediaId, item);
+    });
+    return Array.from(byId.values()).slice(0, 10);
+  }, [aiRecommendationPack, similarItems, id]);
 
   const showFeedback = (message) => {
     setFeedbackMessage(message);
@@ -216,10 +278,14 @@ const Details = () => {
     navigate(`/booking/${id}`);
   };
 
-  const handleReviewSaved = () => {
+  const handleReviewSaved = (payload = {}) => {
+    const actionLabel = payload.action
+      ? `${payload.action.charAt(0).toUpperCase()}${payload.action.slice(1)}`
+      : 'Updated';
+    const ratingLabel = payload.rating ? ` (${payload.rating} stars)` : '';
     addActivity({
       type: 'review',
-      title: `Updated review for ${getMediaTitle(data)}`,
+      title: `${actionLabel} review for ${getMediaTitle(data)}${ratingLabel}`,
     });
   };
 
@@ -275,7 +341,13 @@ const Details = () => {
                 movieTitle={data.Title || ''}
                 onReviewSaved={handleReviewSaved}
               />
-              <SimilarMoviesSection items={similarItems} movieId={id} />
+              <SimilarMoviesSection
+                items={watchNextItems}
+                movieId={id}
+                title="Watch Next"
+                subtitle={`Because this title belongs to ${data.Genre || 'your current watch lane'}.`}
+                explanation={aiRecommendationPack?.explanation || ''}
+              />
 
               {tmdbAvailable && (watchProviders || findResult) && (
                 <section className="details-watch surface-card">

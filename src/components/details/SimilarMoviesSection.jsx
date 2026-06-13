@@ -4,12 +4,24 @@ import { Link } from 'react-router-dom';
 import MovieCard from '../movieCard/MovieCard';
 import StateBlock from '../ui/StateBlock';
 
-const SimilarMoviesSection = ({ items, movieId }) => (
+const SimilarMoviesSection = ({
+  items,
+  movieId,
+  title,
+  subtitle,
+  explanation,
+}) => (
   <section className="detail-similar">
     <div className="detail-similar__header">
-      <h2>Similar Movies</h2>
+      <div>
+        <h2>{title}</h2>
+        {!!subtitle && <p>{subtitle}</p>}
+      </div>
       <Link to="/" className="detail-similar__cta">Explore More</Link>
     </div>
+    {!!explanation && (
+      <p className="detail-similar__explanation">{explanation}</p>
+    )}
     {items.length === 0 ? (
       <StateBlock
         title="No similar movies yet"
@@ -37,10 +49,16 @@ SimilarMoviesSection.propTypes = {
     })
   ),
   movieId: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  explanation: PropTypes.string,
 };
 
 SimilarMoviesSection.defaultProps = {
   items: [],
+  title: 'You May Also Like',
+  subtitle: '',
+  explanation: '',
 };
 
 export default SimilarMoviesSection;

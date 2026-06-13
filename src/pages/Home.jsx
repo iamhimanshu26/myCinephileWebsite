@@ -33,6 +33,7 @@ import { hasTMDbKey } from '../redux/tmdbSlice/tmdbSlice';
 import { hasTraktKey } from '../api/traktApi';
 import {
   addToCollection,
+  getAllCollectionEntries,
   isInCollection,
   normalizeCollectionItem,
   removeFromCollection,
@@ -51,6 +52,12 @@ import { getMediaId, hasRenderablePoster } from '../utils/media';
 import {
   getRecentlyViewed,
 } from '../services/recentlyViewedService';
+import { getBookings } from '../services/bookingService';
+import { getAllReviews } from '../services/reviewService';
+import {
+  buildTasteProfile,
+  getPersonalizedShelfItems,
+} from '../services/personalizationService';
 import CategoryTabs from '../components/discovery/CategoryTabs';
 import HeroSection from '../components/discovery/HeroSection';
 import DiscoverySection from '../components/discovery/DiscoverySection';
@@ -94,6 +101,7 @@ const Home = () => {
   const trendingAnimeData = useSelector(getTrendingAnime);
   const trendingMoviesData = useSelector(getTrendingMovies);
   const trendingShowsData = useSelector(getTrendingShows);
+  const collectionEntries = useSelector(getAllCollectionEntries);
 
   useEffect(() => {
     if (hasTMDbKey()) {
@@ -216,6 +224,41 @@ const Home = () => {
     }),
     [activeFilters, browse, pools, recentlyViewed]
   );
+
+  const tasteProfile = useMemo(() => buildTasteProfile({
+    recentlyViewed,
+    collectionEntries,
+    bookings: getBookings(),
+    reviews: getAllReviews(),
+    catalog: [
+      ...pools.movies,
+      ...pools.shows,
+      ...pools.anime,
+      ...pools.trending,
+    ],
+  }), [recentlyViewed, collectionEntries, pools]);
+
+  const recommendedForYouSection = useMemo(() => {
+    const items = getPersonalizedShelfItems({
+      catalogPools: {
+        movies: pools.movies,
+        shows: pools.shows,
+        anime: pools.anime,
+        trending: pools.trending,
+      },
+      tasteProfile,
+      limit: 12,
+    });
+
+    return {
+      id: 'recommended-for-you',
+      title: 'Recommended For You',
+      subtitle: tasteProfile.hasEnoughSignals
+        ? 'Personalized from your watch history, saves, reviews, and bookings.'
+        : 'Curated picks while your personalization profile is still warming up.',
+      items,
+    };
+  }, [pools, tasteProfile]);
 
   const heroItem = useMemo(() => {
     const priorityOrder = ['trending-now', 'popular-movies', 'top-rated'];
@@ -431,8 +474,9 @@ const Home = () => {
         </div>
 
         <div className="home__sections" ref={discoveryRef}>
+          <DiscoverySection section={recommendedForYouSection} index={0} />
           {discoverySections.map((section, index) => (
-            <DiscoverySection key={section.id} section={section} index={index} />
+            <DiscoverySection key={section.id} section={section} index={index + 1} />
           ))}
         </div>
       </div>

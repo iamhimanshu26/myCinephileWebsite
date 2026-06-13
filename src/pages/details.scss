@@ -235,6 +235,26 @@
   font-size: $text-xs;
 }
 
+.detail-reviews__card header strong {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.detail-reviews__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.detail-reviews__stars svg {
+  color: rgba(201, 122, 43, 0.34);
+}
+
+.detail-reviews__stars .is-active {
+  color: #c97a2b;
+}
+
 .detail-reviews__card p {
   color: $color-text-primary;
   line-height: 1.6;
@@ -254,10 +274,22 @@
   margin-bottom: $space-3;
 }
 
+.detail-similar__header p {
+  color: $color-text-secondary;
+  font-size: $text-sm;
+  margin-top: $space-1;
+}
+
 .detail-similar__cta {
   color: $color-primary;
   font-size: $text-sm;
   font-weight: 700;
+}
+
+.detail-similar__explanation {
+  margin: -$space-2 0 $space-3;
+  color: $color-text-muted;
+  font-size: $text-sm;
 }
 
 .detail-similar__grid {

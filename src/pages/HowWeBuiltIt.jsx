@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   FiActivity,
   FiBookOpen,
+  FiCpu,
   FiDatabase,
   FiGitBranch,
   FiLayers,
@@ -14,6 +15,7 @@ import {
   FiServer,
   FiTarget,
   FiTrendingUp,
+  FiUsers,
 } from 'react-icons/fi';
 import PageTransition from '../components/ui/PageTransition';
 import CaseStudyTabs from '../components/caseStudy/CaseStudyTabs';
@@ -40,7 +42,7 @@ const TABS = [
 ];
 
 const OVERVIEW_METRICS = [
-  { label: 'Product Type', value: 'Movie Discovery & Booking Platform' },
+  { label: 'Product Type', value: 'Movie Discovery, AI Recommendation & Booking Platform' },
   { label: 'Core Purpose', value: 'Discover, save, explore, and plan what to watch' },
   { label: 'Current Stage', value: 'Active Development' },
   { label: 'Frontend', value: 'React' },
@@ -58,7 +60,7 @@ const ARCHITECTURE_LAYERS = [
   },
   {
     title: 'Routing Layer',
-    text: 'Home, Search, Collection, Details, Person, Any Idea, and How We Built It.',
+    text: 'Home, Search, Collection, Details, Person, Cinephile AI, Any Idea, and How We Built It.',
     icon: <FiNavigation />,
   },
   {
@@ -77,9 +79,14 @@ const ARCHITECTURE_LAYERS = [
     icon: <FiTarget />,
   },
   {
-    title: 'Future Recommendation Layer',
-    text: 'AI-powered recommendation logic is planned as a separate module (Gemini/OpenAI), independent from Any Idea.',
+    title: 'AI Recommendation Layer',
+    text: 'Responsible for prompt interpretation, mood-based suggestions, watch planning, and future Gemini/OpenAI integration.',
     icon: <FiActivity />,
+  },
+  {
+    title: 'Personalization Layer',
+    text: 'Responsible for deriving taste signals from recently viewed, favorites, watchlist, reviews, and bookings.',
+    icon: <FiUsers />,
   },
   {
     title: 'Booking Layer',
@@ -123,11 +130,11 @@ const PHASES = [
     status: 'Completed',
   },
   {
-    name: 'Phase 4 — Discovery System',
-    problem: 'Filtering and browsing depth still needs deeper personalization and ranking.',
-    solution: 'Planned richer filter combinations and adaptive content grouping refinements.',
-    result: 'Discovery enhancement backlog is ready for next iteration.',
-    status: 'Planned',
+    name: 'Phase 4 — AI Recommendations & Personalization',
+    problem: 'Users needed intelligent, prompt-driven suggestions and stronger personalized discovery.',
+    solution: 'Implemented Cinephile AI route with prompt chips, fallback recommendation engine, mood/situation intent parsing, watch planner, and personalized recommendation flows.',
+    result: 'Cinephile now offers an AI-style recommendation journey while preserving existing discovery and booking experiences.',
+    status: 'Completed',
   },
   {
     name: 'Phase 5 — Booking Flow',
@@ -138,27 +145,34 @@ const PHASES = [
   },
   {
     name: 'Phase 6 — User Profile & Activity',
-    problem: 'Persistent user identity and activity are limited.',
-    solution: 'Planned profiles for favorites, bookings, reviews, and history.',
-    result: 'Profile personalization roadmap documented.',
-    status: 'Future',
+    problem: 'Profile needed richer insight and social-style engagement cues.',
+    solution: 'Added personalization insights, taste summary, review activity cards, and enhanced timeline presentation.',
+    result: 'Profile now communicates user taste and activity progression more clearly.',
+    status: 'In Progress',
   },
   {
-    name: 'Phase 7 — Any Idea Development Tracker',
+    name: 'Phase 7 — Cinephile AI Recommendation Layer',
+    problem: 'Recommendation quality felt generic without prompt understanding and mood context.',
+    solution: 'Built separate Cinephile AI page with recommendation service architecture, quick prompt chips, explanation panel, and watch planner.',
+    result: 'AI recommendation capability now exists independently from Any Idea and is portfolio-ready for future LLM upgrades.',
+    status: 'Completed',
+  },
+  {
+    name: 'Phase 8 — Any Idea Development Tracker',
     problem: 'Strong product and UI improvement ideas appear during development and get lost.',
     solution: 'Created a development-focused idea tracker to save unplanned product improvements, UI ideas, technical enhancements, and future feature suggestions during the project lifecycle.',
     result: 'Lightweight internal backlog is available inside Cinephile for structured follow-up.',
     status: 'Completed',
   },
   {
-    name: 'Phase 8 — Performance & Accessibility',
+    name: 'Phase 9 — Performance & Accessibility',
     problem: 'Need stronger loading, keyboard, and Lighthouse outcomes.',
     solution: 'Planned skeletons, perf tuning, and accessibility hardening.',
     result: 'Quality gate checklist established.',
     status: 'Planned',
   },
   {
-    name: 'Phase 9 — Deployment & Portfolio Polish',
+    name: 'Phase 10 — Deployment & Portfolio Polish',
     problem: 'Portfolio presentation requires deeper product storytelling.',
     solution: 'Planned architecture showcase, demos, and release-quality docs.',
     result: 'Recruiter/client-ready narrative in progress.',
@@ -180,16 +194,19 @@ const ROADMAP_SECTIONS = [
       'Booking flow foundation with digital ticket confirmation',
       'Booking history with cancellation status updates',
       'Recently viewed discovery rails now use compact clamped card widths',
+      'Cinephile AI prompt-based recommendation page',
+      'Personalized Recommended For You section on Home',
+      'Profile taste insights and social-style review activity',
       'How We Built It case-study page',
     ],
   },
   {
     title: 'Next',
     items: [
-      'Richer personalization on discovery ordering',
       'Trailer integration',
       'Cross-provider metadata enrichment',
       'Smarter similar-title ranking',
+      'Server-side recommendation adapters',
     ],
   },
   {

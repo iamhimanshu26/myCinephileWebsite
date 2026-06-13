@@ -19,7 +19,9 @@ const createActivityId = () => `activity-${Date.now()}-${Math.floor(Math.random(
 
 export const getActivityFeed = () => {
   const raw = localStorage.getItem(ACTIVITY_STORAGE_KEY);
-  return safeParse(raw);
+  return safeParse(raw)
+    .filter((entry) => entry && entry.id && entry.createdAt)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 };
 
 export const addActivity = ({
@@ -30,12 +32,23 @@ export const addActivity = ({
   const nextItem = {
     id: createActivityId(),
     type: type || 'general',
-    title: title || 'Activity',
+    title: title || 'Activity updated',
     metadata: metadata || {},
     createdAt: new Date().toISOString(),
   };
   const current = getActivityFeed();
   return saveActivity([nextItem, ...current].slice(0, MAX_ACTIVITY_ITEMS));
+};
+
+export const getActivityHighlights = () => {
+  const feed = getActivityFeed();
+  return {
+    total: feed.length,
+    reviews: feed.filter((entry) => entry.type === 'review').length,
+    bookings: feed.filter((entry) => entry.type === 'booking').length,
+    watchlist: feed.filter((entry) => entry.type === 'watchlist').length,
+    favorites: feed.filter((entry) => entry.type === 'favorite').length,
+  };
 };
 
 export const clearActivityFeed = () => saveActivity([]);

@@ -16,6 +16,7 @@ import Booking from './pages/Booking';
 import BookingConfirmation from './pages/BookingConfirmation';
 import Bookings from './pages/Bookings';
 import Profile from './pages/Profile';
+import CinephileAI from './pages/CinephileAI';
 import Footer from './components/footer/Footer';
 import './App.scss';
 
@@ -35,6 +36,7 @@ const AnimatedRoutes = () => {
         <Route path="/booking-confirmation/:bookingId" element={<BookingConfirmation />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/cinephile-ai" element={<CinephileAI />} />
       </Routes>
     </AnimatePresence>
   );
