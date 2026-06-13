@@ -255,7 +255,7 @@ const Home = () => {
       title: 'Recommended For You',
       subtitle: tasteProfile.hasEnoughSignals
         ? 'Personalized from your watch history, saves, reviews, and bookings.'
-        : 'Curated picks while your personalization profile is still warming up.',
+        : 'Start exploring movies to personalize this section. For now, here are curated picks.',
       items,
     };
   }, [pools, tasteProfile]);

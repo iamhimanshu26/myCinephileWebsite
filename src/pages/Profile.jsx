@@ -121,7 +121,7 @@ const Profile = () => {
           ) : (
             <StateBlock
               title="Profile is still learning your taste"
-              description="Start exploring, reviewing, and booking movies to build your Cinephile taste profile."
+              description="Start exploring, reviewing, saving, and booking movies to build your Cinephile taste profile."
               compact
             />
           )}
