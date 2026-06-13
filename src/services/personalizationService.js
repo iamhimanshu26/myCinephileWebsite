@@ -64,6 +64,15 @@ const dedupeById = (list) => {
   return Array.from(byId.values());
 };
 
+const inferSuggestedMood = (topGenres = []) => {
+  const joined = topGenres.join(' ').toLowerCase();
+  if (joined.includes('science fiction') || joined.includes('thriller')) return 'Mind-bending';
+  if (joined.includes('romance') || joined.includes('drama')) return 'Emotional';
+  if (joined.includes('comedy') || joined.includes('animation')) return 'Feel-good';
+  if (joined.includes('crime') || joined.includes('horror')) return 'Dark & Serious';
+  return 'Balanced Discovery';
+};
+
 export const buildTasteProfile = ({
   recentlyViewed = getRecentlyViewed(),
   collectionEntries = getCollectionEntries(),
@@ -117,6 +126,10 @@ export const buildTasteProfile = ({
   const tasteSummary = summaryParts.length
     ? `You seem to enjoy ${summaryParts.join(' and ')}.`
     : 'Watch more titles to build your personalized taste profile.';
+  const suggestedMood = inferSuggestedMood(topGenres);
+  const currentTasteProfile = topGenres.length
+    ? `${topGenres.join(', ')} with ${mostViewedType || 'mixed'} focus`
+    : 'Not enough signals yet';
 
   return {
     topGenres,
@@ -129,6 +142,8 @@ export const buildTasteProfile = ({
     bookingsCount: bookings.length,
     reviewsWritten: reviews.length,
     tasteSummary,
+    suggestedMood,
+    currentTasteProfile,
     interactionItems: dedupeById(interactionItems),
     watchedIds: Array.from(interactionIds),
     hasEnoughSignals: (

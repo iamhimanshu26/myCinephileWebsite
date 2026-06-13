@@ -57,6 +57,11 @@ const Profile = () => {
     { label: 'Watchlist Count', value: String(collectionStats.watchlistCount) },
     { label: 'Reviews Written', value: String(reviews.length) },
     { label: 'Recently Viewed', value: String(recentlyViewed.length) },
+    { label: 'Suggested Mood', value: tasteProfile.suggestedMood || 'Balanced Discovery' },
+    {
+      label: 'Current Taste Profile',
+      value: tasteProfile.currentTasteProfile || 'Not enough signals yet',
+    },
   ];
 
   return (
@@ -116,7 +121,7 @@ const Profile = () => {
           ) : (
             <StateBlock
               title="Profile is still learning your taste"
-              description="Watch, review, and save more titles to unlock richer personalization insights."
+              description="Start exploring, reviewing, and booking movies to build your Cinephile taste profile."
               compact
             />
           )}

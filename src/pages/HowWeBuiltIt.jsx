@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   FiActivity,
   FiBookOpen,
+  FiClock,
   FiDatabase,
   FiGitBranch,
   FiLayers,
@@ -88,6 +89,11 @@ const ARCHITECTURE_LAYERS = [
     icon: <FiUsers />,
   },
   {
+    title: 'Activity Layer',
+    text: 'Responsible for recent actions, watchlist/favorite updates, booking events, review updates, and profile timeline output.',
+    icon: <FiClock />,
+  },
+  {
     title: 'Booking Layer',
     text: 'Demo booking flow for theatres, showtimes, seats, and digital ticket confirmation.',
     icon: <FiPlayCircle />,
@@ -152,8 +158,8 @@ const PHASES = [
   {
     name: 'Phase 7 — Cinephile AI Recommendation Layer',
     problem: 'Recommendation quality felt generic without prompt understanding and mood context.',
-    solution: 'Built separate Cinephile AI page with recommendation service architecture, quick prompt chips, explanation panel, and watch planner.',
-    result: 'AI recommendation capability now exists independently from Any Idea and is portfolio-ready for future LLM upgrades.',
+    solution: 'Built a separate Cinephile AI route with prompt-based recommendations, mood-based discovery, quick chips, fallback recommendation engine, personalized suggestions, and watch-planning support.',
+    result: 'Cinephile AI now delivers recommendation experiences while Any Idea remains a development idea tracker, ready for future Gemini/OpenAI integration.',
     status: 'Completed',
   },
   {
@@ -194,6 +200,7 @@ const ROADMAP_SECTIONS = [
       'Booking history with cancellation status updates',
       'Recently viewed discovery rails now use compact clamped card widths',
       'Cinephile AI prompt-based recommendation page',
+      'Fallback AI-ready recommendation service',
       'Personalized Recommended For You section on Home',
       'Profile taste insights and social-style review activity',
       'How We Built It case-study page',
@@ -221,10 +228,11 @@ const ROADMAP_SECTIONS = [
     title: 'Future',
     items: [
       'Gemini/OpenAI recommendation module',
+      'Advanced personalization engine',
       'Streaming availability',
-      'Social features',
-      'Mobile app',
-      'Admin panel',
+      'Smarter recommendation ranking',
+      'Social recommendation sharing',
+      'Multi-user profiles',
     ],
   },
 ];
@@ -329,6 +337,24 @@ const DEPLOYMENT_CARDS = [
 
 const TECH_STACK = [
   {
+    name: 'Recommendation Service',
+    purpose: 'Prompt parsing and recommendation orchestration',
+    note: 'Handles mood/similarity/weekend/personalized and fallback recommendation strategies.',
+    status: 'Current',
+  },
+  {
+    name: 'LocalStorage Personalization',
+    purpose: 'Taste-signal extraction',
+    note: 'Derives profile insights from recently viewed, watchlist, favorites, reviews, and bookings.',
+    status: 'Current',
+  },
+  {
+    name: 'Activity Service',
+    purpose: 'Timeline and engagement feed',
+    note: 'Stores lightweight local activity events for profile timeline and engagement context.',
+    status: 'Current',
+  },
+  {
     name: 'React',
     purpose: 'Frontend UI and page rendering',
     note: 'Component-driven rendering across all product modules.',
@@ -361,7 +387,7 @@ const TECH_STACK = [
   {
     name: 'Framer Motion',
     purpose: 'Animations and transitions',
-    note: 'Page transitions, micro interactions, and section reveals.',
+    note: 'Page transitions, AI-page reveal states, and premium section-level micro interactions.',
     status: 'Current',
   },
   {
