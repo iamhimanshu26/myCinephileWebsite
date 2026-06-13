@@ -4,7 +4,6 @@ import {
   getMediaRating,
   getMediaTitle,
   getMediaType,
-  getMediaYear,
   hasRenderablePoster,
 } from '../utils/media';
 import { buildTasteProfile, getPersonalizedShelfItems } from './personalizationService';

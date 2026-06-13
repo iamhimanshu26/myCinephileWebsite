@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   FiActivity,
   FiBookOpen,
-  FiCpu,
   FiDatabase,
   FiGitBranch,
   FiLayers,

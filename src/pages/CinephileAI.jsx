@@ -9,7 +9,6 @@ import {
   FiHeart,
   FiLoader,
   FiMap,
-  FiRefreshCcw,
   FiSend,
   FiStar,
 } from 'react-icons/fi';
@@ -248,7 +247,10 @@ const CinephileAI = () => {
       addActivity({ type: 'favorite', title: `Removed ${getMediaTitle(item)} from Favorites` });
       return;
     }
-    dispatch(addToFavorites({ ...normalizeCollectionItem(item), watchlist: watchlistIds.has(itemId) }));
+    dispatch(addToFavorites({
+      ...normalizeCollectionItem(item),
+      watchlist: watchlistIds.has(itemId),
+    }));
     addActivity({ type: 'favorite', title: `Added ${getMediaTitle(item)} to Favorites` });
   };
 
@@ -321,7 +323,7 @@ const CinephileAI = () => {
               rows={4}
               value={prompt}
               onChange={(event) => setPrompt(event.target.value)}
-              placeholder={"I want something emotional but not too slow...\nSuggest movies like Interstellar...\nAnime movies for a peaceful weekend...\nThriller under 2 hours..."}
+              placeholder={'I want something emotional but not too slow...\nSuggest movies like Interstellar...\nAnime movies for a peaceful weekend...\nThriller under 2 hours...'}
             />
             <button type="submit" className="btn btn--primary" disabled={loading}>
               {loading ? <FiLoader className="is-spinning" /> : <FiSend />}
@@ -388,7 +390,7 @@ const CinephileAI = () => {
               }}
             >
               {resultPack.results.map((entry) => {
-                const item = entry.item;
+                const { item } = entry;
                 const itemId = getMediaId(item);
                 const isMovie = getMediaType(item) === 'Movie';
                 return (

@@ -179,7 +179,9 @@ const Profile = () => {
                 <article key={review.id} className="profile-review-card">
                   <header>
                     <h3>{review.movieTitle || 'Untitled'}</h3>
-                    <span>{new Date(review.updatedAt || review.createdAt).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(review.updatedAt || review.createdAt).toLocaleDateString()}
+                    </span>
                   </header>
                   <p className="profile-review-card__stars">
                     {'★'.repeat(Math.max(0, Number(review.rating) || 0))}
