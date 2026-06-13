@@ -9,6 +9,7 @@ const CaseStudyTabs = ({ tabs, activeTab, onChange }) => (
         type="button"
         className={`case-tabs__item ${activeTab === tab.id ? 'is-active' : ''}`}
         onClick={() => onChange(tab.id)}
+        aria-pressed={activeTab === tab.id}
       >
         {tab.label}
       </button>

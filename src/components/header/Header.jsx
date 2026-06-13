@@ -107,7 +107,12 @@ const Header = () => {
       );
     }
     return (
-      <Link key={item.name} className={className} to={item.to}>
+      <Link
+        key={item.name}
+        className={className}
+        to={item.to}
+        aria-current={isActive ? 'page' : undefined}
+      >
         {item.name}
       </Link>
     );
@@ -115,6 +120,7 @@ const Header = () => {
 
   const renderMobileLink = (item) => {
     const Icon = item.icon;
+    const isActive = isItemActive(item);
     if (item.href) {
       return (
         <a
@@ -134,7 +140,8 @@ const Header = () => {
       <Link
         key={item.name}
         to={item.to}
-        className={`header__dropdown-link ${isItemActive(item) ? 'is-active' : ''}`}
+        className={`header__dropdown-link ${isActive ? 'is-active' : ''}`}
+        aria-current={isActive ? 'page' : undefined}
         onClick={() => setMenuOpen(false)}
       >
         <Icon className="header__dropdown-icon" aria-hidden />
@@ -208,6 +215,7 @@ const Header = () => {
           aria-expanded={menuOpen}
           aria-haspopup="true"
           aria-controls="header-menu"
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
         >
           {menuOpen ? <FiX aria-hidden /> : <FiMenu aria-hidden />}
         </button>

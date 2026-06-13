@@ -42,6 +42,25 @@
   gap: $space-3;
 }
 
+.cinephile-ai__prompt-label {
+  display: grid;
+  gap: $space-1;
+  color: $color-text-secondary;
+  font-size: $text-sm;
+}
+
+.cinephile-ai__prompt-help {
+  margin-top: -$space-2;
+  color: $color-text-muted;
+  font-size: $text-xs;
+}
+
+.cinephile-ai__prompt-feedback {
+  margin-top: $space-2;
+  color: $color-error;
+  font-size: $text-sm;
+}
+
 .cinephile-ai__textarea {
   resize: vertical;
   min-height: 7rem;

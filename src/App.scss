@@ -286,3 +286,30 @@ h4 {
     padding-bottom: var(--space-8);
   }
 }
+
+.app__route-loading {
+  width: min(100% - 2rem, $container-max-width);
+  margin: calc(#{$header-height} + var(--space-6)) auto var(--space-8);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

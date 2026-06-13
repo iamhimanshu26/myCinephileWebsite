@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FiBookmark,
@@ -118,9 +118,11 @@ const CinephileAI = () => {
   const [activePrompt, setActivePrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [promptFeedback, setPromptFeedback] = useState('');
   const [resultPack, setResultPack] = useState(null);
   const [plannerInputs, setPlannerInputs] = useState(plannerDefaults);
   const [plannerResult, setPlannerResult] = useState(null);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (hasTMDbKey()) {
@@ -187,8 +189,13 @@ const CinephileAI = () => {
 
   const generateRecommendations = async (nextPrompt) => {
     const trimmedPrompt = nextPrompt.trim();
-    if (!trimmedPrompt) return;
+    if (!trimmedPrompt) {
+      setPromptFeedback('Please describe your mood or use one of the quick prompt chips.');
+      setResultPack(null);
+      return;
+    }
     setError('');
+    setPromptFeedback('');
     setLoading(true);
     setActivePrompt(trimmedPrompt);
 
@@ -224,6 +231,7 @@ const CinephileAI = () => {
 
   const handleApplyChip = (chip) => {
     setPrompt(chip);
+    setPromptFeedback('');
     generateRecommendations(chip);
   };
 
@@ -297,9 +305,9 @@ const CinephileAI = () => {
       <div className="cinephile-ai__container">
         <motion.section
           className="cinephile-ai__hero surface-card"
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="cinephile-ai__eyebrow">CINEPHILE AI</span>
           <h1 className="page-title">Cinephile AI</h1>
@@ -318,18 +326,32 @@ const CinephileAI = () => {
         <section className="cinephile-ai__prompt surface-card">
           <h2>Describe your mood, situation, or movie taste</h2>
           <form onSubmit={handleSubmit}>
-            <textarea
-              className="input cinephile-ai__textarea"
-              rows={4}
-              value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-              placeholder={'I want something emotional but not too slow...\nSuggest movies like Interstellar...\nAnime movies for a peaceful weekend...\nThriller under 2 hours...'}
-            />
+            <label htmlFor="cinephile-ai-prompt" className="cinephile-ai__prompt-label">
+              Prompt
+              <textarea
+                id="cinephile-ai-prompt"
+                className="input cinephile-ai__textarea"
+                rows={4}
+                value={prompt}
+                onChange={(event) => {
+                  setPrompt(event.target.value);
+                  if (promptFeedback) setPromptFeedback('');
+                }}
+                aria-describedby="cinephile-ai-prompt-help"
+                placeholder={'I want something emotional but not too slow...\nSuggest movies like Interstellar...\nAnime movies for a peaceful weekend...\nThriller under 2 hours...'}
+              />
+            </label>
+            <p id="cinephile-ai-prompt-help" className="cinephile-ai__prompt-help">
+              Mention mood, runtime, or a similar title for better recommendations.
+            </p>
             <button type="submit" className="btn btn--primary" disabled={loading}>
               {loading ? <FiLoader className="is-spinning" /> : <FiSend />}
               Get Recommendations
             </button>
           </form>
+          {!!promptFeedback && (
+            <p className="cinephile-ai__prompt-feedback" role="alert">{promptFeedback}</p>
+          )}
           <div className="cinephile-ai__chips">
             {QUICK_PROMPTS.map((chip) => (
               <button
@@ -337,6 +359,7 @@ const CinephileAI = () => {
                 type="button"
                 className="badge cinephile-ai__chip"
                 onClick={() => handleApplyChip(chip)}
+                aria-label={`Use prompt chip: ${chip}`}
               >
                 {chip}
               </button>
@@ -345,7 +368,7 @@ const CinephileAI = () => {
         </section>
 
         {loading && (
-          <section className="surface-card cinephile-ai__loading">
+          <section className="surface-card cinephile-ai__loading" role="status" aria-live="polite">
             <h3>Finding the right titles for your mood...</h3>
             <div className="cinephile-ai__loading-dots" aria-hidden>
               <span />
@@ -386,7 +409,10 @@ const CinephileAI = () => {
               animate="visible"
               variants={{
                 hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: shouldReduceMotion ? 0 : 0.05 },
+                },
               }}
             >
               {resultPack.results.map((entry) => {
@@ -398,7 +424,7 @@ const CinephileAI = () => {
                     key={`${itemId}-${entry.reason}`}
                     className="surface-card cinephile-ai-card"
                     variants={{
-                      hidden: { opacity: 0, y: 10 },
+                      hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 10 },
                       visible: { opacity: 1, y: 0 },
                     }}
                   >

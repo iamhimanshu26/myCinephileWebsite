@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import {
   BrowserRouter as Router, Route, Routes, useLocation,
 } from 'react-router-dom';
 import 'swiper/swiper.min.css';
 import Header from './components/header/Header';
-import Home from './pages/Home';
-import Details from './pages/Details';
-import Person from './pages/Person';
-import Search from './pages/Search';
-import Collection from './pages/Collection';
-import AnyIdea from './pages/AnyIdea';
-import HowWeBuiltIt from './pages/HowWeBuiltIt';
-import Booking from './pages/Booking';
-import BookingConfirmation from './pages/BookingConfirmation';
-import Bookings from './pages/Bookings';
-import Profile from './pages/Profile';
-import CinephileAI from './pages/CinephileAI';
 import Footer from './components/footer/Footer';
 import './App.scss';
+
+const Home = lazy(() => import('./pages/Home'));
+const Details = lazy(() => import('./pages/Details'));
+const Person = lazy(() => import('./pages/Person'));
+const Search = lazy(() => import('./pages/Search'));
+const Collection = lazy(() => import('./pages/Collection'));
+const AnyIdea = lazy(() => import('./pages/AnyIdea'));
+const HowWeBuiltIt = lazy(() => import('./pages/HowWeBuiltIt'));
+const Booking = lazy(() => import('./pages/Booking'));
+const BookingConfirmation = lazy(() => import('./pages/BookingConfirmation'));
+const Bookings = lazy(() => import('./pages/Bookings'));
+const Profile = lazy(() => import('./pages/Profile'));
+const CinephileAI = lazy(() => import('./pages/CinephileAI'));
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -42,13 +43,21 @@ const AnimatedRoutes = () => {
   );
 };
 
+const RouteFallback = () => (
+  <div className="app__route-loading" role="status" aria-live="polite">
+    Loading page...
+  </div>
+);
+
 function App() {
   return (
     <div className="app">
       <Router>
         <Header />
         <main id="main-content">
-          <AnimatedRoutes />
+          <Suspense fallback={<RouteFallback />}>
+            <AnimatedRoutes />
+          </Suspense>
         </main>
         <Footer />
       </Router>

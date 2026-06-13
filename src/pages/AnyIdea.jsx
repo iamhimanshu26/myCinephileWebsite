@@ -70,6 +70,7 @@ const AnyIdea = () => {
   const [ideas, setIdeas] = useState(() => getAllIdeas());
   const [formState, setFormState] = useState(initialFormState);
   const [editingId, setEditingId] = useState(null);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
@@ -94,9 +95,11 @@ const AnyIdea = () => {
     if (editingId) {
       const updated = updateIdea(editingId, formState);
       setIdeas(updated);
+      setFeedbackMessage('Idea updated successfully.');
     } else {
       const created = createIdea(formState);
       setIdeas(created);
+      setFeedbackMessage('Idea saved successfully.');
     }
     resetForm();
   };
@@ -118,15 +121,25 @@ const AnyIdea = () => {
   const handleDelete = (ideaId) => {
     const next = deleteIdea(ideaId);
     setIdeas(next);
+    setFeedbackMessage('Idea deleted.');
     if (editingId === ideaId) resetForm();
   };
 
   const updateIdeaStatus = (ideaId, status) => {
     const next = updateIdea(ideaId, { status });
     setIdeas(next);
+    setFeedbackMessage(`Idea marked as ${status}.`);
     if (editingId === ideaId) {
       setFormState((prev) => ({ ...prev, status }));
     }
+  };
+
+  const handleResetBoardFilters = () => {
+    setSearch('');
+    setCategoryFilter('All');
+    setPriorityFilter('All');
+    setStatusFilter('All');
+    setSortBy('Latest');
   };
 
   const filteredIdeas = useMemo(() => {
@@ -228,6 +241,11 @@ const AnyIdea = () => {
               </button>
             )}
           </div>
+          {!!feedbackMessage && (
+            <p className="any-idea-form__feedback" role="status" aria-live="polite">
+              {feedbackMessage}
+            </p>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="any-idea-form__grid">
               <label htmlFor="idea-title">
@@ -347,28 +365,49 @@ const AnyIdea = () => {
                 placeholder="Search saved ideas..."
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
+                aria-label="Search saved ideas"
               />
             </div>
             <div className="any-idea-board__filters">
-              <select className="select" value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+              <select
+                className="select"
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                aria-label="Filter ideas by category"
+              >
                 <option value="All">All Categories</option>
                 {CATEGORIES.map((category) => (
                   <option key={category} value={category}>{category}</option>
                 ))}
               </select>
-              <select className="select" value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
+              <select
+                className="select"
+                value={priorityFilter}
+                onChange={(e) => setPriorityFilter(e.target.value)}
+                aria-label="Filter ideas by priority"
+              >
                 <option value="All">All Priorities</option>
                 {PRIORITIES.map((priority) => (
                   <option key={priority} value={priority}>{priority}</option>
                 ))}
               </select>
-              <select className="select" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+              <select
+                className="select"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="Filter ideas by status"
+              >
                 <option value="All">All Statuses</option>
                 {STATUSES.map((status) => (
                   <option key={status} value={status}>{status}</option>
                 ))}
               </select>
-              <select className="select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <select
+                className="select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort ideas"
+              >
                 {SORT_OPTIONS.map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}
@@ -378,10 +417,14 @@ const AnyIdea = () => {
 
           {filteredIdeas.length === 0 ? (
             <StateBlock
-              title="No ideas saved yet"
-              description="When a new improvement idea comes up during development, save it here so it can be reviewed later."
-              actionLabel="Add First Idea"
-              onAction={() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              title={ideas.length === 0 ? 'No ideas saved yet' : 'No ideas match current filters'}
+              description={ideas.length === 0
+                ? 'When a new improvement idea comes up during development, save it here so it can be reviewed later.'
+                : 'Try changing search keywords, status, category, or priority filters.'}
+              actionLabel={ideas.length === 0 ? 'Add First Idea' : 'Reset Filters'}
+              onAction={ideas.length === 0
+                ? () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                : handleResetBoardFilters}
             />
           ) : (
             <div className="any-idea-board__grid">

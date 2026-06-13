@@ -304,7 +304,7 @@ const BookingFlow = () => {
             <BookingStepper steps={STEP_LABELS} activeStep={activeStep} />
             {renderStep()}
             {!!errorMessage && (
-              <p className="booking-page__error">{errorMessage}</p>
+              <p className="booking-page__error" role="alert">{errorMessage}</p>
             )}
             <div className="booking-page__actions">
               <button

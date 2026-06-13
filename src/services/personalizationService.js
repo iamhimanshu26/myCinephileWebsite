@@ -50,8 +50,12 @@ const mapToSortedEntries = (map) => (
 );
 
 const getCollectionEntries = () => {
-  const raw = localStorage.getItem(COLLECTION_STORAGE_KEY);
-  return safeParse(raw);
+  try {
+    const raw = localStorage.getItem(COLLECTION_STORAGE_KEY);
+    return safeParse(raw);
+  } catch {
+    return [];
+  }
 };
 
 const dedupeById = (list) => {
@@ -187,3 +191,6 @@ export const getPersonalizedShelfItems = ({
     .slice(0, limit)
     .map((entry) => entry.item);
 };
+
+// Future migration note:
+// Keep this service API stable and move signals to backend persistence later.

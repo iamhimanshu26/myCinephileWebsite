@@ -73,6 +73,8 @@
   color: $color-text-primary;
   font-size: $text-base;
   font-weight: 700;
+  line-height: 1.45;
+  word-break: break-word;
 }
 
 .profile-insights__summary {
@@ -182,6 +184,16 @@
 .profile-activity li span {
   color: $color-text-muted;
   font-size: $text-xs;
+}
+
+@media (max-width: 1200px) {
+  .profile-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .profile-insights__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: $tablet-width) {
