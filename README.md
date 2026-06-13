@@ -2,159 +2,227 @@
 
 **AI-powered movie discovery, booking, watchlist, and recommendation platform.**
 
----
-
-## 1) Project Overview
-
-Cinephile is a product-style frontend platform for discovering movies, series, and anime with a polished cinematic UI.  
-It combines discovery, personalization, booking simulation, review tracking, profile insights, and AI-style recommendation flows in one cohesive experience.
-
----
-
-## 2) Why I Built This
-
-I built Cinephile to move beyond a basic "search movies" app and design a full user journey:
-
-- Discover content through curated sections
-- Save and organize titles
-- Explore rich detail pages
-- Simulate booking with seat selection and digital confirmation
-- Add ratings/reviews and profile activity
-- Get AI-style recommendations and watch plans
-
-The goal was to demonstrate product thinking, architecture discipline, and scalable frontend engineering decisions suitable for portfolio, recruiter, and interview review.
+![React](https://img.shields.io/badge/React-18-blue?logo=react)
+![Redux Toolkit](https://img.shields.io/badge/Redux%20Toolkit-State%20Management-764ABC?logo=redux)
+![SCSS](https://img.shields.io/badge/SCSS-Styling-CC6699?logo=sass)
+![Framer Motion](https://img.shields.io/badge/Framer%20Motion-Animation-black)
+![Vercel](https://img.shields.io/badge/Vercel-Deployment-black?logo=vercel)
+![OMDB/TMDB API](https://img.shields.io/badge/OMDB%2FTMDB-Data%20Sources-0F766E)
+![LocalStorage Demo](https://img.shields.io/badge/Persistence-LocalStorage%20Demo-4B5563)
+![Future OpenAI/Gemini](https://img.shields.io/badge/Future-AI%20OpenAI%2FGemini-7C3AED)
+![Future Neon PostgreSQL](https://img.shields.io/badge/Future-Neon%20PostgreSQL-10B981)
 
 ---
 
-## 3) Live Demo
+## 1. Project Overview
 
-- **Vercel:** https://cinephile.vercel.app  
-  _(If your production URL differs, update this link to your project-specific Vercel domain.)_
+Cinephile is a cinematic movie discovery and booking platform where users can explore movies, TV series, and anime, view detailed title information, save favorites, manage watchlists, book demo movie tickets, write reviews, view profile insights, and get AI-style recommendations through **Cinephile AI**.
+
+The goal is not just a movie website, but a polished product-style platform for discovering, saving, booking, reviewing, and planning what to watch.
 
 ---
 
-## 4) Key Features
+## 2. Live Demo
 
-- Cinematic homepage with hero and discovery rails
-- Movie / TV / Anime discovery tabs
-- Search and filter workflows
-- Movie details with metadata, similar titles, and actions
+**Live Demo:**  
+https://mycinephilewebsite.vercel.app/
+
+---
+
+## 3. Why I Built This
+
+I wanted to move beyond a basic movie search website and build a complete entertainment platform that demonstrates:
+
+- Frontend architecture
+- UI/UX design system
+- Movie discovery flow
+- Booking flow
+- Local persistence
+- AI-ready recommendation design
+- Personalization
+- Portfolio case-study presentation
+- Real product thinking
+
+---
+
+## 4. Key Features
+
+- Cinematic homepage
+- Movie / TV / Anime discovery
+- Trending, popular, top-rated, and curated sections
+- Search and filters
+- Professional movie detail pages
+- Poster fallback and image handling
 - Watchlist and favorites
-- Recently viewed shelf
-- Booking flow (date, theatre, screen, showtime, seats)
-- Seat selection map
-- Digital ticket confirmation
-- Booking history with status updates
+- Recently viewed
 - Reviews and ratings
-- Profile insights and activity timeline
-- Cinephile AI recommendations and watch planner
-- Any Idea development tracker (internal backlog)
+- Booking flow
+- Showtime selection
+- Seat selection
+- Demo reservation confirmation
+- Digital ticket
+- Booking history
+- Profile insights
+- Activity timeline
+- Recommended For You
+- Cinephile AI recommendations
+- Watch planner
+- Any Idea development tracker
 - How We Built It case-study page
+- Responsive UI
+- Lighter sage/emerald cinematic design system
 
 ---
 
-## 5) Tech Stack
+## 5. Feature Walkthrough
 
-- **React** (SPA UI architecture)
-- **Redux Toolkit** (application state)
-- **SCSS** (token-based styling and theme consistency)
-- **Framer Motion** (lightweight transitions and motion)
-- **OMDb + multi-source catalog integrations**
-- **LocalStorage services** (booking/review/activity/recently-viewed/ideas)
-- **Vercel** (deployment)
-- **Future AI:** OpenAI / Gemini integration
-- **Future database:** Neon PostgreSQL
+1. Discover content from homepage.
+2. Search and filter movies.
+3. Open movie details.
+4. Save to watchlist/favorites.
+5. Add review/rating.
+6. Book demo ticket.
+7. Select seats.
+8. View digital ticket.
+9. Check booking history.
+10. Use Cinephile AI for recommendations.
+11. Save development ideas in Any Idea.
+12. Review project evolution in How We Built It.
 
 ---
 
-## 6) Architecture Overview
+## 6. Tech Stack
 
-### Page Layer
-Route-level pages (`Home`, `Search`, `Details`, `Profile`, `CinephileAI`, `AnyIdea`, booking routes, etc.).
+### Frontend
+- React
+- Redux Toolkit
+- JavaScript
+- SCSS
+- Framer Motion
 
-### Component Layer
-Reusable UI modules for cards, states, sections, booking widgets, profile widgets, and case-study tabs/cards.
+### APIs / Data
+- OMDB API
+- TMDB-style movie metadata where applicable
+- Local catalog/fallback data
 
-### Service Layer
-Dedicated local services for domain behavior and persistence:
+### Persistence
+- LocalStorage services for demo persistence
 
-- `ideaService`
-- `recentlyViewedService`
+### Deployment
+- Vercel
+
+### Future
+- OpenAI / Gemini for advanced recommendations
+- Neon PostgreSQL for database-backed persistence
+- Backend API for production booking/profile/review data
+
+---
+
+## 7. Architecture Overview
+
+The application follows a layered frontend architecture:
+
+- **Page layer**: Route-level pages and product workflows.
+- **Component layer**: Reusable UI sections, cards, state blocks, booking widgets, and case-study modules.
+- **Service layer**: Isolated domain logic and persistence APIs.
+- **Utility layer**: Shared helpers for filtering, media normalization, recommendation logic, and booking/seat computations.
+- **Redux/state layer**: Centralized app state for movie/catalog and collection interactions.
+- **LocalStorage persistence layer**: Demo persistence for user activity and product flows.
+- **Movie API/data layer**: API integrations and fallback mapping.
+- **Recommendation layer**: Prompt parsing and recommendation strategy.
+- **Personalization layer**: Taste signal extraction and profile insights.
+- **Future database layer**: Planned Neon PostgreSQL integration.
+- **Future AI integration layer**: Planned OpenAI/Gemini recommendation adapters.
+
+Important services used in the project include:
+
 - `bookingService`
 - `reviewService`
-- `activityService`
+- `recentlyViewedService`
+- `ideaService`
 - `recommendationService`
-- `personalizationService`
-
-### Utility Layer
-Normalization, filtering, recommendation scoring, seat-map generation, and discovery section strategy utilities.
-
-### Persistence Layer (Current)
-Client-side localStorage persistence through service abstractions.
-
-### Future Backend Layer
-Neon PostgreSQL-backed persistence and API services.
-
-### Future AI Integration Layer
-External OpenAI/Gemini providers for semantic recommendation intelligence.
+- `activityService`
 
 ---
 
-## 7) Project Phases
+## 8. Project Phases
 
-- **Phase 1:** Foundation & design system
-- **Phase 2:** Cinematic homepage & discovery
-- **Phase 3:** Movie details, reviews, booking flow
-- **Phase 4:** Cinephile AI & personalization
-- **Phase 5:** Final polish, accessibility, performance, documentation, portfolio readiness
+### Phase 1 — Foundation & Design System
+- UI consistency
+- Typography
+- Spacing
+- Header
+- Theme
+- Reusable components
 
----
+### Phase 2 — Cinematic Homepage & Discovery
+- Hero section
+- Discovery sections
+- Movie / TV / Anime browsing
+- Poster fallback
+- Recently viewed
+- Lighter sage/emerald theme
 
-## 8) Feature Walkthrough
+### Phase 3 — Movie Details, Reviews & Booking
+- Professional movie details
+- Metadata layout
+- Reviews/ratings
+- Similar movies
+- Booking flow
+- Seat selection
+- Digital ticket
+- Booking history
 
-1. **Discovery Flow**  
-   Home -> browse curated rails -> open details -> save to watchlist/favorites.
+### Phase 4 — Cinephile AI & Personalization
+- Cinephile AI page
+- Prompt-based recommendations
+- Watch planner
+- Recommended For You
+- Profile insights
+- Future OpenAI/Gemini support
 
-2. **Search Flow**  
-   Search from header -> refine -> open details.
-
-3. **Booking Flow (Demo)**  
-   Details -> book ticket -> choose date/theatre/showtime/seats -> confirm reservation -> view digital ticket -> see booking history.
-
-4. **Review + Profile Flow**  
-   Add rating/review on details page -> review appears in profile activity and contributes to personalization signals.
-
-5. **Cinephile AI Flow**  
-   Use prompt chips or custom text -> get recommendation cards -> open details -> save/book directly.
-
-6. **Any Idea Flow**  
-   Capture product ideas -> filter/sort by status/priority/category -> edit/delete as roadmap evolves.
-
----
-
-## 9) Demo Limitations
-
-- Booking is simulated (demo flow).
-- Payments are not real.
-- AI recommendations currently use fallback/local logic.
-- OpenAI/Gemini integration is planned for a future phase.
-- Database migration (Neon PostgreSQL) is planned for a future phase.
-
----
-
-## 10) Future Improvements
-
-- Authentication and user accounts
-- Neon PostgreSQL integration and backend APIs
-- Real AI provider integration (OpenAI/Gemini)
-- Streaming availability integrations
-- Rich social features (sharing, follow, lists)
-- Admin/ops panel for moderation and analytics
-- Dedicated mobile application
+### Phase 5 — Final Polish & Portfolio Readiness
+- Documentation
+- SEO/meta
+- Accessibility
+- Responsive polish
+- Build verification
+- Portfolio-ready README
 
 ---
 
-## 11) Local Setup
+## 9. Demo Limitations
+
+- Booking is a demo/simulated reservation flow.
+- No real payment is processed.
+- Some movie data depends on third-party APIs.
+- Some poster/fallback data may be curated for presentation quality.
+- Cinephile AI currently uses fallback/local recommendation logic.
+- OpenAI/Gemini integration is planned for future.
+- User data is stored locally for demo purposes.
+- Production database integration is planned for future.
+
+---
+
+## 10. Future Roadmap
+
+- Authentication
+- Neon PostgreSQL
+- Backend API
+- Real AI API integration with OpenAI/Gemini
+- Better recommendation ranking
+- Streaming availability
+- Real booking backend
+- Payment simulation layer
+- Multi-user profiles
+- Social features
+- Admin panel
+- Mobile app
+- Performance analytics
+
+---
+
+## 11. Local Setup
 
 ```bash
 npm install
@@ -162,40 +230,44 @@ npm start
 npm run build
 ```
 
+Create a `.env` file using `.env.example`.  
+Do not commit real API keys.
+
 ---
 
-## 12) Environment Variables
-
-Use a `.env` file with placeholders only:
+## 12. Environment Variables
 
 ```env
-REACT_APP_OMDB_API_KEY=your_omdb_key
-REACT_APP_TMDB_API_KEY=your_tmdb_key
-REACT_APP_TRAKT_CLIENT_ID=your_trakt_client_id
-REACT_APP_TRAKT_CLIENT_SECRET=your_trakt_client_secret
-REACT_APP_GEMINI_API_KEY=your_gemini_key
-REACT_APP_OPENAI_API_KEY=your_openai_key
+REACT_APP_OMDB_API_KEY=
+REACT_APP_TMDB_API_KEY=
+REACT_APP_TRAKT_API_KEY=
+REACT_APP_GEMINI_API_KEY=
+REACT_APP_OPENAI_API_KEY=
 ```
 
-Do not commit real secrets.
+`REACT_APP_GEMINI_API_KEY` and `REACT_APP_OPENAI_API_KEY` are future placeholders only and should never be committed with real secrets.
 
 ---
 
-## 13) Screenshots
+## 13. Screenshots
 
-_Add screenshots in this section when assets are ready:_
+_Add/update screenshots here as the presentation deck evolves._
 
-- Home discovery view
-- Details page
-- Booking flow seat map
-- Booking confirmation ticket
-- Profile insights
-- Cinephile AI recommendations
-- How We Built It case-study tab view
+- Homepage
+- Movie details
+- Booking flow
+- Cinephile AI
+- Profile
+- How We Built It
 
 ---
 
-## 14) Author
+## 14. Author
 
-- **Cinephile Maintainer**  
-- GitHub: `@your-github-handle`
+**Himanshu Kumar Sharma**
+
+GitHub:  
+https://github.com/iamhimanshu26
+
+Project:  
+Cinephile

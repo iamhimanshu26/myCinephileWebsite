@@ -1,49 +1,94 @@
-# Cinephile – Git & Vercel Deployment
+# Deployment Guide
 
-## 1. Create a new repo on GitHub
+## 1. Current Hosting
 
-1. Go to [github.com/new](https://github.com/new).
-2. Set **Repository name** (e.g. `Cinephile` or `cinephile`).
-3. Choose **Public**, leave "Add a README" **unchecked** (you already have one).
-4. Click **Create repository**.
+**Platform:** Vercel  
+**Live URL:** https://mycinephilewebsite.vercel.app/
 
-## 2. Push this project to your new repo
+---
 
-In a terminal, from the project folder (`C:\Users\LENOVO\OneDrive\Desktop\My_Projects\CineVerse-main`), run (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repo name):
+## 2. Build Command
 
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git branch -M main
-git push -u origin main
+npm run build
 ```
 
-Example:
+---
 
-```bash
-git remote add origin https://github.com/johndoe/Cinephile.git
-git branch -M main
-git push -u origin main
+## 3. Output Directory
+
+```text
+build
 ```
 
-## 3. Deploy on Vercel (new deployment)
+---
 
-1. Go to [vercel.com](https://vercel.com) and sign in (e.g. with GitHub).
-2. Click **Add New…** → **Project**.
-3. **Import** the GitHub repo you just created (e.g. `Cinephile`).
-4. Vercel will detect the React app. Settings should be:
-   - **Framework Preset:** Create React App  
-   - **Build Command:** `npm run build` (or use `vercel.json`)  
-   - **Output Directory:** `build`  
-   (These are already set in `vercel.json`.)
-5. Click **Deploy**.  
-   After the build finishes, you’ll get a live URL (e.g. `https://cinephile-xxx.vercel.app`).
+## 4. Environment Variables
 
-Later: every push to `main` will trigger a new deployment automatically.
+Use `.env.example` as the reference for required/future variables:
 
-## Optional: API key (movie data)
+- `REACT_APP_OMDB_API_KEY`
+- `REACT_APP_TMDB_API_KEY`
+- `REACT_APP_TRAKT_API_KEY`
+- `REACT_APP_GEMINI_API_KEY` (future placeholder)
+- `REACT_APP_OPENAI_API_KEY` (future placeholder)
 
-If the app uses an API key (e.g. in `src/api/movieApiKey.js`), add it in Vercel:
+Do not commit real secrets.
 
-1. Project → **Settings** → **Environment Variables**.
-2. Add the variable name and value (e.g. `REACT_APP_OMDB_API_KEY`).
-3. Redeploy so the new env is applied.
+---
+
+## 5. Vercel Configuration
+
+The project uses `vercel.json` with:
+
+- `buildCommand: npm run build`
+- `outputDirectory: build`
+- SPA rewrite support
+
+---
+
+## 6. SPA Routing
+
+Vercel rewrites route all requests to `index.html` so React Router paths work on refresh/direct access.
+
+Example rule (already configured):
+
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+---
+
+## 7. Deployment Steps
+
+1. Push updates to GitHub `main` branch.
+2. Vercel automatically starts a new build/deploy.
+3. After deployment, verify major routes and product flows.
+
+---
+
+## 8. Manual Verification Routes
+
+- `/`
+- `/search`
+- `/collection`
+- `/any-idea`
+- `/how-we-built-it`
+- `/movie/:id`
+- `/person/:personId`
+- `/booking/:movieId`
+- `/booking-confirmation/:bookingId`
+- `/bookings`
+- `/profile`
+- `/cinephile-ai`
+
+---
+
+## 9. Demo Limitations
+
+- Booking is demo-only.
+- No real payment is processed.
+- AI API integration is planned for future phases.
+- LocalStorage data is browser-specific and not shared across devices/users.
