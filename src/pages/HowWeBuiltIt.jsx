@@ -44,7 +44,7 @@ const TABS = [
 const OVERVIEW_METRICS = [
   { label: 'Product Type', value: 'Movie Discovery, AI Recommendation & Booking Platform' },
   { label: 'Core Purpose', value: 'Discover, save, explore, and plan what to watch' },
-  { label: 'Current Stage', value: 'Active Development' },
+  { label: 'Current Stage', value: 'Phase 5 Completed (Portfolio-Ready Polish)' },
   { label: 'Frontend', value: 'React' },
   { label: 'State Management', value: 'Redux' },
   { label: 'Styling', value: 'SCSS' },
@@ -107,81 +107,46 @@ const ARCHITECTURE_LAYERS = [
 
 const PHASES = [
   {
-    name: 'Phase 0 — Project Audit',
-    problem: 'Legacy app had mixed styles and uneven architecture visibility.',
-    solution: 'Completed full audit of routes, APIs, components, and UI consistency.',
-    result: 'Clear baseline and scoped transformation plan.',
+    name: 'Phase 0 — Idea & Problem',
+    problem: 'Started as a basic movie-search concept without strong product flow or positioning.',
+    solution: 'Defined Cinephile as a complete discovery, booking, review, and recommendation platform.',
+    result: 'Clear product direction, route map, and phased implementation plan.',
     status: 'Completed',
   },
   {
     name: 'Phase 1 — Foundation & UI Consistency',
     problem: 'Visual language was fragmented across pages.',
     solution: 'Standardized design tokens, spacing, components, and motion language.',
-    result: 'Unified cinematic emerald interface.',
+    result: 'Unified lighter sage/emerald interface and reusable design system baseline.',
     status: 'Completed',
   },
   {
-    name: 'Phase 2 — Cinematic Homepage',
+    name: 'Phase 2 — Cinematic Homepage & Discovery',
     problem: 'Homepage needed stronger storytelling and module hierarchy.',
     solution: 'Implemented cinematic hero, lighter sage/emerald theme pass, discovery sections backed by a configurable discovery strategy, Movie/TV/Anime browsing tabs, poster fallback quality upgrades, and recently viewed integration.',
     result: 'Homepage now delivers curated discovery flows with stronger media quality, cleaner card alignment, and resilient poster loading behavior.',
     status: 'Completed',
   },
   {
-    name: 'Phase 3 — Movie Detail Experience',
-    problem: 'Detail pages needed richer storytelling, metadata, and actionable user flow.',
-    solution: 'Implemented cinematic detail hero, metadata redesign, favorites/watchlist actions, user rating/review persistence, similar movies modules, and recently viewed card-size stability fixes.',
-    result: 'Movie detail route now supports a stronger end-to-end engagement journey with compact and consistent discovery cards.',
+    name: 'Phase 3 — Movie Details, Reviews & Booking Flow',
+    problem: 'Detail experience lacked depth, and there was no complete user journey to booking.',
+    solution: 'Delivered detail-page redesign, review/rating persistence, booking flow, seat map, digital ticket confirmation, and booking history.',
+    result: 'Cinephile now supports a full discovery-to-booking demo journey.',
     status: 'Completed',
   },
   {
-    name: 'Phase 4 — AI Recommendations & Personalization',
-    problem: 'Users needed intelligent, prompt-driven suggestions and stronger personalized discovery.',
-    solution: 'Implemented Cinephile AI route with prompt chips, fallback recommendation engine, mood/situation intent parsing, watch planner, and personalized recommendation flows.',
-    result: 'Cinephile now offers an AI-style recommendation journey while preserving existing discovery and booking experiences.',
+    name: 'Phase 4 — Cinephile AI & Personalization',
+    problem: 'Discovery needed intelligence and user-specific recommendations.',
+    solution: 'Added Cinephile AI prompt experience, fallback recommendation engine, watch planner, personalized home shelf, and profile insights.',
+    result: 'Users now get AI-style recommendations and personalized discovery from local activity signals.',
     status: 'Completed',
   },
   {
-    name: 'Phase 5 — Booking Flow',
-    problem: 'Users needed a complete booking journey from details page to reservation confirmation.',
-    solution: 'Implemented multi-step booking flow with date/theatre/screen/showtime selection, seat map interaction, booking summary, demo reservation confirmation, digital ticket, and booking history.',
-    result: 'Booking now works as a realistic demo flow with local persistence and status updates.',
+    name: 'Phase 5 — Final Polish, Documentation & Portfolio Readiness',
+    problem: 'Product needed final consistency, accessibility, performance tuning, and presentation quality.',
+    solution: 'Completed global QA pass, accessibility hardening, responsive polish, metadata upgrades, and portfolio-focused documentation.',
+    result: 'Cinephile is now stable, polished, and recruiter/client presentation ready as an enterprise-style frontend product.',
     status: 'Completed',
-  },
-  {
-    name: 'Phase 6 — User Profile & Activity',
-    problem: 'Profile needed richer insight and social-style engagement cues.',
-    solution: 'Added personalization insights, taste summary, review activity cards, and enhanced timeline presentation.',
-    result: 'Profile now communicates user taste and activity progression more clearly.',
-    status: 'In Progress',
-  },
-  {
-    name: 'Phase 7 — Cinephile AI Recommendation Layer',
-    problem: 'Recommendation quality felt generic without prompt understanding and mood context.',
-    solution: 'Built a separate Cinephile AI route with prompt-based recommendations, mood-based discovery, quick chips, fallback recommendation engine, personalized suggestions, and watch-planning support.',
-    result: 'Cinephile AI now delivers recommendation experiences while Any Idea remains a development idea tracker; real Gemini/OpenAI integration is intentionally planned for a later phase.',
-    status: 'Completed',
-  },
-  {
-    name: 'Phase 8 — Any Idea Development Tracker',
-    problem: 'Strong product and UI improvement ideas appear during development and get lost.',
-    solution: 'Created a development-focused idea tracker to save unplanned product improvements, UI ideas, technical enhancements, and future feature suggestions during the project lifecycle.',
-    result: 'Lightweight internal backlog is available inside Cinephile for structured follow-up.',
-    status: 'Completed',
-  },
-  {
-    name: 'Phase 9 — Performance & Accessibility',
-    problem: 'Need stronger loading, keyboard, and Lighthouse outcomes.',
-    solution: 'Planned skeletons, perf tuning, and accessibility hardening.',
-    result: 'Quality gate checklist established.',
-    status: 'Planned',
-  },
-  {
-    name: 'Phase 10 — Deployment & Portfolio Polish',
-    problem: 'Portfolio presentation requires deeper product storytelling.',
-    solution: 'Planned architecture showcase, demos, and release-quality docs.',
-    result: 'Recruiter/client-ready narrative in progress.',
-    status: 'In Progress',
   },
 ];
 
@@ -203,6 +168,8 @@ const ROADMAP_SECTIONS = [
       'Fallback AI-ready recommendation service',
       'Personalized Recommended For You section on Home',
       'Profile taste insights and social-style review activity',
+      'Phase 5 final QA, accessibility, responsive, and metadata polish',
+      'Portfolio-ready README and project walkthrough updates',
       'How We Built It case-study page',
     ],
   },
@@ -221,7 +188,7 @@ const ROADMAP_SECTIONS = [
       'Booking history enhancements',
       'Profile-level preferences and personalization',
       'Review moderation and quality prompts',
-      'Neon PostgreSQL integration',
+      'Neon PostgreSQL integration (future database plan)',
     ],
   },
   {
@@ -465,8 +432,9 @@ const HowWeBuiltIt = () => {
 
           <CaseStudyCard title="Demo Notice" icon={<FiBookOpen />}>
             <p>
-              This project is under active development. Some movie and booking data may be
-              simulated for demonstration purposes.
+              Booking, payment, and recommendation intelligence are demonstrated as product flows.
+              Real payment gateways, backend persistence, and Gemini/OpenAI AI providers are
+              intentionally planned for later roadmap phases.
             </p>
           </CaseStudyCard>
         </div>
