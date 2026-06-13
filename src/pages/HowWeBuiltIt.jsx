@@ -159,7 +159,7 @@ const PHASES = [
     name: 'Phase 7 — Cinephile AI Recommendation Layer',
     problem: 'Recommendation quality felt generic without prompt understanding and mood context.',
     solution: 'Built a separate Cinephile AI route with prompt-based recommendations, mood-based discovery, quick chips, fallback recommendation engine, personalized suggestions, and watch-planning support.',
-    result: 'Cinephile AI now delivers recommendation experiences while Any Idea remains a development idea tracker, ready for future Gemini/OpenAI integration.',
+    result: 'Cinephile AI now delivers recommendation experiences while Any Idea remains a development idea tracker; real Gemini/OpenAI integration is intentionally planned for a later phase.',
     status: 'Completed',
   },
   {
@@ -227,7 +227,7 @@ const ROADMAP_SECTIONS = [
   {
     title: 'Future',
     items: [
-      'Gemini/OpenAI recommendation module',
+      'Real Gemini/OpenAI recommendation integration (planned later)',
       'Advanced personalization engine',
       'Streaming availability',
       'Smarter recommendation ranking',
